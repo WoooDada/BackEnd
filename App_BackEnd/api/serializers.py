@@ -1,71 +1,52 @@
+from django.core.exceptions import ValidationError
 
+from .models import User
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from .models import Account
-from rest_framework.exceptions import ValidationError
+from django.http import JsonResponse
 
-
+#회원가입 serializer
 class signupSerializer(serializers.ModelSerializer):
-
-    username = serializers.CharField(source='user.username')
-    password = serializers.CharField(source='user.password', style={'input_type': 'password'})
-
-    class Meta:
-        model = Account
-        fields = [
-            'uid',
-            'username',
-            'password',
-        ]
-
     def create(self, validated_data):
-
-        user_data = validated_data.pop('user')
-        user = User.objects.create(**user_data)
-        user.set_password(user_data['password'])
+        user = User.objects.create_user(
+            uid = validated_data['uid'],
+            nickname = validated_data['nickname'],
+            password = validated_data['password']
+        )
+        if User.objects.all().filter(uid=validated_data['uid']).exists():
+            return JsonResponse({'message': 'uid 중복'}, status=400)
+        if User.objects.all().filter(nickname=validated_data['nickname']).exists():
+            return JsonResponse({'message': 'nickname 중복'}, status=400)
         user.save()
-
-        account = Account.objects.create(user=user, **validated_data)
-        account.username = user.username
-        account.save()
-        return account
-
-
-class AccountSerializer(serializers.ModelSerializer):
+        return JsonResponse(status=200)
 
     class Meta:
-        model = Account
-        fields = [
-            'id',
-            'username',
-        ]
+        model = User
+        fields = ['uid', 'nickname', 'password']
 
 
 
-
+#로그인 serializer
 class loginSerializer(serializers.ModelSerializer):
 
-    username = serializers.CharField(source='user.username')
-    password = serializers.CharField(source='user.password', style={'input_type': 'password'})
-    account = AccountSerializer(allow_null=True, read_only=True)
+    uid = serializers.CharField(source='user.uid')
+    password = serializers.CharField(source='user.password')
+
 
     class Meta:
         model = User
         depth = 1
         fields = [
-            'username',
+            'uid',
             'password',
-            'account',
         ]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate(self, attrs):
         validation_data = dict(attrs)['user']
-        username = validation_data.get('username', None)
+        uid = validation_data.get('uid', None)
         password = validation_data.get('password', None)
-
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(uid=uid)
 
         except:
             raise ValidationError("Incorrect Username/Password")

@@ -1,34 +1,28 @@
-from rest_framework import generics, permissions, views, response,status
-from .models import Account
-from .serializers import signupSerializer, AccountSerializer, loginSerializer
+
+from .serializers import signupSerializer,loginSerializer
+from .models import User
+from rest_framework import generics, status, views
+from django.http import JsonResponse, response
 
 
-
-# Create your views here.
-
-
+# 회원가입
 class signup(generics.CreateAPIView):
-    queryset = Account.objects.all()
+    queryset = User.objects.all()
     serializer_class = signupSerializer
-    permission_classes = [permissions.AllowAny]
-
-"""
-class AccountListView(generics.ListAPIView):
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
-    permission_classes = [permissions.IsAuthenticated]
-"""
 
 
-
+#로그인
 class login(views.APIView):
-    queryset = Account.objects.all()
+    queryset = User.objects.all()
     serializer_class = loginSerializer
 
     def post(self, request):
         data = request.data
-        serializer = loginSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            new_date = serializer.data
-            return response.Response(new_date,status=status.HTTP_200_OK)
-        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = signupSerializer(data=data)
+        try:
+            if serializer.is_valid(raise_exception=True):
+                new_date = serializer.data
+                return JsonResponse(status=200)
+        except:
+            return JsonResponse({'message': 'wrong'}, status=400)
+
