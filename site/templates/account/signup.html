@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+</head>
+<body>
+    {% block content %}
+    <div class="image_container">
+        <!-- <input type="image">  -->
+        <h4>같이 공부해요</h4>
+    </div>
+   <br> <br>
+    <form class="form-signin" method="post">{% csrf_token %}
+
+    ID <br>
+  <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus><br>
+
+    PassWord<br>
+    <input type="password" name="password" id="inputPassword1" class="form-control" placeholder="Password" required><br>
+    NickName<br>
+    <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required><br>
+
+  {% for field in registration_form %}
+      <p>
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+  {% endfor %}
+  {% if registration_form.non_field_errors %}
+    <div style="color: red">
+      <p>{{registration_form.non_field_errors}}</p>
+    </div>
+        {% endif %}
+
+        <a href="{% url 'home'%}"><button type="submit" >Sign up</button></a>
+
+</form>
+{% endblock content %}
+</body>
+</html>
