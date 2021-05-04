@@ -5,7 +5,7 @@ from .models import Account
 from rest_framework.exceptions import ValidationError
 
 
-class AccountCreateSerializer(serializers.ModelSerializer):
+class signupSerializer(serializers.ModelSerializer):
 
     username = serializers.CharField(source='user.username')
     password = serializers.CharField(source='user.password', style={'input_type': 'password'})
@@ -13,10 +13,8 @@ class AccountCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = [
-            'id',
+            'uid',
             'username',
-            'displayName',
-            'facebook',
             'password',
         ]
 
@@ -40,14 +38,12 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'username',
-            'displayName',
-            'facebook',
         ]
 
 
 
 
-class AuthenticateSerializer(serializers.ModelSerializer):
+class loginSerializer(serializers.ModelSerializer):
 
     username = serializers.CharField(source='user.username')
     password = serializers.CharField(source='user.password', style={'input_type': 'password'})
