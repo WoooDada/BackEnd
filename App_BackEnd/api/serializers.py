@@ -1,3 +1,5 @@
+from django.contrib import auth
+from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 
 from .models import User
@@ -10,8 +12,10 @@ class signupSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(
             uid = validated_data['uid'],
             nickname = validated_data['nickname'],
-            password = validated_data['password']
+            password = validated_data['password'],
         )
+        user.set_password(validated_data['password'])
+        user.is_active = False    #가입시 자동로그인 x
         if User.objects.all().filter(uid=validated_data['uid']).exists():
             return JsonResponse({'message': 'uid 중복'}, status=400)
         if User.objects.all().filter(nickname=validated_data['nickname']).exists():
@@ -28,30 +32,42 @@ class signupSerializer(serializers.ModelSerializer):
 #로그인 serializer
 class loginSerializer(serializers.ModelSerializer):
 
-    uid = serializers.CharField(source='user.uid')
-    password = serializers.CharField(source='user.password')
-
+    uid = serializers.EmailField()
+    #uid = serializers.CharField()
+    password = serializers.CharField()
 
     class Meta:
         model = User
-        depth = 1
         fields = [
             'uid',
             'password',
         ]
         extra_kwargs = {"password": {"write_only": True}}
 
-    def validate(self, attrs):
-        validation_data = dict(attrs)['user']
-        uid = validation_data.get('uid', None)
-        password = validation_data.get('password', None)
-        try:
-            user = User.objects.get(uid=uid)
 
+    def validate(self, attrs):
+
+        uid = attrs['uid']
+        password=attrs['password']
+
+        try :
+            user = User.objects.get(uid=uid)
         except:
-            raise ValidationError("Incorrect Username/Password")
+            return 0  # 계정 없음
 
         if user.check_password(password):
-            attrs['account'] = user.account
-            return attrs
-        raise ValidationError("Incorrect login/password.")
+            return 1  # pw 불일치
+        return 2
+
+
+
+"""
+   def validate(self, attrs):
+
+        user = authenticate(
+            uid=attrs['uid'], password=attrs['password'])
+        if user is None:
+            raise serializers.ValidationError('invalid credentials provided')
+        self.instance = user
+        return user
+"""

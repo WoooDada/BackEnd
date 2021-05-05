@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
 
 
 class UserManager(BaseUserManager):
@@ -23,8 +23,8 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             uid =uid,
             nickname=nickname,
-            password=password,
         )
+        user.set_password(password)
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -35,14 +35,14 @@ class User(AbstractBaseUser):
     uid = models.EmailField(default='', max_length=100, null=False, blank=False, unique=True, primary_key=True)
     nickname = models.CharField(default='', max_length=100, null=False, blank=False, unique=True)
     password = models.CharField(default='', max_length=100, null=False, blank=False)
-    birth = models.DateField(verbose_name="Birth")
-    tot_concent_hour = models.IntegerField(verbose_name="Total Study Hour", default=0)
+    birth = models.DateField(verbose_name="Birth", null=True)
+    tot_concent_hour = models.IntegerField(verbose_name="Total Study Hour", default=0, null=True)
     SEX = (
         ('M', '남성(Man)'),
         ('W', '여성(Woman)'),
         ('N', '설정안함(None)'),
     )
-    sex = models.CharField(max_length=1, choices=SEX)
+    sex = models.CharField(max_length=1, choices=SEX, null=True)
     BADGE = (
         ('B', 'BRONZE'),
         ('S', 'SILVER'),
@@ -50,8 +50,8 @@ class User(AbstractBaseUser):
         ('P', 'PLATINUM'),
         ('D', 'DIAMOND'),
     )
-    badge = models.CharField(max_length=2, choices=BADGE, default='B')
-
+    badge = models.CharField(max_length=2, choices=BADGE, default='B', null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     # User 모델의 필수 field
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -59,10 +59,10 @@ class User(AbstractBaseUser):
     # 헬퍼 클래스 사용
     objects = UserManager()
 
-    # 사용자의 username field는 nickname으로 설정
-    USERNAME_FIELD = 'nickname'
+    # 사용자의 username field는 uid로 설정
+    USERNAME_FIELD = 'uid'
     # 필수로 작성해야하는 field
-    REQUIRED_FIELDS = ['uid', 'nickname', 'password']
+    REQUIRED_FIELDS = ['uid', 'nickname']
 
     def __str__(self):
-        return self.nickname
+        return self.uid

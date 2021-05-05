@@ -4,6 +4,7 @@
     <list default="true" id="72820162-4a3a-4bfd-876d-af9a0b63ba5a" name="Default" comment="2021.05.05">
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App_BackEnd/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/App_BackEnd/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers.py" afterDir="false" />
@@ -308,6 +309,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="2021.05.05" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="604" y="163" key="#Inspections" timestamp="1620231511352">
+      <screen x="0" y="0" width="1442" height="864" />
+    </state>
+    <state x="604" y="163" key="#Inspections/0.0.1442.864@0.0.1442.864" timestamp="1620231511352" />
     <state x="402" y="23" key="CommitChangelistDialog2" timestamp="1620152332487">
       <screen x="0" y="0" width="1442" height="864" />
     </state>
