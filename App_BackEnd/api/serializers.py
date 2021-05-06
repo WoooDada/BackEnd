@@ -52,8 +52,8 @@ class signupSerializer(serializers.ModelSerializer):
 #로그인 serializer
 class loginSerializer(serializers.ModelSerializer):
 
+
     uid = serializers.EmailField()
-    #uid = serializers.CharField()
     password = serializers.CharField()
 
     class Meta:
@@ -62,9 +62,9 @@ class loginSerializer(serializers.ModelSerializer):
             'uid',
             'password',
         ]
-        extra_kwargs = {"password": {"write_only": True}}
+        #extra_kwargs = {"password": {"write_only": True}}
 
-
+"""
     def validate(self, attrs):
 
         uid = attrs['uid']
@@ -73,11 +73,13 @@ class loginSerializer(serializers.ModelSerializer):
         try :
             user = User.objects.get(uid=uid)
         except:
-            return 0  # 계정 없음
+            raise ValidationError("no Id")  # 계정 없음
 
         if user.check_password(password):
             return 1  # pw 불일치
-        return 2
+        raise ValidationError("pw wrong")
+
+"""
 
 
 

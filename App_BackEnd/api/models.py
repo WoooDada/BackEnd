@@ -62,7 +62,7 @@ class User(AbstractBaseUser):
     # 사용자의 username field는 uid로 설정
     USERNAME_FIELD = 'uid'
     # 필수로 작성해야하는 field
-    REQUIRED_FIELDS = ['uid', 'nickname']
+    REQUIRED_FIELDS = ['uid']
 
     def __str__(self):
         return self.uid
