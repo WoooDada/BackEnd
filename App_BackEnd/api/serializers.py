@@ -17,11 +17,15 @@ class signupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.is_active = False    #가입시 자동로그인 x
         if User.objects.all().filter(uid=validated_data['uid']).exists():
-            return JsonResponse({'message': 'uid 중복'}, status=400)
+            res = JsonResponse({'message': 'uid 중복'}, status=400)
+            return res
+
         if User.objects.all().filter(nickname=validated_data['nickname']).exists():
             return JsonResponse({'message': 'nickname 중복'}, status=400)
         user.save()
-        return JsonResponse(status=200)
+        res = JsonResponse(status=200)
+        print(res)
+        return res
 
     class Meta:
         model = User

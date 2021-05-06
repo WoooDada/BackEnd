@@ -54,7 +54,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'App_BackEnd.urls'
 
 STATICFILES_DIRS = [
@@ -85,6 +84,8 @@ CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:3000'
 )
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
