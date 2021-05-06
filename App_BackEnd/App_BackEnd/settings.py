@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'App_BackEnd.urls'
 
 STATICFILES_DIRS = [
