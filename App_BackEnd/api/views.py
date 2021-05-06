@@ -9,8 +9,12 @@ from django.http import JsonResponse, response, HttpResponse
 
 # 회원가입
 class signup(generics.CreateAPIView):
+
     queryset = User.objects.all()
     serializer_class = signupSerializer
+
+
+
 
 
 #로그인
