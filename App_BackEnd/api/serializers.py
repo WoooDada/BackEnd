@@ -1,21 +1,38 @@
 from django.contrib import auth
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.core.exceptions import ValidationError
+from requests import Response
 
 from .models import User
 from rest_framework import serializers
-from django.http import JsonResponse
+from django.http import JsonResponse, request
+
 
 #회원가입 serializer
 class signupSerializer(serializers.ModelSerializer):
+    uid = serializers.EmailField()
+    nickname = serializers.CharField()
+    password = serializers.CharField()
+
     def create(self, validated_data):
-        user = User.objects.create_user(
+
+        user = User.objects.create(
             uid = validated_data['uid'],
             nickname = validated_data['nickname'],
-            password = validated_data['password'],
+            #password = validated_data['password'],
         )
         user.set_password(validated_data['password'])
-        user.is_active = False    #가입시 자동로그인 x
+        #user.save()
+        #user.is_active = False    #가입시 자동로그인 x
+        return user
+
+
+    class Meta:
+        model = User
+        fields = ['uid', 'nickname', 'password']
+
+
+"""
         if User.objects.all().filter(uid=validated_data['uid']).exists():
             res = JsonResponse({'message': 'uid 중복'}, status=400)
             return res
@@ -23,14 +40,13 @@ class signupSerializer(serializers.ModelSerializer):
         if User.objects.all().filter(nickname=validated_data['nickname']).exists():
             return JsonResponse({'message': 'nickname 중복'}, status=400)
         user.save()
-        res = JsonResponse(status=200)
-        print(res)
-        return res
-
-    class Meta:
-        model = User
-        fields = ['uid', 'nickname', 'password']
-
+        response = {
+            'success':"true",
+            'status code' : 200,
+            'message': user
+        }
+        return Response(response, status=200)
+"""
 
 
 #로그인 serializer

@@ -15,7 +15,7 @@ class UserManager(BaseUserManager):
             nickname=nickname,
         )
         user.set_password(password)
-        user.save(using=self._db)
+        #user.save(using=self._db)
         return user
 
     # 관리자 user 생성
