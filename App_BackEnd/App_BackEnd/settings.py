@@ -78,7 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'App_BackEnd.wsgi.application'
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 CORS_ORIGIN_WHITELIST = (
 
