@@ -19,9 +19,9 @@ class signupSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             uid = validated_data['uid'],
             nickname = validated_data['nickname'],
-            #password = validated_data['password'],
+            password = validated_data['password'],
         )
-        user.set_password(validated_data['password'])
+        #user.set_password(validated_data['password'])
         #user.save()
         #user.is_active = False    #가입시 자동로그인 x
         return user

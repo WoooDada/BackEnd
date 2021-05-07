@@ -6,7 +6,7 @@ from .models import User
 from rest_framework import generics, status, views, request
 from django.http import JsonResponse, HttpResponse
 from rest_framework.parsers import JSONParser
-from django.views.decorators.csrf import csrf_exempt
+
 
 # 회원가입
 class signup(generics.CreateAPIView):
@@ -14,17 +14,18 @@ class signup(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = signupSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         serializer = signupSerializer(data=request.data)
         if not serializer.is_valid(raise_exception=True):
-            return JsonResponse({"message" : "error"}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message" : "uid duplicate"}, status=status.HTTP_400_BAD_REQUEST)
 
 
         if User.objects.filter(nickname=serializer.validated_data['nickname']).exists():
-            return JsonResponse({"message" : "nickname 중복"}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message" : "nickname duplicate"}, status=status.HTTP_400_BAD_REQUEST)
         if User.objects.filter(uid=serializer.validated_data['uid']).exists():
-            return JsonResponse({"message": "uid 중복"}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message": "uid duplicate"}, status=status.HTTP_400_BAD_REQUEST)
         else :
+            serializer.is_active = False
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -45,11 +46,12 @@ class login(views.APIView):
             return JsonResponse({"message" : "error"}, status=status.HTTP_400_BAD_REQUEST)
 
         ser_uid = serializer['uid']
+        #user = User.objects.get(uid=serializer.validated_data['uid'])
         user = User.objects.get(uid=serializer.validated_data['uid'])
-
-        if user.password == serializer['password'] :
+        if user.password == serializer.validated_data['password'] :
+        #if user.check_password(serializer['password']):
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse({'message': 'id와 pw를 확인해주세요'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'message': 'check your id and password'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
