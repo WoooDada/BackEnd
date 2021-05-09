@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72820162-4a3a-4bfd-876d-af9a0b63ba5a" name="Default" comment="2021.05.05">
+      <change afterPath="$PROJECT_DIR$/home/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tdl/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tdl/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App_BackEnd/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/App_BackEnd/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App_BackEnd/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/App_BackEnd/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers.py" afterDir="false" />
