@@ -44,16 +44,18 @@ class User(AbstractBaseUser):
     )
     sex = models.CharField(max_length=1, choices=SEX, null=True)
     BADGE = (
+        ('N', 'NULL'),
         ('B', 'BRONZE'),
         ('S', 'SILVER'),
         ('G', 'GOLD'),
         ('P', 'PLATINUM'),
         ('D', 'DIAMOND'),
     )
-    badge = models.CharField(max_length=2, choices=BADGE, default='B', null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    #badge = models.CharField(max_length=2, choices=BADGE, default='B', null=True)
+    badge = models.CharField(max_length=2, choices=BADGE, default='N', null=True)
+    #user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     # User 모델의 필수 field
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
     # 헬퍼 클래스 사용

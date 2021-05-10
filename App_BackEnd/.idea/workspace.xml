@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72820162-4a3a-4bfd-876d-af9a0b63ba5a" name="Default" comment="2021.05.05">
-      <change afterPath="$PROJECT_DIR$/home/serializers.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tdl/serializers.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tdl/urls.py" afterDir="false" />
@@ -329,10 +328,10 @@
       <screen x="0" y="0" width="1442" height="864" />
     </state>
     <state x="402" y="23" key="CommitChangelistDialog2/0.0.1442.864@0.0.1442.864" timestamp="1620152332487" />
-    <state x="230" y="75" key="SettingsEditor" timestamp="1620149364667">
+    <state x="230" y="75" key="SettingsEditor" timestamp="1620676970949">
       <screen x="0" y="0" width="1442" height="864" />
     </state>
-    <state x="230" y="75" key="SettingsEditor/0.0.1442.864@0.0.1442.864" timestamp="1620149364667" />
+    <state x="230" y="75" key="SettingsEditor/0.0.1442.864@0.0.1442.864" timestamp="1620676970949" />
     <state x="314" y="166" key="Vcs.Push.Dialog.v2" timestamp="1620152347081">
       <screen x="0" y="0" width="1442" height="864" />
     </state>

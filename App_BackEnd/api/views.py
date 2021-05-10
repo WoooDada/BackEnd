@@ -16,7 +16,7 @@ class signup(generics.CreateAPIView):
 
     def post(self, request):
         serializer = signupSerializer(data=request.data)
-        if not serializer.is_valid(raise_exception=True):
+        if not serializer.is_valid(raise_exception=False):
             return JsonResponse({"message" : "uid duplicate"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -50,6 +50,7 @@ class login(views.APIView):
         user = User.objects.get(uid=serializer.validated_data['uid'])
         if user.password == serializer.validated_data['password'] :
         #if user.check_password(serializer['password']):
+
             return Response(serializer.data, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'check your id and password'}, status=status.HTTP_400_BAD_REQUEST)
 
