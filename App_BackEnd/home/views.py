@@ -9,8 +9,9 @@ from datetime import datetime
 class badge_profile(views.APIView):
 
     def get(self,request):
-        current_user = request.user  #요청한 사용자 받아오기
-        user = User.objects.get(uid=current_user.uid)
+        current_user_uid = request.data.get("uid")  #요청한 사용자 받아오기
+        #request안의 data의 uid
+        user = User.objects.get(uid=current_user_uid)
 
         #user = User.objects.get(uid="woojung@love.com")   ##테스트데이터 line 13, 14 주석처리 후 진행
 
