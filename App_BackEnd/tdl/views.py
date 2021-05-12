@@ -1,3 +1,5 @@
+from collections import Counter
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -93,14 +95,31 @@ class weekly_tdl(views.APIView):
 
     def get(self, request):
 
+        w_todo_list = []
+
+
         try:
             current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
             user = User.objects.get(uid=current_user_uid)
 
+            #dates_param = request.GET.getlist('dates')
+            dates_param = list(request.data.get('dates'))
+
             if user :
-                #queryset = Weekly_tdl.objects.filter(uid=current_user_uid)
-                queryset = user.Weekly_tdl_uid.all()['uid_id','w_date','w_content','w_check']
-                return Response(list(queryset), status=status.HTTP_200_OK)
+
+                #data_list = user.Weekly_tdl_uid.all()  #user의 계획들 다 받아오기
+                for date in dates_param:
+                    date_qs = {"w_date" : date}
+                    qs = user.Weekly_tdl_uid.filter(w_date=date).values('w_todo_id', 'w_content','w_check')
+                    data_qs = { "w_todos" : list(qs)}
+
+                    fin = {**date_qs, **data_qs}
+                    w_todo_list.append(fin)
+
+
+
+                #queryset = user.Weekly_tdl_uid.all()['w_date','w_content','w_check']
+                return Response({"w_todo_list" : w_todo_list }, status=status.HTTP_200_OK)
             else:
                 return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
 
