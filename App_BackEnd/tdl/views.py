@@ -1,5 +1,3 @@
-from collections import Counter
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -24,15 +22,15 @@ class monthly_tdl(views.APIView):
         user = User.objects.get(uid=current_user_uid)
 
 
-        if not serializer.is_valid(raise_exception=True):
+        if not serializer.is_valid(raise_exception=False):
             return Response({"message":"mtdl post fail"}, status=status.HTTP_400_BAD_REQUEST)
 
 
         else:
 
-            serializer.save(uid=user)
+            obj = serializer.save(uid=user)
             #return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({"m_todo_id" : serializer.validated_data['m_todo_id']}, status=status.HTTP_200_OK)
+            return Response({"m_todo_id" : obj.m_todo_id}, status=status.HTTP_200_OK)
             #return JsonResponse({"m_todo_id" : serializer.validated_data['m_todo_id']}, status=status.HTTP_200_OK)
 
     #계획 가져오기
@@ -44,7 +42,8 @@ class monthly_tdl(views.APIView):
 
             if user :
                 #queryset = user.Monthly_tdl.all().values()
-                queryset = user.Monthly_tdl.all().values('')
+                queryset = user.Monthly_tdl_uid.all().values('m_todo_id','stt_date',
+                                                             'end_date','m_content')
                 return Response(list(queryset), status=status.HTTP_200_OK)
             else:
                 return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
@@ -123,13 +122,13 @@ class weekly_tdl(views.APIView):
             else:
                 return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
 
-        except ObjectDoesNotExist:
+        except :
             return Response({"message":"no uid"}, status=status.HTTP_400_BAD_REQUEST)
 
 
     def post(self, request):
 
-        try:
+       try:
             data = request.data
             serializer = weekly_serializer(data=data)
 
@@ -142,9 +141,11 @@ class weekly_tdl(views.APIView):
 
             else:
 
-                serializer.save(uid=user)
-                return Response({"w_todo_id": serializer.validated_data['w_todo_id']}, status=status.HTTP_200_OK)
-        except :
+                obj = serializer.save(uid=user)
+
+                return Response({"w_todo_id": obj.w_todo_id}, status=status.HTTP_200_OK)
+
+       except:
             return Response({"message":"wdtl post fail"}, status=status.HTTP_400_BAD_REQUEST)
 
 
