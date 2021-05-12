@@ -156,7 +156,7 @@ class weekly_tdl(views.APIView):
             w_date = w_obj.w_date
             serializer = weekly_serializer(data=request.data, instance=w_obj)
 
-            if serializer.is_valid(raise_exception=True):
+            if serializer.is_valid(raise_exception=False):
                 serializer.save()
                 return Response({"w_todo_id":w_todo_id}, status=status.HTTP_200_OK)
 
