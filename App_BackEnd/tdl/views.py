@@ -45,7 +45,8 @@ class monthly_tdl(views.APIView):
                 #queryset = user.Monthly_tdl.all().values()
                 queryset = user.Monthly_tdl_uid.all().values('m_todo_id','stt_date',
                                                              'end_date','m_content')
-                return Response(list(queryset), status=status.HTTP_200_OK)
+
+                return Response({"m_todo_list":queryset}, status=status.HTTP_200_OK)
             else:
                 return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
 
