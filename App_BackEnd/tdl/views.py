@@ -77,18 +77,18 @@ class monthly_tdl(views.APIView):
     def delete(self, request):
 
         try:
-            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+            current_user_uid = request.data.get('uid')  # 요청한 사용자 받아오기
             user = User.objects.get(uid=current_user_uid)
 
             if user:
-                m_todo_id = self.request.query_params.get("m_todo_id")
+                m_todo_id = request.data.get("m_todo_id")
                 m_obj = Monthly_tdl.objects.get(m_todo_id=m_todo_id)
                 m_obj.delete()
                 return Response({"m_todo_id":m_todo_id}, status=status.HTTP_200_OK)
             else:
                 return Response({"message": "mtdl delete fail"}, status=status.HTTP_400_BAD_REQUEST)
 
-        except ObjectDoesNotExist:
+        except:
             return Response({"message": "mtdl delete fail"}, status=status.HTTP_400_BAD_REQUEST)
 
 
