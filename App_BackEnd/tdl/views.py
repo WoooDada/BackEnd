@@ -169,13 +169,12 @@ class weekly_tdl(views.APIView):
             current_user_uid = request.data.get('uid')  # 요청한 사용자 받아오기
             user = User.objects.get(uid=current_user_uid)
 
-            if user:
-                w_todo_id = request.data.get("w_todo_id")
-                w_obj = Weekly_tdl.objects.get(w_todo_id=w_todo_id)
-                w_obj.delete()
-                return Response({"w_todo_id": w_todo_id}, status=status.HTTP_200_OK)
-            else:
-                return Response({"message": "wtdl delete fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+            w_todo_id = request.data.get("w_todo_id")
+            w_obj = Weekly_tdl.objects.get(w_todo_id=w_todo_id)
+            w_obj.delete()
+            return Response({"w_todo_id": w_todo_id}, status=status.HTTP_200_OK)
+
 
         except ObjectDoesNotExist:
             return Response({"message": "wtdl delete fail"}, status=status.HTTP_400_BAD_REQUEST)
