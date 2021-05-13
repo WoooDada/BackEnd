@@ -50,7 +50,7 @@ class monthly_tdl(views.APIView):
                 return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
 
         except ObjectDoesNotExist:
-            return Response({"message":"no uid"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message":"ObjectDoesNotExist uid"}, status=status.HTTP_400_BAD_REQUEST)
 
     #계획 수정하기
     def put(self, request):
@@ -177,6 +177,9 @@ class weekly_tdl(views.APIView):
 
 
         except ObjectDoesNotExist:
+            return Response({"message": "wtdl delete fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except :
             return Response({"message": "wtdl delete fail"}, status=status.HTTP_400_BAD_REQUEST)
 
 
