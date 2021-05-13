@@ -80,7 +80,7 @@ class monthly_tdl(views.APIView):
             user = User.objects.get(uid=current_user_uid)
 
             if user:
-                m_todo_id = request.data.get("m_todo_id")
+                m_todo_id = request.query_params.get("m_todo_id")
                 m_obj = Monthly_tdl.objects.get(m_todo_id=m_todo_id)
                 m_obj.delete()
                 return Response({"m_todo_id":m_todo_id}, status=status.HTTP_200_OK)
@@ -170,7 +170,7 @@ class weekly_tdl(views.APIView):
             user = User.objects.get(uid=current_user_uid)
 
             if user:
-                w_todo_id = request.data.get("w_todo_id")
+                w_todo_id = request.query_params.get("w_todo_id")
                 w_obj = Weekly_tdl.objects.get(w_todo_id=w_todo_id)
                 w_obj.delete()
                 return Response({"w_todo_id": w_todo_id}, status=status.HTTP_200_OK)
