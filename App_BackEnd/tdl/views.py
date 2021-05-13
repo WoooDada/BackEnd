@@ -103,7 +103,7 @@ class weekly_tdl(views.APIView):
             user = User.objects.get(uid=current_user_uid)
 
             #dates_param = request.GET.getlist('dates')
-            dates_param = list(request.GET.getlist('dates'))
+            dates_param = request.GET.getlist('dates')
 
             if user :
 
