@@ -147,7 +147,7 @@ class weekly_tdl(views.APIView):
 
     def put(self, request):
         try:
-            w_todo_id = self.request.query_params.get("w_todo_id")
+            w_todo_id = request.data.get("w_todo_id")
             w_obj = Weekly_tdl.objects.get(w_todo_id = w_todo_id)
             w_date = w_obj.w_date
             serializer = weekly_serializer(data=request.data, instance=w_obj)
@@ -166,11 +166,11 @@ class weekly_tdl(views.APIView):
     def delete(self, request):
 
         try:
-            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+            current_user_uid = request.data.get('uid')  # 요청한 사용자 받아오기
             user = User.objects.get(uid=current_user_uid)
 
             if user:
-                w_todo_id = self.request.query_params.get("w_todo_id")
+                w_todo_id = request.data.get("w_todo_id")
                 w_obj = Weekly_tdl.objects.get(w_todo_id=w_todo_id)
                 w_obj.delete()
                 return Response({"w_todo_id": w_todo_id}, status=status.HTTP_200_OK)
