@@ -103,25 +103,20 @@ class weekly_tdl(views.APIView):
             user = User.objects.get(uid=current_user_uid)
 
             #dates_param = request.GET.getlist('dates')
-            dates_param = request.GET.getlist('dates')
+            dates_param = self.request.query_params.get('dates')
+            dates_param = dates_param.split("|")
 
-            if user :
+            for date in dates_param:
+                date_qs = {"w_date": date}
+                qs = user.Weekly_tdl_uid.filter(w_date=date).values('w_todo_id', 'w_content', 'w_check')
+                data_qs = {"w_todos": list(qs)}
 
-                #data_list = user.Weekly_tdl_uid.all()  #user의 계획들 다 받아오기
-                for date in dates_param:
-                    date_qs = {"w_date" : date}
-                    qs = user.Weekly_tdl_uid.filter(w_date=date).values('w_todo_id', 'w_content','w_check')
-                    data_qs = { "w_todos" : list(qs)}
+                fin = {**date_qs, **data_qs}
+                w_todo_list.append(fin)
 
-                    fin = {**date_qs, **data_qs}
-                    w_todo_list.append(fin)
+                # queryset = user.Weekly_tdl_uid.all()['w_date','w_content','w_check']
+            return Response({"w_todo_list": w_todo_list}, status=status.HTTP_200_OK)
 
-
-
-                #queryset = user.Weekly_tdl_uid.all()['w_date','w_content','w_check']
-                return Response({"w_todo_list" : w_todo_list }, status=status.HTTP_200_OK)
-            else:
-                return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
 
         except :
             return Response({"message":"no uid"}, status=status.HTTP_400_BAD_REQUEST)
