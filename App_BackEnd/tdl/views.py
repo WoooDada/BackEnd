@@ -19,6 +19,7 @@ class monthly_tdl(views.APIView):
         serializer = monthly_serializer(data=data)
 
         current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
+
         user = User.objects.get(uid=current_user_uid)
 
 
@@ -37,7 +38,7 @@ class monthly_tdl(views.APIView):
     def get(self, request):
 
         try:
-            current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
+            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
             user = User.objects.get(uid=current_user_uid)
 
             if user :
@@ -75,7 +76,7 @@ class monthly_tdl(views.APIView):
     def delete(self, request):
 
         try:
-            current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
+            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
             user = User.objects.get(uid=current_user_uid)
 
             if user:
@@ -98,7 +99,7 @@ class weekly_tdl(views.APIView):
 
 
         try:
-            current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
+            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
             user = User.objects.get(uid=current_user_uid)
 
             #dates_param = request.GET.getlist('dates')
@@ -170,7 +171,7 @@ class weekly_tdl(views.APIView):
     def delete(self, request):
 
         try:
-            current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
+            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
             user = User.objects.get(uid=current_user_uid)
 
             if user:

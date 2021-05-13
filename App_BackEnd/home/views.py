@@ -9,7 +9,8 @@ from datetime import datetime
 class badge_profile(views.APIView):
 
     def get(self,request):
-        current_user_uid = request.data.get("uid")  #요청한 사용자 받아오기
+        current_user_uid = self.request.query_params.get('uid')
+         #요청한 사용자 받아오기
         #request안의 data의 uid
         user = User.objects.get(uid=current_user_uid)
 
@@ -35,7 +36,7 @@ class concent_graph(views.APIView):
     def get(self,request):
         #current_user = request.user
         #user = User.objects.get(uid=current_user.uid)
-        user = User.objects.get(uid="woojung@love.com")
+        user = self.request.query_params.get('uid')
 
         if user:
 
