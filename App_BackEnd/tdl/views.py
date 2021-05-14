@@ -1,13 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
-from django.shortcuts import render
-from rest_framework import views, status, request
+from rest_framework import views, status
 from rest_framework.response import Response
 from api.models import User
-from .serializers import monthly_serializer, weekly_serializer
-from .models import Monthly_tdl, Weekly_tdl
-from datetime import datetime
-from django.utils.dateformat import DateFormat
+from .serializers import monthly_serializer, weekly_serializer, daily_serializer
+from .models import Monthly_tdl, Weekly_tdl, Daily_tdl
+
 
 class monthly_tdl(views.APIView):
 
@@ -50,8 +47,8 @@ class monthly_tdl(views.APIView):
             else:
                 return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
 
-        except ObjectDoesNotExist:
-            return Response({"message":"ObjectDoesNotExist uid"}, status=status.HTTP_400_BAD_REQUEST)
+        except :
+            return Response({"message":"no uid"}, status=status.HTTP_400_BAD_REQUEST)
 
     #계획 수정하기
     def put(self, request):
@@ -189,4 +186,70 @@ class weekly_tdl(views.APIView):
 class daily_tdl(views.APIView):
 
     def get(self, request):
-        return Response()
+
+        try:
+            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+            user = User.objects.get(uid=current_user_uid)
+
+            if user:
+                queryset = user.Daily_tdl_uid.all().values('d_todo_id', 'd_date','d_tag', 'd_content', 'd_check')
+
+                return Response({"d_todo_list": queryset}, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except:
+            return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def post(self, request):
+
+        try:
+            data = request.data
+            serializer = daily_serializer(data=data)
+
+            current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
+            user = User.objects.get(uid=current_user_uid)
+
+            if not serializer.is_valid(raise_exception=False):
+                return Response({"message": "dtdl post fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+            else:
+
+                obj = serializer.save(uid=user)
+                return Response({"d_todo_id": obj.d_todo_id}, status=status.HTTP_200_OK)
+
+        except:
+            return Response({"message": "dtdl post fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def put(self, request):
+        try:
+            d_todo_id = request.data.get("d_todo_id")
+            d_obj = Daily_tdl.objects.get(d_todo_id=d_todo_id)
+
+            serializer = daily_serializer(data=request.data, instance=d_obj)
+
+            if serializer.is_valid(raise_exception=False):
+                serializer.save()
+                return Response({"d_todo_id": d_todo_id}, status=status.HTTP_200_OK)
+
+            else:
+                return Response({"message": "dtdl update fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except:
+            return Response({"message": "dtdl update fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request):
+
+        try:
+
+            d_todo_id = request.data.get("d_todo_id")
+            d_obj = Daily_tdl.objects.get(d_todo_id=d_todo_id)
+            d_obj.delete()
+            return Response({"d_todo_id": d_todo_id}, status=status.HTTP_200_OK)
+
+        except:
+            return Response({"message": "dtdl delete fail"}, status=status.HTTP_400_BAD_REQUEST)

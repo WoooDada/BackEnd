@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^', include('api.urls')),         #login, signup
     url(r'^', include('home.urls')),        #badge_profile
     url(r'^', include('tdl.urls')),         #monthly/weekly/dialy
-
+    url(r'^', include('study.urls')),
 ]

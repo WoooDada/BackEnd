@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="72820162-4a3a-4bfd-876d-af9a0b63ba5a" name="Default" comment="2021.05.05">
       <change afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/urls.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tdl/serializers.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tdl/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
