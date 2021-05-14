@@ -187,19 +187,22 @@ class daily_tdl(views.APIView):
 
     def get(self, request):
 
-        try:
-            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
-            user = User.objects.get(uid=current_user_uid)
+        current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+        user = User.objects.get(uid=current_user_uid)
 
-            if user:
-                queryset = user.Daily_tdl_uid.all().values('d_todo_id', 'd_date','d_tag', 'd_content', 'd_check')
+        if user:
+            try:
+                date = self.request.query_params.get('d_date')
+                qs = user.Daily_tdl_uid.filter(d_date=date).values('d_todo_id', 'd_date','d_tag', 'd_content', 'd_check')
 
-                return Response({"d_todo_list": queryset}, status=status.HTTP_200_OK)
-            else:
+                return Response({"d_todo_list": qs}, status=status.HTTP_200_OK)
+
+            except:
                 return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
-
-        except:
+        else:
             return Response({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
     def post(self, request):
