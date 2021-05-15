@@ -3,18 +3,14 @@ from django.shortcuts import render
 from rest_framework import views, status
 from rest_framework.response import Response
 from api.models import User
-import pandas
-from datetime import datetime
+from study.models import Study_analysis
 
 class badge_profile(views.APIView):
 
     def get(self,request):
         current_user_uid = self.request.query_params.get('uid')
-         #요청한 사용자 받아오기
-        #request안의 data의 uid
         user = User.objects.get(uid=current_user_uid)
 
-        #user = User.objects.get(uid="woojung@love.com")   ##테스트데이터 line 13, 14 주석처리 후 진행
 
         if user:
             uid = user.uid
@@ -34,9 +30,9 @@ class badge_profile(views.APIView):
 class concent_graph(views.APIView):
 
     def get(self,request):
-        #current_user = request.user
-        #user = User.objects.get(uid=current_user.uid)
-        user = self.request.query_params.get('uid')
+
+        current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+        user = User.objects.get(uid=current_user_uid)
 
         if user:
 
