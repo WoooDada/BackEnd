@@ -19,7 +19,7 @@ class study_button(views.APIView):
 
         if user:
             try:
-                if (request.data.get('start')=='true'):
+                if (request.data.get('type')=='start'):
                     start = True
                     stop = False
 
