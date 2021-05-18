@@ -1,9 +1,14 @@
+import datetime
+
 from django.http import HttpResponse
+from django.utils import timezone
 from rest_framework import views, status
 from rest_framework.response import Response
+from rest_framework.utils import json
+
 from api.models import User
-#from .serializers import
 from .models import Daily_1m_content, Study_analysis
+from .serializers import daily_1m_serializer, study_ana_serializer
 
 
 #전역변수로 버튼 초기화
@@ -40,9 +45,89 @@ class study_button(views.APIView):
 
 class study_data(views.APIView):
 
-    def get(self, request):
+    def post(self, request):
 
-        Response()
+        uid = request.data.get("uid")
+        user = User.objects.get(uid=uid)
+
+        time = request.data.get('time')  # char형태로 받음
+        get_type = request.data.get('type')
+
+        now = timezone.now()
+        hour = now.hour
+
+
+        if 0 <= hour <= 3:   # 자정 ~ 오전 4시 : 전날 모델로 생성(없을 경우)
+            if not Study_analysis.objects.filter(uid=user, date=now.date()-datetime.timedelta(days=1)).exists():
+                user.daily_1m_uid.all().delete()
+                Study_analysis.objects.create(uid=user, date=now.date() - datetime.timedelta(days=1))
+
+        else:  # 아니면 해당 날짜 모델로 생성(없을 경우)
+            if not Study_analysis.objects.filter(uid=user, date=now.date()).exists():
+                user.daily_1m_uid.all().delete()
+                Study_analysis.objects.create(uid=user, date=now.date())
+
+
+        serializer = daily_1m_serializer(data=request.data,instance=user)
+
+        if serializer.is_valid():
+            serializer.save()
+            Daily_1m_content.objects.create(uid=user, type=get_type, time=time)
+
+
+
+
+        qs = Study_analysis.objects.filter(uid=uid).values_list('uid','daily_tot_hour','daily_concent_hour','date')
+
+        study_data = {
+
+            'uid':qs[0][0],
+            'daily_tot_hour':qs[0][1],
+            'daily_concent_hour':qs[0][2],
+            'date':qs[0][3]
+
+        }
+
+
+        serializer_2 = study_ana_serializer(data=study_data, instance=user)
+
+        if serializer_2.is_valid() :
+
+            serializer_2.save()
+
+            tot_time = int(qs[0][1])
+            tot_con = int(qs[0][2])
+            obj = Study_analysis.objects.get(uid=user)
+
+            if get_type == 'C':
+                tot_con += 1
+            tot_time += 1
+
+
+            obj.daily_tot_hour = str(tot_time)
+            obj.daily_concent_hour = str(tot_con)
+            obj.save()
+
+            total_play_time = tot_time - tot_con
+
+            if get_type == 'U':
+                total_play_time = total_play_time-1
+
+            tot_play_hour = total_play_time // 60
+            tot_play_minute = total_play_time - tot_play_hour*60
+
+            tot_concent_hour = tot_con // 60
+            tot_concent_minute = tot_con - tot_concent_hour * 60
+
+            final_tot_play = str(tot_play_hour) + ':' + str(tot_play_minute)
+            final_tot_concent = str(tot_concent_hour) + ':' + str(tot_concent_minute)
+
+            return Response({"tot_concent_time": final_tot_concent, "tot_play_time": final_tot_play},status=status.HTTP_200_OK)
+
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 

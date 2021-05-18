@@ -6,17 +6,12 @@ class Daily_1m_content(models.Model):
     objects = models.Manager()
 
     uid = models.ForeignKey(User, on_delete=models.CASCADE, related_name='daily_1m_uid')
-    datetime = models.DateTimeField(null=True)
+    time = models.CharField(null=True, max_length=20)
+    type = models.CharField(max_length=2, null=True)
 
-    CONC = (
-        ('C', 'Concentrate'),
-        ('P', 'Play'),
-        ('U', 'Unknown'),
-    )
-    concentrate = models.CharField(max_length=2, choices=CONC, null=True)
 
     def __str__(self):
-        return str(self.concentrate)
+        return str(self.time)
 
 
 class Study_analysis(models.Model):     #새벽4시 일괄 업데이트
@@ -25,8 +20,8 @@ class Study_analysis(models.Model):     #새벽4시 일괄 업데이트
 
     uid = models.ForeignKey(User, on_delete=models.CASCADE, related_name='study_ana_uid')
     date = models.DateField(null=True)
-    daily_concent_hour = models.FloatField(null=True)
-    daily_tot_hour = models.FloatField(null=True)
+    daily_concent_hour = models.IntegerField(null=True, default=0)
+    daily_tot_hour = models.IntegerField(null=True, default=0)
 
     def __str__(self):
         return str(self.daily_concent_hour)
