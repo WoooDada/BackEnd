@@ -56,14 +56,15 @@ class study_data(views.APIView):
         now = timezone.now()
         hour = now.hour
 
-
         if 0 <= hour <= 3:   # 자정 ~ 오전 4시 : 전날 모델로 생성(없을 경우)
             if not Study_analysis.objects.filter(uid=user, date=now.date()-datetime.timedelta(days=1)).exists():
+
                 user.daily_1m_uid.all().delete()
                 Study_analysis.objects.create(uid=user, date=now.date() - datetime.timedelta(days=1))
 
         else:  # 아니면 해당 날짜 모델로 생성(없을 경우)
             if not Study_analysis.objects.filter(uid=user, date=now.date()).exists():
+
                 user.daily_1m_uid.all().delete()
                 Study_analysis.objects.create(uid=user, date=now.date())
 
@@ -77,14 +78,14 @@ class study_data(views.APIView):
 
 
 
-        qs = Study_analysis.objects.filter(uid=uid).values_list('uid','daily_tot_hour','daily_concent_hour','date')
-
+        qs = Study_analysis.objects.filter(uid=user).values_list('uid','daily_tot_hour','daily_concent_hour','date')
+        count = Study_analysis.objects.filter(uid=user).count() - 1
         study_data = {
 
-            'uid':qs[0][0],
-            'daily_tot_hour':qs[0][1],
-            'daily_concent_hour':qs[0][2],
-            'date':qs[0][3]
+            'uid':qs[count][0],
+            'daily_tot_hour':qs[count][1],
+            'daily_concent_hour':qs[count][2],
+            'date':qs[count][3]
 
         }
 
@@ -95,9 +96,9 @@ class study_data(views.APIView):
 
             serializer_2.save()
 
-            tot_time = int(qs[0][1])
-            tot_con = int(qs[0][2])
-            obj = Study_analysis.objects.get(uid=user)
+            tot_time = int(qs[count][1])
+            tot_con = int(qs[count][2])
+            obj = Study_analysis.objects.filter(uid=user).last()
 
             if get_type == 'C':
                 tot_con += 1
