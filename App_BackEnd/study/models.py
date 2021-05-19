@@ -24,7 +24,7 @@ class Study_analysis(models.Model):     #새벽4시 일괄 업데이트
     daily_tot_hour = models.IntegerField(null=True, default=0)
 
     def __str__(self):
-        return str(self.daily_concent_hour)
+        return str(self.date)
 
 
 

@@ -1,11 +1,8 @@
 import datetime
-
 from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework import views, status
 from rest_framework.response import Response
-from rest_framework.utils import json
-
 from api.models import User
 from .models import Daily_1m_content, Study_analysis
 from .serializers import daily_1m_serializer, study_ana_serializer
@@ -119,6 +116,12 @@ class study_data(views.APIView):
 
             tot_concent_hour = tot_con // 60
             tot_concent_minute = tot_con - tot_concent_hour * 60
+
+            if tot_concent_minute // 10 == 0:
+                tot_concent_minute = "0"+str(tot_concent_minute)
+
+            if tot_play_minute // 10 == 0:
+                tot_play_minute = "0"+str(tot_play_minute)
 
             final_tot_play = str(tot_play_hour) + ':' + str(tot_play_minute)
             final_tot_concent = str(tot_concent_hour) + ':' + str(tot_concent_minute)
