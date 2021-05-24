@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import views, status
 from rest_framework.response import Response
 from api.models import User
-from study.models import Study_analysis
+from study.models import One_week_study_data
 
 class badge_profile(views.APIView):
 
@@ -31,19 +31,24 @@ class concent_graph(views.APIView):
 
     def get(self,request):
 
+        graph = []
         current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
         user = User.objects.get(uid=current_user_uid)
 
         if user:
 
-            """
-            
-            start_date = request.query_params.get('from_date')
-            end_date = request.query_params.get('to_date')
+            query_set = One_week_study_data.objects.filter(uid=user)
 
-            https://newbiecs.tistory.com/272
-            
-            """
+            for qs in query_set :
+
+                data_set = {
+                    "date": qs.date,
+                    "concent_time": qs.concent_time,
+                    "play_time": qs.play_time
+                }
+                graph.append(data_set)
+
+                """
             graph =  [ {"date": "월", "concent_time": 5, "play_time": 5},
                 {"date": "화", "concent_time": 1, "play_time": 0},
                 {"date": "수", "concent_time": 1, "play_time": 2},
@@ -51,7 +56,8 @@ class concent_graph(views.APIView):
                 {"date": "금", "concent_time": 3, "play_time": 2},
                 {"date": "토", "concent_time": 2, "play_time": 2},
                 {"date": "일", "concent_time": 4, "play_time": 2} ]
-
-            return JsonResponse(graph, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False},)
+                
+                """
+            return JsonResponse(graph, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
         else :
             return JsonResponse({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)

@@ -28,5 +28,14 @@ class Study_analysis(models.Model):     #새벽4시 일괄 업데이트
 
 
 
+class One_week_study_data(models.Model):
 
+    objects = models.Manager()
 
+    uid = models.ForeignKey(User, on_delete=models.CASCADE, related_name='one_week_uid')
+    date = models.CharField(null=True, max_length=10)
+    concent_time = models.IntegerField(null=True, default=0)
+    play_time = models.IntegerField(null=True, default=0)
+
+    def __str__(self):
+        return str(self.date)
