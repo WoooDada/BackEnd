@@ -195,7 +195,12 @@ class ten_min_data(views.APIView):
 
         data_length = 0
         #hour_str = str(hour) + ":" +str(minute)
-        hour_str = str(0) + str(hour) + ":" + str(minute-1)  # 00~03시인경우
+
+        if 0<=hour<=3 :
+            hour_str = str(0) + str(hour) + ":" + str(minute - 1)  # 00~03시인경우
+
+        else :
+            hour_str = str(hour) + ":" + str(minute - 1)
 
         for qs in query_set:
 
