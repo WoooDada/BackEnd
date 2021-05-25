@@ -264,8 +264,8 @@ class ten_min_data(views.APIView):
 
     def get(self,request):
 
-        uid = request.data.get("uid")
-        user = User.objects.get(uid=uid)
+        current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+        user = User.objects.get(uid=current_user_uid)
 
         update = request.data.get("update")
 
@@ -275,24 +275,24 @@ class ten_min_data(views.APIView):
 
         if update == 'F' :  #홈 -> 공부 : 이전 데이터 한번에
 
-            if start == True and stop == False:         #temp_list의 00:00 ~ 4:00 데이터와 해당날짜의 나머지꺼 합쳐주기
+           # if start == True and stop == False:         #temp_list의 00:00 ~ 4:00 데이터와 해당날짜의 나머지꺼 합쳐주기
 
                 ten_data = self.get_tenmin_data(user, hour, minute, 1)
 
                 return Response({"ten_min_list:": ten_data}, status=status.HTTP_200_OK)
 
-            else :
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+          #  else :
+           #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
         elif update == 'T' :  #현재 실시간 공부중, 1분마다 get
 
-            if start == True and stop == False:
+         #   if start == True and stop == False:
 
                 ten_data = self.get_tenmin_data(user, hour, minute, 0)
 
-                return Response({"ten_min_list:":ten_data},status=status.HTTP_200_OK)
+         #       return Response({"ten_min_list:":ten_data},status=status.HTTP_200_OK)
 
-            else:
+          #  else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
         else :
