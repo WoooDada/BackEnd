@@ -267,7 +267,7 @@ class ten_min_data(views.APIView):
         current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
         user = User.objects.get(uid=current_user_uid)
 
-        update = request.data.get("update")
+        update = self.request.query_params.get("update")
 
         now = timezone.now()
         minute = now.minute
