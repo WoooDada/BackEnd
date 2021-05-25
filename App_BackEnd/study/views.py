@@ -275,25 +275,20 @@ class ten_min_data(views.APIView):
 
         if update == 'F' :  #홈 -> 공부 : 이전 데이터 한번에
 
-           # if start == True and stop == False:         #temp_list의 00:00 ~ 4:00 데이터와 해당날짜의 나머지꺼 합쳐주기
+            ten_data = self.get_tenmin_data(user, hour, minute, 1)
+            return Response({"ten_min_list": ten_data}, status=status.HTTP_200_OK)
 
-                ten_data = self.get_tenmin_data(user, hour, minute, 1)
-
-                return Response({"ten_min_list": ten_data}, status=status.HTTP_200_OK)
-
-          #  else :
-           #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
         elif update == 'T' :  #현재 실시간 공부중, 1분마다 get
 
          #   if start == True and stop == False:
 
-                ten_data = self.get_tenmin_data(user, hour, minute, 0)
+            ten_data = self.get_tenmin_data(user, hour, minute, 0)
 
-         #       return Response({"ten_min_list:":ten_data},status=status.HTTP_200_OK)
+            return Response({"ten_min_list:":ten_data},status=status.HTTP_200_OK)
 
           #  else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                #return Response(status=status.HTTP_400_BAD_REQUEST)
 
         else :
             return Response(status=status.HTTP_400_BAD_REQUEST)
