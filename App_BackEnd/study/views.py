@@ -285,7 +285,7 @@ class ten_min_data(views.APIView):
 
             ten_data = self.get_tenmin_data(user, hour, minute, 0)
 
-            return Response({"ten_min_list:":ten_data},status=status.HTTP_200_OK)
+            return Response({"ten_min_list":ten_data},status=status.HTTP_200_OK)
 
           #  else:
                 #return Response(status=status.HTTP_400_BAD_REQUEST)
