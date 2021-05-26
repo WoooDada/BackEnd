@@ -33,6 +33,7 @@ class One_week_study_data(models.Model):
     objects = models.Manager()
 
     uid = models.ForeignKey(User, on_delete=models.CASCADE, related_name='one_week_uid')
+    day=models.DateField(null=True)
     date = models.CharField(null=True, max_length=10)
     concent_time = models.IntegerField(null=True, default=0)
     play_time = models.IntegerField(null=True, default=0)

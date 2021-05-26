@@ -14,8 +14,7 @@ temp_list =[]
 #전역변수로 버튼 초기화
 start = False
 stop = True
-#start = True                       #ten_min_data 'local로' test할때 바꿔주고 해!!
-#stop = False
+
 
 
 
@@ -90,7 +89,8 @@ class study_data(views.APIView):
             if not Study_analysis.objects.filter(uid=user, date=now.date()-datetime.timedelta(days=1)).exists():
 
                 week_time = self.week_time(user)
-                One_week_study_data.objects.create(uid=user, date=days[day], concent_time=week_time['concent'] ,
+                One_week_study_data.objects.create(uid=user, day=now.date() - datetime.timedelta(days=1),
+                                                    date=days[day], concent_time=week_time['concent'] ,
                                                    play_time= week_time['play'])      #삭제 전 데이터 생성
 
                 user.daily_1m_uid.all().delete()
@@ -102,7 +102,8 @@ class study_data(views.APIView):
 
                 #temp_list = get_tenmin_data(user, -1, -1, 2) # 00:00 ~ 4:00 10분단위 데이터 저장
                 week_time = self.week_time(user)
-                One_week_study_data.objects.create(uid=user, date=days[day], concent_time=week_time['concent'],
+                One_week_study_data.objects.create(uid=user, day=now.date() - datetime.timedelta(days=1),
+                                                   date=days[day], concent_time=week_time['concent'],
                                                    play_time=week_time['play'])  # 삭제 전 데이터 생성
 
                 user.daily_1m_uid.all().delete()
