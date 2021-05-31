@@ -4,7 +4,7 @@ from django.utils import timezone
 from rest_framework import views, status
 from rest_framework.response import Response
 from api.models import User
-from .models import Daily_1m_content, Study_analysis, One_week_study_data
+from .models import Daily_1m_content, Study_analysis, One_week_study_data, today_date
 from .serializers import daily_1m_serializer, study_ana_serializer
 
 
@@ -79,19 +79,28 @@ class study_data(views.APIView):
         day = now.today().weekday()
         days =['일','월','화','수','목','금','토']
 
+        today_date.objects.create(uid=user, day=now.date())
+        count_today_date = user.today_date_uid.count()
+        today_query_set = user.today_date_uid.all()
 
+        if count_today_date == 7 :
+            today_query_set[0].delete()
         if One_week_study_data.objects.count() == 7:
             qs = One_week_study_data.objects.all()
             qs[0].delete()  #가장 오래된 객체 삭제하여 7개 유지
 
 
         if 0 <= hour <= 3:   # 자정 ~ 오전 4시 : 전날 모델로 생성(없을 경우)
+
             if not Study_analysis.objects.filter(uid=user, date=now.date()-datetime.timedelta(days=1)).exists():
 
                 week_time = self.week_time(user)
-                One_week_study_data.objects.create(uid=user, day=now.date() - datetime.timedelta(days=1),
-                                                    date=days[day], concent_time=week_time['concent'] ,
-                                                   play_time= week_time['play'])      #삭제 전 데이터 생성
+                if count_today_date != 1:
+                    if today_query_set[count_today_date - 2].day == now.date() - datetime.timedelta(days=1):
+                        One_week_study_data.objects.create(uid=user, day=now.date() - datetime.timedelta(days=1),
+                                                        date=days[day], concent_time=week_time['concent'] ,
+                                                       play_time= week_time['play'])      #삭제 전 데이터 생성
+
 
                 user.daily_1m_uid.all().delete()
                 Study_analysis.objects.create(uid=user, date=now.date() - datetime.timedelta(days=1))
@@ -102,9 +111,11 @@ class study_data(views.APIView):
 
                 #temp_list = get_tenmin_data(user, -1, -1, 2) # 00:00 ~ 4:00 10분단위 데이터 저장
                 week_time = self.week_time(user)
-                One_week_study_data.objects.create(uid=user, day=now.date() - datetime.timedelta(days=1),
-                                                   date=days[day], concent_time=week_time['concent'],
-                                                   play_time=week_time['play'])  # 삭제 전 데이터 생성
+                if count_today_date != 1 :
+                    if today_query_set[count_today_date - 2].day == now.date() - datetime.timedelta(days=1):
+                        One_week_study_data.objects.create(uid=user, day=now.date() - datetime.timedelta(days=1),
+                                                    date=days[day], concent_time=week_time['concent'],
+                                                    play_time=week_time['play'])  # 삭제 전 데이터 생성
 
                 user.daily_1m_uid.all().delete()
                 Study_analysis.objects.create(uid=user, date=now.date())

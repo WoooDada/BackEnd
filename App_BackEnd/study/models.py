@@ -27,6 +27,14 @@ class Study_analysis(models.Model):     #새벽4시 일괄 업데이트
         return str(self.date)
 
 
+#어제날짜 없으면 one_week_study_data 생성하지 않게 하기 위해 
+class today_date(models.Model):
+    objects = models.Manager()
+    uid = models.ForeignKey(User, on_delete=models.CASCADE, related_name='today_date_uid')
+    day=models.DateField(null=True)
+
+    def __str__(self):
+        return str(self.day)
 
 class One_week_study_data(models.Model):
 
