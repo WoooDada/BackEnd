@@ -289,7 +289,7 @@ class ten_min_data(views.APIView):
                     end_time = now_hour + ":" + end_minute      #end_time
 
 
-                    if check_concent >= check_play :
+                    if check_concent > check_play :
                         concent_type = 'C'
                     else :
                         concent_type = 'P'
