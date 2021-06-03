@@ -245,7 +245,7 @@ class ten_min_data(views.APIView):
 
 
         if get_type == 0:  # 해당되는 1분 데이터 주기 5/25 2:17에 get인 경우 5/24 2:16 데이터 넘기기
-            return one_min_list
+            return qs_data
 
 
         elif get_type == 1:  # 해당 날짜의 모든 데이터 가져오기
