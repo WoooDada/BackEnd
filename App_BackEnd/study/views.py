@@ -79,7 +79,9 @@ class study_data(views.APIView):
         day = now.today().weekday()
         days =['일','월','화','수','목','금','토']
 
-        today_date.objects.create(uid=user, day=now.date())
+        if not today_date.objects.filter(uid=user, day=now.date()).exists() :
+            today_date.objects.create(uid=user, day=now.date())
+
         count_today_date = user.today_date_uid.count()
         today_query_set = user.today_date_uid.all()
 
