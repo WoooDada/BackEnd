@@ -43,7 +43,7 @@ class login(views.APIView):
         serializer = loginSerializer(data=data)
         if not serializer.is_valid(raise_exception=False):
             #Response(serializer.data, status=status.HTTP_200_OK)
-            return JsonResponse({"message" : "error"}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message" : "check your id and password"}, status=status.HTTP_400_BAD_REQUEST)
 
         ser_uid = serializer['uid']
         #user = User.objects.get(uid=serializer.validated_data['uid'])
