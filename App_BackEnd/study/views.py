@@ -290,20 +290,24 @@ class ten_min_data(views.APIView):
                     end_minute = str(now_minute[0]) + "9"
                     end_time = now_hour + ":" + end_minute      #end_time
 
-                    if (check_concent + check_play) >= 5 :
 
-                        if check_concent > check_play :
-                            concent_type = 'C'
-                        else :
-                            concent_type = 'P'
+
+                    if check_concent > check_play and (check_concent + check_play) >= 5 :
+                        concent_type = 'C'
+                        qs_data = {
+                            "stt_time": stt_time,
+                            "end_time": end_time,
+                            "concent_type": concent_type
+                        }
+                        whole_min_list.append(qs_data)
+                    elif check_concent <= check_play and (check_concent + check_play) >= 5 :
+                        concent_type = 'P'
 
                         qs_data = {
                             "stt_time": stt_time,
                             "end_time": end_time,
                             "concent_type": concent_type
                         }
-
-
                         whole_min_list.append(qs_data)
 
             return whole_min_list
