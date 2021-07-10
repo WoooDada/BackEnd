@@ -318,7 +318,7 @@ class ten_min_data(views.APIView):
     def get(self,request):
 
         current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
-        user = User.objects.get(uid=current_user_uid)
+        user = User.objects.get(uid=current_user_uid)[0]
 
         update = self.request.query_params.get("update")
 

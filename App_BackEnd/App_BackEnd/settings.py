@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from datetime import timedelta
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -38,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_auth.registration',
+    'rest_framework.authtoken',
     'rest_framework',
     'api',
     'home',
@@ -145,11 +149,23 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+REST_USE_JWT = True
+ACCOUNT_LOGOUT_ON_GET = True
+
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': (
+        'rest_framework.pagination.LimitOffsetPagination',
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'PAGE_SIZE': 100,
 	'DEFAULT_AUTHENTICATION_CLASSES': (
-         'rest_framework.authentication.BasicAuthentication',
-         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+      #  'rest_framework.authentication.SessionAuthentication',
+
+      #  'rest_framework.authentication.BasicAuthentication',
 	)
 }

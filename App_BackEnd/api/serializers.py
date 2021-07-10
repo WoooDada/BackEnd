@@ -1,29 +1,32 @@
 from django.contrib import auth
 from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ValidationError
 from requests import Response
-
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_jwt.settings import api_settings
 from .models import User
 from rest_framework import serializers
 from django.http import JsonResponse, request
 
 
+
 #회원가입 serializer
 class signupSerializer(serializers.ModelSerializer):
+
     uid = serializers.EmailField()
     nickname = serializers.CharField()
     password = serializers.CharField()
 
     def create(self, validated_data):
-
         user = User.objects.create(
-            uid = validated_data['uid'],
-            nickname = validated_data['nickname'],
-            password = validated_data['password'],
+            uid=validated_data['uid'],
+            nickname=validated_data['nickname'],
+            password=validated_data['password'],
         )
-        #user.set_password(validated_data['password'])
-        #user.save()
-        #user.is_active = False    #가입시 자동로그인 x
+        user.set_password(validated_data['password'])
+        # user.save()
+        # user.is_active = False    #가입시 자동로그인 x
         return user
 
 
@@ -32,29 +35,12 @@ class signupSerializer(serializers.ModelSerializer):
         fields = ['uid', 'nickname', 'password']
 
 
-"""
-        if User.objects.all().filter(uid=validated_data['uid']).exists():
-            res = JsonResponse({'message': 'uid 중복'}, status=400)
-            return res
-
-        if User.objects.all().filter(nickname=validated_data['nickname']).exists():
-            return JsonResponse({'message': 'nickname 중복'}, status=400)
-        user.save()
-        response = {
-            'success':"true",
-            'status code' : 200,
-            'message': user
-        }
-        return Response(response, status=200)
-"""
-
-
 #로그인 serializer
 class loginSerializer(serializers.ModelSerializer):
 
-
     uid = serializers.EmailField()
     password = serializers.CharField()
+
 
     class Meta:
         model = User

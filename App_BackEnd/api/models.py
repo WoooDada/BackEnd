@@ -67,4 +67,5 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['uid']
 
     def __str__(self):
-        return self.uid
+       return self.uid
+

@@ -1,6 +1,5 @@
 from django.conf.urls import url
 from . import views
-from django.urls import path
 
 urlpatterns = [
 
@@ -8,3 +7,4 @@ urlpatterns = [
     url(r'^api/login/$',views.login.as_view(), name='login'),
 
 ]
+
