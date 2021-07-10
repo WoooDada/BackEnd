@@ -24,7 +24,7 @@ class Study_analysis(models.Model):     #새벽4시 일괄 업데이트
     daily_tot_hour = models.IntegerField(null=True, default=0)
 
     def __str__(self):
-        return str(self.date)
+        return str(self.uid)
 
 
 #어제날짜 없으면 one_week_study_data 생성하지 않게 하기 위해 

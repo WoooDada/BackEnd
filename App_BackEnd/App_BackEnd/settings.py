@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'home',
     'tdl',
     'study',
+    'main',
 ]
 
 MIDDLEWARE = [

@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^', include('home.urls')),        #badge_profile
     url(r'^', include('tdl.urls')),         #monthly/weekly/dialy
     url(r'^', include('study.urls')),
+    url(r'^', include('main.urls')),
 ]
