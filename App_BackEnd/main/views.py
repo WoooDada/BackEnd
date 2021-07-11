@@ -28,7 +28,7 @@ class studyrank(views.APIView):
                     # 집중시간 순서로 내림차순 정렬
             num = 1
             my_rank_num = 0
-
+            prev_mystudy=0
             for my_rank in study_queryset :  # 내 랭킹 찾기
                 if uid == my_rank.uid.uid:
                     my_rank_num = num
@@ -49,9 +49,9 @@ class studyrank(views.APIView):
                     })
 
                     break
-                else :
+                if prev_mystudy != my_rank.daily_concent_hour:
                     num += 1
-
+                prev_mystudy = my_rank.daily_concent_hour
 
 
             prev_concent_time = 0
@@ -121,6 +121,7 @@ class playrank(views.APIView):
 
             #내 순위 찾기
             my_rank = 1
+            prev_playtime = 0
             for key in play_dict:
                 if key[0] == my_nickname :
                     my_rate = str(key[1]) + "%"
@@ -130,8 +131,9 @@ class playrank(views.APIView):
                         'tot_concent_rate': my_rate
                     })
                     break
-                else :
+                if key[1] != prev_playtime:
                     my_rank += 1
+                prev_playtime = key[1]
 
          #   print(play_dict)
             #상위 10명 뽑기
