@@ -106,8 +106,13 @@ CORS_ALLOW_HEADERS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'woodada.cpjixbb9i7rb.ap-northeast-2.rds.amazonaws.com',
+        'PORT': '3306',
+        'NAME': 'woodada',
+        'USER': 'admin',
+        'PASSWORD': '1813467kdh',
     }
 }
 
