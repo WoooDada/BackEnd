@@ -9,7 +9,7 @@ import datetime, jwt
 from django.utils import timezone
 
 # 회원가입
-class signup(generics.CreateAPIView):
+class signup(views.APIView):
 
     queryset = User.objects.all()
     serializer_class = signupSerializer
