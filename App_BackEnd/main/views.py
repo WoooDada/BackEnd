@@ -69,11 +69,10 @@ class studyrank(views.APIView):
 
                 else :
 
-                    if count > 10 :
-                        break
-
                     count += 1
                     rank = rank + 1
+                    if count > 10 :
+                        break
 
 
                 prev_concent_time = my_concent_time
@@ -104,16 +103,66 @@ class playrank(views.APIView):
     def get(self, request):
 
         try :
-            rank_study_list = []
+            rank_play_list = []
 
             uid = self.request.query_params.get('uid')
-            my_nickname = User.objects.get(uid=uid)
-            my_study_data = Study_analysis.objects.get(uid=uid)
+            my_nickname = User.objects.get(uid=uid).nickname
+            my_study_data = Study_analysis.objects.get(uid=uid).daily_tot_hour - Study_analysis.objects.get(uid=uid).daily_concent_hour
+
+            study_query = Study_analysis.objects.filter(date=date)
+
+            play_dict = {}
+            for ppl in study_query :
+                nickname = User.objects.get(uid=ppl.uid).nickname
+                play_rate = round(ppl.daily_concent_hour / ppl.daily_tot_hour * 100,2)
+                play_dict[nickname] = play_rate
+
+            play_dict = sorted(play_dict.items(), key=lambda x: x[1], reverse=True)         #play_hour 순서로 내림차순 정렬
+
+            #내 순위 찾기
+            my_rank = 1
+            for key in play_dict:
+                if key[0] == my_nickname :
+                    my_rate = str(key[1]) + "%"
+                    rank_play_list.append({
+                        'rank': my_rank,
+                        'nickname': my_nickname,
+                        'tot_concent_rate': my_rate
+                    })
+                    break
+                else :
+                    my_rank += 1
+
+         #   print(play_dict)
+            #상위 10명 뽑기
+            num = 0
+            rank_10 = 0
+            prev_rate = 0.0
+            for key in play_dict:
+                if key[1] == prev_rate :
+                    num += 1
+                else :
+                    #if num > 10 :
+                     #   break
+                    num += 1
+                    rank_10 += 1
+
+                    if num > 10 :
+                        break
+                prev_rate = key[1]
+                rank_play_list.append({
+                    'rank': rank_10,
+                    'nickname': key[0],
+                    'tot_concent_rate': str(key[1]) + "%"
+                })
 
 
+            return Response({'rank_play_list': rank_play_list}, status=status.HTTP_200_OK)
+            #return Response({'rank_play_list': play_dict}, status=status.HTTP_200_OK)
 
-        except:
-            return Response({'message' : "fail"},status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            print(ex)
+            return Response({'message' : "fail"}, status=status.HTTP_400_BAD_REQUEST)
 
 class random_rooms(views.APIView):
 
