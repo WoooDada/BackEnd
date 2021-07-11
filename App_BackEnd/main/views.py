@@ -49,7 +49,7 @@ class studyrank(views.APIView):
                     })
 
                     break
-                if prev_mystudy != my_rank.daily_concent_hour:
+                else:
                     num += 1
                 prev_mystudy = my_rank.daily_concent_hour
 
@@ -57,25 +57,14 @@ class studyrank(views.APIView):
             prev_concent_time = 0
             rank = 0
             count = 0
-
+            flag = False
+            prev_rank = 0
             for study in study_queryset:        #상위 10명 데이터 리스트에 넣기
 
                 uid = study.uid
                 nickname = User.objects.get(uid=uid).nickname
 
                 my_concent_time = study.daily_concent_hour
-                if prev_concent_time == my_concent_time:    #전 사람과 동점
-                    count += 1
-
-                else :
-
-                    count += 1
-                    rank = rank + 1
-                    if count > 10 :
-                        break
-
-
-                prev_concent_time = my_concent_time
 
                 if study.daily_concent_hour < 60:
                     hour = 0
@@ -86,11 +75,36 @@ class studyrank(views.APIView):
                     minute = "0" + str(minute)
                 time_string = str(hour) + ":" + str(minute)
 
-                rank_study_list.append({
-                    'rank' : rank,
-                    'nickname' : nickname,
-                    'tot_concent_time' : time_string
-                })
+                if prev_concent_time == my_concent_time:    #전 사람과 동점
+                    count += 1
+
+
+                    rank_study_list.append({
+                        'rank': prev_rank,
+                        'nickname': nickname,
+                        'tot_concent_time': time_string,
+                        'prev': prev_concent_time
+                    })
+
+                else :
+
+                    count += 1
+                    rank += 1
+                    prev_rank = count
+                    if count > 10 :
+                        break
+
+                    rank_study_list.append({
+                        'rank': count,
+                        'nickname': nickname,
+                        'tot_concent_time': time_string,
+                        'prev': prev_concent_time
+                    })
+
+
+
+                prev_concent_time = my_concent_time
+
 
             return Response({'rank_study_list':rank_study_list}, status=status.HTTP_200_OK)
         except:
@@ -122,6 +136,7 @@ class playrank(views.APIView):
             #내 순위 찾기
             my_rank = 1
             prev_playtime = 0
+            prev_rank = 0
             for key in play_dict:
                 if key[0] == my_nickname :
                     my_rate = str(key[1]) + "%"
@@ -131,7 +146,7 @@ class playrank(views.APIView):
                         'tot_concent_rate': my_rate
                     })
                     break
-                if key[1] != prev_playtime:
+                else:
                     my_rank += 1
                 prev_playtime = key[1]
 
@@ -141,22 +156,31 @@ class playrank(views.APIView):
             rank_10 = 0
             prev_rate = 0.0
             for key in play_dict:
-                if key[1] == prev_rate :
+                if key[1] == prev_rate :        #같으면 rank전과 동일하고 num만 늘어남
+
                     num += 1
+                    rank_play_list.append({
+                        'rank': prev_rank,
+                        'nickname': key[0],
+                        'tot_concent_rate': str(key[1]) + "%"
+                    })
                 else :
                     #if num > 10 :
                      #   break
                     num += 1
                     rank_10 += 1
-
+                    prev_rank = num
                     if num > 10 :
                         break
+
+                    rank_play_list.append({
+                        'rank': num,
+                        'nickname': key[0],
+                        'tot_concent_rate': str(key[1]) + "%"
+                    })
+
                 prev_rate = key[1]
-                rank_play_list.append({
-                    'rank': rank_10,
-                    'nickname': key[0],
-                    'tot_concent_rate': str(key[1]) + "%"
-                })
+
 
 
             return Response({'rank_play_list': rank_play_list}, status=status.HTTP_200_OK)
