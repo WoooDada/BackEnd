@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import views, status
 from api.models import User
 from study.models import Study_analysis
+from .models import Room, Room_Enroll
 
 
 now = timezone.now()
@@ -194,11 +195,33 @@ class random_rooms(views.APIView):
 
     def get(self, request):
 
+
+
         return
 
 
 class my_rooms(views.APIView):
 
     def get(self, request):
+        my_room_list = []
+        num = 0
+        try:
+            uid = self.request.query_params.get('uid')
+            user = User.objects.get(uid=uid)
+            myroom_queryset = user.f_uid.all()
 
-        return
+            for query in myroom_queryset:
+
+                room = query.room_id
+                num = Room_Enroll.objects.filter(room_id=room).count()
+                my_room_list.append({
+                    'room_id':room.room_id,
+                    'room_name':room.room_name,
+                    'inppl': num,
+                    'maxppl' : room.maxppl,
+                    'room_color':room.room_color
+                })
+            return Response({'my_room_list': my_room_list}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({'message' : "fail"}, status=status.HTTP_400_BAD_REQUEST)
