@@ -1,3 +1,4 @@
+import random
 from django.utils import timezone
 import datetime
 from rest_framework.response import Response
@@ -194,11 +195,32 @@ class playrank(views.APIView):
 class random_rooms(views.APIView):
 
     def get(self, request):
+        all_room_list = []
+        try:
+            room_query = Room.objects.all()
+            room_number = Room.objects.all().count()
+            room_id_list = []
+            for num in range(0,10):
+                random_number = random.randint(1,room_number)
+                if random_number in room_id_list:
+                    num -=1
+                    continue
+                else:
+                    room_id_list.append(random_number)
+                    this_room = Room.objects.get(room_id=random_number)
+                    inppl =Room_Enroll.objects.filter(room_id=this_room).count()
+                    all_room_list.append({
+                        'room_id': this_room.room_id,
+                        'room_name': this_room.room_name,
+                        'inppl': inppl,
+                        'maxppl': this_room.maxppl,
+                        'room_color': this_room.room_color
+                    })
 
-
-
-        return
-
+            return Response({'all_room_list': all_room_list}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({'message' : "fail"}, status=status.HTTP_400_BAD_REQUEST)
 
 class my_rooms(views.APIView):
 
