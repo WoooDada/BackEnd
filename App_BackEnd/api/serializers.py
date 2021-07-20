@@ -1,13 +1,6 @@
-from django.contrib import auth
-from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.models import update_last_login
-from django.core.exceptions import ValidationError
-from requests import Response
-from rest_framework.exceptions import AuthenticationFailed
-from rest_framework_jwt.settings import api_settings
 from .models import User
 from rest_framework import serializers
-from django.http import JsonResponse, request
+
 
 
 
