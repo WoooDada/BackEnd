@@ -12,4 +12,6 @@ urlpatterns = [
     url(r'^', include('tdl.urls')),         #monthly/weekly/dialy
     url(r'^', include('study.urls')),
     url(r'^', include('main.urls')),
+    url(r'^', include('myprofile.urls')),
+    url(r'^', include('studyroom.urls')),
 ]
