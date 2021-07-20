@@ -51,10 +51,10 @@ class User(AbstractBaseUser):
         ('P', 'PLATINUM'),
         ('D', 'DIAMOND'),
     )
-    #badge = models.CharField(max_length=2, choices=BADGE, default='B', null=True)
+
     badge = models.CharField(max_length=2, choices=BADGE, default='N', null=True)
-    #user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     # User 모델의 필수 field
+    like_category=models.CharField(max_length=100,null=True, blank=True)   # "-"로 항목 구분해 저장
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
