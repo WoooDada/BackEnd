@@ -2,7 +2,9 @@ from rest_framework.response import Response
 from .serializers import signupSerializer,loginSerializer
 from .models import User
 from rest_framework import generics, status, views, request
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from rest_framework.parsers import JSONParser
+from rest_framework.authtoken.models import Token
 import datetime, jwt
 from django.utils import timezone
 
