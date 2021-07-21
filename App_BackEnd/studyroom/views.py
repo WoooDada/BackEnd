@@ -66,12 +66,14 @@ class studyroom(views.APIView):
                         room_query = Room.objects.all()
                         for room in room_query:
                             data.append({
+                                "room_id":room.room_id,
                                 "room_name": room.room_name,
                                 "maxppl":room.maxppl,
                                 "inppl":room.f_room.all().count(),
                                 "room_comment":room.room_comment,
                                 "is_secret":room.is_secret,
-                                "room_tag":room.room_tag
+                                "room_tag":room.room_tag,
+                                "room_color":room.room_color
                             })
                         break
                     else:
