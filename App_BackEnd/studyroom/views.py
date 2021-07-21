@@ -12,6 +12,9 @@ class studyroom(views.APIView):
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
 
+        roomname = request.data.get("room_name")
+        if Room.objects.filter(room_name=roomname).exists() is True:
+            return Response({"room_id": "-1"}, status=status.HTTP_200_OK)
         if request.data.get("is_secret") == 'T':
             is_secret = True
         else :
@@ -19,7 +22,7 @@ class studyroom(views.APIView):
         try :
 
             if request.data.get("is_secret") == 'T' and request.data.get("room_pwd") == "" :
-                return Response({"message": "no room_pwd"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"room_id": "-2"}, status=status.HTTP_200_OK)
             else :
                 room = Room.objects.create(
                     maker_uid=user,
@@ -59,6 +62,7 @@ class studyroom(views.APIView):
             dict['language'] = language
             etc=self.request.query_params.get('etc')
             dict['etc']=etc
+            keyword=self.request.query_params.get('keyword')
 
             for key,value in dict.items():
                 if key=='all':
