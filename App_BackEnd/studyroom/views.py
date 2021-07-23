@@ -4,6 +4,21 @@ from rest_framework.response import Response
 from api.models import User
 from main.models import Room
 
+
+def append_data(data, room):
+    data.append({
+                    "room_id":room.room_id,
+                    "room_name": room.room_name,
+                    "maxppl":room.maxppl,
+                    "inppl":room.f_room.all().count(),
+                    "room_comment":room.room_comment,
+                    "is_secret":room.is_secret,
+                    "room_tag":room.room_tag,
+                    "room_color":room.room_color
+                })
+    return data
+
+
 class studyroom(views.APIView):
 
     def post(self,request):
@@ -41,7 +56,6 @@ class studyroom(views.APIView):
             print(e)
             return Response({"message":"fail"}, status=status.HTTP_400_BAD_REQUEST)
 
-
     def get(self, request):
         try:
             data=[]
@@ -69,38 +83,30 @@ class studyroom(views.APIView):
                     if value=='T':
                         room_query = Room.objects.all()
                         for room in room_query:
-                            data.append({
-                                "room_id":room.room_id,
-                                "room_name": room.room_name,
-                                "maxppl":room.maxppl,
-                                "inppl":room.f_room.all().count(),
-                                "room_comment":room.room_comment,
-                                "is_secret":room.is_secret,
-                                "room_tag":room.room_tag,
-                                "room_color":room.room_color
-                            })
+                            if keyword is not None :
+                                if room.room_name.find(keyword) != -1:
+                                    append_data(data,room)
+
+                            else:
+                                append_data(data,room)
+
                         break
                     else:
                         continue
                 if value=='T':
                     room_query = Room.objects.filter(room_tag=key)
                     for room in room_query:
-                        data.append({
-                            "room_id": room.room_id,
-                            "room_name": room.room_name,
-                            "maxppl": room.maxppl,
-                            "inppl": room.f_room.all().count(),
-                            "room_comment": room.room_comment,
-                            "is_secret": room.is_secret,
-                            "room_tag": room.room_tag,
-                            "room_color": room.room_color
-                        })
-
+                        if keyword is not None:
+                            if room.room_name.find(keyword) != -1:
+                                append_data(data,room)
+                        else:
+                            append_data(data, room)
 
             return Response({"data": data}, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response({"message": "fail"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
@@ -118,4 +124,4 @@ class studyroom_pw(views.APIView):
         if get_pw==real_pw:
             return Response({"correct": "T"}, status=status.HTTP_200_OK)
         else:
-            return Response({"correct": "F"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"correct": "F"}, status=status.HTTP_200_OK)
