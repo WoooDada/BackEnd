@@ -55,7 +55,7 @@ class myprofile(views.APIView):
 
 
 
-    def patch(self,request):
+    def put(self,request):
         try :
             access_token = request.headers.get('Authorization', None).split(' ')[1]
             payload = jwt.decode(access_token, 'secret', algorithm='HS256')
