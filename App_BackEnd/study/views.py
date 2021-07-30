@@ -4,6 +4,7 @@ from django.utils import timezone
 from rest_framework import views, status
 from rest_framework.response import Response
 from api.models import User
+from main.models import Room, Room_Enroll
 from .models import Daily_1m_content, Study_analysis, One_week_study_data, today_date
 from .serializers import daily_1m_serializer, study_ana_serializer
 
@@ -15,6 +16,18 @@ temp_list =[]
 start = False
 stop = True
 
+def get_time(count):
+
+    if count < 60:
+        hour = 0
+    else :
+        hour = count // 60
+
+    minute = count - hour * 60
+    if minute < 10 :
+        minute = "0" + str(minute)
+    time = str(hour) + ":" + str(minute)
+    return time
 
 
 
@@ -334,14 +347,68 @@ class ten_min_data(views.APIView):
 
         elif update == 'T' :  #현재 실시간 공부중, 1분마다 get
 
-         #   if start == True and stop == False:
-
             ten_data = self.get_tenmin_data(user, hour, minute, 0)
 
             return Response({"ten_min_list":ten_data},status=status.HTTP_200_OK)
 
-          #  else:
-                #return Response(status=status.HTTP_400_BAD_REQUEST)
-
         else :
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class room_info(views.APIView):
+
+    def get(self, request):
+
+        room_id = self.request.query_params.get("room_id")
+        room = Room.objects.get(room_id=room_id)
+        response = {
+            "room_name":room.room_name,
+            "room_tag":room.room_tag,
+            "in_ppl":Room_Enroll.objects.filter(room_id=room).count(),
+            "max_ppl":room.maxppl,
+            "room_manner":room.room_comment
+        }
+
+        return Response(response,status=status.HTTP_400_BAD_REQUEST)
+
+
+class study_mate(views.APIView):
+
+    def get(self,request):
+        try:
+            room_id = self.request.query_params.get("room_id")
+            room_query=Room_Enroll.objects.filter(room_id=room_id)
+
+            studymates = []
+            for room in room_query :
+                user = room.user_id
+                study_info = Daily_1m_content.objects.filter(uid=user)
+                concent = 0
+                play = 0
+
+                for info in study_info:     #실시간 play/concent 개수 가져오기
+                    if info.type == 'C':
+                        concent += 1
+                    elif info.type == 'P':
+                        play += 1
+
+                tot_time = study_info.count()
+                concent_rate = round(concent / tot_time,2) * 100
+
+                concent_time = get_time(concent)
+                concent_time = concent_time.split(":")[0] + "시간 " + concent_time.split(":")[1] + "분"
+
+                play_time = get_time(play)
+                play_time = play_time.split(":")[0] + "시간 " + play_time.split(":")[1] + "분"
+
+                studymates.append({
+                    "nickname":user.nickname,
+                    "concent_rate" : str(concent_rate) + "%",
+                    "concent_time" : concent_time,
+                    "play_time" : play_time
+                })
+
+            return Response({"studymates":studymates},status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)

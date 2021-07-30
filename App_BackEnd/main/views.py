@@ -4,7 +4,7 @@ import datetime
 from rest_framework.response import Response
 from rest_framework import views, status
 from api.models import User
-from study.models import Study_analysis
+from study.models import Study_analysis,Daily_1m_content
 from .models import Room, Room_Enroll
 
 
@@ -24,13 +24,22 @@ class studyrank(views.APIView):
 
             uid = self.request.query_params.get('uid')
             my_nickname = User.objects.get(uid=uid)
-            my_study_data = Study_analysis.objects.get(uid = uid)
+            my_study_data = Study_analysis.objects.get(uid=uid)
 
             study_queryset = Study_analysis.objects.filter(date=date).order_by('-daily_concent_hour')
                     # 집중시간 순서로 내림차순 정렬
             num = 1
-            my_rank_num = 0
-            prev_mystudy=0
+
+            if study_queryset.count() == 0:
+                rank_study_list.append({
+                    'rank': 1,
+                    'nickname': my_nickname.nickname,
+                    'tot_concent_time': '0:00',
+
+                })
+
+                return Response({'rank_study_list': rank_study_list}, status=status.HTTP_200_OK)
+
             for my_rank in study_queryset :  # 내 랭킹 찾기
                 if uid == my_rank.uid.uid:
                     my_rank_num = num
@@ -107,9 +116,9 @@ class studyrank(views.APIView):
 
                 prev_concent_time = my_concent_time
 
-
             return Response({'rank_study_list':rank_study_list}, status=status.HTTP_200_OK)
-        except:
+        except Exception as e:
+            print(e)
             return Response({'message' : "fail"},status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -128,6 +137,16 @@ class playrank(views.APIView):
             study_query = Study_analysis.objects.filter(date=date)
 
             play_dict = {}
+
+            if study_query.count() == 0:
+                rank_play_list.append({
+                    'rank': 1,
+                    'nickname': my_nickname,
+                    'tot_concent_time': '0:00',
+                })
+
+                return Response({'rank_play_list': rank_play_list}, status=status.HTTP_200_OK)
+
             for ppl in study_query :
                 nickname = User.objects.get(uid=ppl.uid).nickname
                 play_rate = round(ppl.daily_concent_hour / ppl.daily_tot_hour * 100,2)
@@ -145,7 +164,7 @@ class playrank(views.APIView):
                     rank_play_list.append({
                         'rank': my_rank,
                         'nickname': my_nickname,
-                        'tot_concent_rate': my_rate
+                        'tot_concent_rate': "0%"
                     })
                     break
                 else:
@@ -186,7 +205,6 @@ class playrank(views.APIView):
 
 
             return Response({'rank_play_list': rank_play_list}, status=status.HTTP_200_OK)
-            #return Response({'rank_play_list': play_dict}, status=status.HTTP_200_OK)
 
         except Exception as ex:
             print(ex)

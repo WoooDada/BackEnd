@@ -2,7 +2,7 @@ import jwt
 from rest_framework import views, request, status
 from rest_framework.response import Response
 from api.models import User
-from main.models import Room
+from main.models import Room, Room_Enroll
 
 
 def append_data(data, room):
@@ -125,3 +125,23 @@ class studyroom_pw(views.APIView):
             return Response({"correct": "T"}, status=status.HTTP_200_OK)
         else:
             return Response({"correct": "F"}, status=status.HTTP_200_OK)
+
+
+class isfull(views.APIView):
+
+    def get(self,request):
+        try :
+            room_id = self.request.query_params.get("room_id")
+            count = Room_Enroll.objects.filter(room_id=room_id).count()
+            maxppl = Room.objects.get(room_id=room_id).maxppl
+
+            if count == maxppl:
+                isfull = "T"
+            else :
+                isfull = "F"
+
+            return Response({"isfull":isfull}, status=status.HTTP_200_OK)
+
+        except Exception as e :
+            print(e)
+            return Response(status=status.HTTP_200_OK)
