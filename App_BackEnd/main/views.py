@@ -16,6 +16,19 @@ else :
     date = now.date()
 
 
+
+def get_time(count):
+
+    hour = count // 60
+    minute = count - hour * 60
+
+    if minute < 10:
+        minute = "0" + str(minute)
+    time_string = str(hour) + ":" + str(minute)
+    return time_string
+
+
+
 class studyrank(views.APIView):
 
     def get(self, request):
@@ -24,34 +37,44 @@ class studyrank(views.APIView):
 
             uid = self.request.query_params.get('uid')
             my_nickname = User.objects.get(uid=uid)
-            my_study_data = Study_analysis.objects.get(uid=uid)
 
-            study_queryset = Study_analysis.objects.filter(date=date).order_by('-daily_concent_hour')
-                    # 집중시간 순서로 내림차순 정렬
-            num = 1
+            user_query = User.objects.all()
+            study_list = []
+            for user in user_query:
+                sub_list = []
+                user_1m_data_query = Daily_1m_content.objects.filter(uid=user.uid)
+                concent = 0
 
-            if study_queryset.count() == 0:
+                tot_count = user_1m_data_query.count()
+                if tot_count != 0:   # 오늘 안들어온 사람은 쿼리에 추가 x
+                    for one_min in user_1m_data_query:  # c / p 개수 세기
+                        if one_min.type == 'C':
+                            concent += 1
+
+                    sub_list.append(user)
+                    sub_list.append(concent)
+                    study_list.append(sub_list)     #study_list에 [user, tot_concent] 추가
+
+            if len(study_list) == 0:
                 rank_study_list.append({
                     'rank': 1,
                     'nickname': my_nickname.nickname,
                     'tot_concent_time': '0:00',
 
                 })
-
                 return Response({'rank_study_list': rank_study_list}, status=status.HTTP_200_OK)
 
-            for my_rank in study_queryset :  # 내 랭킹 찾기
-                if uid == my_rank.uid.uid:
-                    my_rank_num = num
+            study_list.sort(key=lambda x:-x[1])   #tot_concent 순서로 정렬
 
-                    if my_study_data.daily_concent_hour < 60 :
-                        hour = 0
-                    else :
-                        hour = my_study_data.daily_concent_hour / 60
-                    minute = my_study_data.daily_concent_hour - hour * 60
-                    if minute < 10:
-                        minute = "0" + str(minute)
-                    time_string = str(hour) + ":" + str(minute)
+            num=1
+            #내 랭킹 찾기
+            for user_info in study_list:
+                user = user_info[0]
+                concent_time = user_info[1]
+
+                if user.uid == my_nickname.uid :
+                    my_rank_num = num
+                    time_string = get_time(concent_time)
 
                     rank_study_list.append({  # 내 데이터 넣기
                         'rank': my_rank_num,
@@ -62,61 +85,51 @@ class studyrank(views.APIView):
                     break
                 else:
                     num += 1
-                prev_mystudy = my_rank.daily_concent_hour
 
-
+            #상위 10명 찾기
             prev_concent_time = 0
             rank = 0
             count = 0
-            flag = False
             prev_rank = 0
-            for study in study_queryset:        #상위 10명 데이터 리스트에 넣기
 
-                uid = study.uid
+            for study in study_list:  # 상위 10명 데이터 리스트에 넣기
+
+                uid = study[0].uid
                 nickname = User.objects.get(uid=uid).nickname
 
-                my_concent_time = study.daily_concent_hour
+                my_concent_time = study[1]
+                time_string=get_time(my_concent_time)
 
-                if study.daily_concent_hour < 60:
-                    hour = 0
-                else:
-                    hour = study.daily_concent_hour / 60
-                minute = study.daily_concent_hour - hour * 60
-                if minute < 10 :
-                    minute = "0" + str(minute)
-                time_string = str(hour) + ":" + str(minute)
-
-                if prev_concent_time == my_concent_time:    #전 사람과 동점
+                if prev_concent_time == my_concent_time:  # 전 사람과 동점
                     count += 1
-
 
                     rank_study_list.append({
                         'rank': prev_rank,
                         'nickname': nickname,
                         'tot_concent_time': time_string,
-                        'prev': prev_concent_time
+                       # 'prev': prev_concent_time
                     })
 
-                else :
+                else:
 
                     count += 1
                     rank += 1
                     prev_rank = count
-                    if count > 10 :
+                    if count > 10:
                         break
 
                     rank_study_list.append({
                         'rank': count,
                         'nickname': nickname,
                         'tot_concent_time': time_string,
-                        'prev': prev_concent_time
+                   #     'prev': prev_concent_time
                     })
-
-
 
                 prev_concent_time = my_concent_time
 
-            return Response({'rank_study_list':rank_study_list}, status=status.HTTP_200_OK)
+            return Response({'rank_study_list': rank_study_list}, status=status.HTTP_200_OK)
+
+
         except Exception as e:
             print(e)
             return Response({'message' : "fail"},status=status.HTTP_400_BAD_REQUEST)
@@ -131,78 +144,93 @@ class playrank(views.APIView):
             rank_play_list = []
 
             uid = self.request.query_params.get('uid')
-            my_nickname = User.objects.get(uid=uid).nickname
-            my_study_data = Study_analysis.objects.get(uid=uid).daily_tot_hour - Study_analysis.objects.get(uid=uid).daily_concent_hour
+            my_nickname = User.objects.get(uid=uid)
 
-            study_query = Study_analysis.objects.filter(date=date)
+            user_query = User.objects.all()
+            study_list = []
+            for user in user_query:
+                sub_list = []
+                user_1m_data_query = Daily_1m_content.objects.filter(uid=user.uid)
+                concent = 0
 
-            play_dict = {}
+                tot_count = user_1m_data_query.count()
+                if tot_count != 0:  # 오늘 안들어온 사람은 쿼리에 추가 x
+                    for one_min in user_1m_data_query:  # c / p 개수 세기
+                        if one_min.type == 'C':
+                            concent += 1
+                    concent_rate = concent / tot_count * 100
+                    sub_list.append(user)
+                    sub_list.append(concent_rate)
+                    study_list.append(sub_list)  # study_list에 [user, concent_rate] 추가
 
-            if study_query.count() == 0:
+            if len(study_list) == 0:
                 rank_play_list.append({
                     'rank': 1,
-                    'nickname': my_nickname,
-                    'tot_concent_time': '0:00',
-                })
+                    'nickname': my_nickname.nickname,
+                     'tot_concent_rate': "0%"
 
+                })
                 return Response({'rank_play_list': rank_play_list}, status=status.HTTP_200_OK)
 
-            for ppl in study_query :
-                nickname = User.objects.get(uid=ppl.uid).nickname
-                play_rate = round(ppl.daily_concent_hour / ppl.daily_tot_hour * 100,2)
-                play_dict[nickname] = play_rate
+            study_list.sort(key=lambda x: x[1])  # concent_rate 순서로 오름차순 정렬
 
-            play_dict = sorted(play_dict.items(), key=lambda x: x[1], reverse=True)         #play_hour 순서로 내림차순 정렬
+            num = 1
+            # 내 랭킹 찾기
+            for user_info in study_list:
+                user = user_info[0]
+                concent_rate = user_info[1]
 
-            #내 순위 찾기
-            my_rank = 1
-            prev_playtime = 0
-            prev_rank = 0
-            for key in play_dict:
-                if key[0] == my_nickname :
-                    my_rate = str(key[1]) + "%"
-                    rank_play_list.append({
-                        'rank': my_rank,
-                        'nickname': my_nickname,
-                        'tot_concent_rate': "0%"
+                if user.uid == my_nickname.uid:
+                    my_rank_num = num
+
+                    rank_play_list.append({  # 내 데이터 넣기
+                        'rank': my_rank_num,
+                        'nickname': my_nickname.nickname,
+                        'tot_concent_rate': str(round(concent_rate,2)) + "%"
                     })
                     break
                 else:
-                    my_rank += 1
-                prev_playtime = key[1]
-
-         #   print(play_dict)
-            #상위 10명 뽑기
-            num = 0
-            rank_10 = 0
-            prev_rate = 0.0
-            for key in play_dict:
-                if key[1] == prev_rate :        #같으면 rank전과 동일하고 num만 늘어남
-
                     num += 1
+
+            # 상위 10명 찾기
+            prev_concent_time = 0
+            rank = 0
+            count = 0
+            prev_rank = 0
+
+            for study in study_list:  # 상위 10명 데이터 리스트에 넣기
+
+                uid = study[0].uid
+                nickname = User.objects.get(uid=uid).nickname
+
+                my_concent_rate = study[1]
+
+                if prev_concent_time == my_concent_rate:  # 전 사람과 동점
+                    count += 1
+
                     rank_play_list.append({
                         'rank': prev_rank,
-                        'nickname': key[0],
-                        'tot_concent_rate': str(key[1]) + "%"
+                        'nickname': nickname,
+                        'tot_concent_rate': str(round(my_concent_rate,2)) + "%"
+                        # 'prev': prev_concent_time
                     })
-                else :
-                    #if num > 10 :
-                     #   break
-                    num += 1
-                    rank_10 += 1
-                    prev_rank = num
-                    if num > 10 :
+
+                else:
+
+                    count += 1
+                    rank += 1
+                    prev_rank = count
+                    if count > 10:
                         break
 
                     rank_play_list.append({
-                        'rank': num,
-                        'nickname': key[0],
-                        'tot_concent_rate': str(key[1]) + "%"
+                        'rank': count,
+                        'nickname': nickname,
+                        'tot_concent_rate': str(round(my_concent_rate,2)) + "%"
+                        #     'prev': prev_concent_time
                     })
 
-                prev_rate = key[1]
-
-
+                prev_concent_time = my_concent_rate
 
             return Response({'rank_play_list': rank_play_list}, status=status.HTTP_200_OK)
 
