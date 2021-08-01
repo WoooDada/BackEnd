@@ -393,7 +393,10 @@ class study_mate(views.APIView):
                         play += 1
 
                 tot_time = study_info.count()
-                concent_rate = round(concent / tot_time,2) * 100
+                if concent == 0:
+                    concent_rate = '0'
+                else :
+                    concent_rate = round(concent / tot_time,2) * 100
 
                 concent_time = get_time(concent)
                 concent_time = concent_time.split(":")[0] + "시간 " + concent_time.split(":")[1] + "분"
