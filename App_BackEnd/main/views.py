@@ -243,7 +243,6 @@ class random_rooms(views.APIView):
     def get(self, request):
         all_room_list = []
         try:
-            room_query = Room.objects.all()
             room_number = Room.objects.all().count()
             room_id_list = []
             room_not_list=[]
@@ -251,18 +250,23 @@ class random_rooms(views.APIView):
 
             while True:
 
-                if len(room_not_list) + len(room_id_list) == room_number:
-                    break
-                random_number = random.randint(1,room_number)
-                room = Room.objects.get(room_id=random_number)
+                random_number = random.randint(1,Room.objects.all().count())
+
+                print(random_number)
+                try:
+                    room = Room.objects.get(room_id=random_number)
+                except:
+                    continue
+
+                print(room.room_id)
                 room_inppl = room.f_room.all().count()
                 if room_inppl >= 1:
 
                     if random_number in room_id_list:
-                        room_not_list.append(random_number)
+                      #  room_not_list.append(random_number)
                         continue
                     else:
-                        if num >= 10 :
+                        if num >= 9 :
                             break
                         num += 1
                         room_id_list.append(random_number)
