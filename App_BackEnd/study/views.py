@@ -369,7 +369,7 @@ class room_info(views.APIView):
             "room_manner":room.room_comment
         }
 
-        return Response(response,status=status.HTTP_400_BAD_REQUEST)
+        return Response(response,status=status.HTTP_200_OK)
 
 
 class study_mate(views.APIView):
@@ -408,7 +408,7 @@ class study_mate(views.APIView):
                     "play_time" : play_time
                 })
 
-            return Response({"studymates":studymates},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"studymates":studymates},status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)
