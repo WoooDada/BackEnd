@@ -252,13 +252,11 @@ class random_rooms(views.APIView):
 
                 random_number = random.randint(1,Room.objects.all().count())
 
-                print(random_number)
                 try:
                     room = Room.objects.get(room_id=random_number)
                 except:
                     continue
 
-                print(room.room_id)
                 room_inppl = room.f_room.all().count()
                 if room_inppl >= 1:
 
