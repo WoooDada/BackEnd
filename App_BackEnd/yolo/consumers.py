@@ -16,6 +16,7 @@ class sendConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         message = data['message']
+        print("receive == " + message)
 
         self.send(text_data=json.dumps({
             'message': message
