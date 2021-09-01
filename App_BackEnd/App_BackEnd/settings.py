@@ -171,7 +171,11 @@ REST_FRAMEWORK = {
 CHANNEL_LAYERS = {
     'default': {
        # 'BACKEND': 'asgi_redis.RedisChannelLayer',
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        'ROUTING': 'App_BackEnd.routing.channel_routing',
+       # "BACKEND": "asgiref.inmemory.ChannelLayer",
+       # 'ROUTING': 'App_BackEnd.routing.channel_routing',
+        "CONFIG": {
+            "hosts": [('localhost','6379')],
+        },
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
     },
 }
