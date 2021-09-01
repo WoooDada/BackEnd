@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72820162-4a3a-4bfd-876d-af9a0b63ba5a" name="Default" comment="2021.05.05">
+      <change afterPath="$PROJECT_DIR$/App_BackEnd/asgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App_BackEnd/routing.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/main/serializers.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/main/urls.py" afterDir="false" />
@@ -10,6 +12,10 @@
       <change afterPath="$PROJECT_DIR$/study/urls.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tdl/serializers.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tdl/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yolo/consumers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yolo/routing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yolo/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/App_BackEnd.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/App_BackEnd.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App_BackEnd/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/App_BackEnd/settings.py" afterDir="false" />
@@ -44,6 +50,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -72,11 +79,17 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\BackEnd\App_BackEnd\App_BackEnd" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
@@ -332,31 +345,24 @@
     <option name="LAST_COMMIT_MESSAGE" value="2021.05.05" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="604" y="163" key="#Inspections" timestamp="1620231511352">
+    <state x="537" y="179" key="FileChooserDialogImpl" timestamp="1630383080757">
       <screen x="0" y="0" width="1442" height="864" />
     </state>
-    <state x="604" y="163" key="#Inspections/0.0.1442.864@0.0.1442.864" timestamp="1620231511352" />
-    <state x="402" y="23" key="CommitChangelistDialog2" timestamp="1620152332487">
-      <screen x="0" y="0" width="1442" height="864" />
-    </state>
-    <state x="402" y="23" key="CommitChangelistDialog2/0.0.1442.864@0.0.1442.864" timestamp="1620152332487" />
-    <state x="715" y="216" key="FileChooserDialogImpl" timestamp="1626586421318">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
+    <state x="537" y="179" key="FileChooserDialogImpl/0.0.1442.864@0.0.1442.864" timestamp="1630383080757" />
     <state x="715" y="216" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1626586421318" />
-    <state x="437" y="103" key="SettingsEditor" timestamp="1626586427808">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="230" y="75" key="SettingsEditor/0.0.1442.864@0.0.1442.864" timestamp="1621353170488" />
-    <state x="437" y="103" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1626586427808" />
-    <state x="314" y="166" key="Vcs.Push.Dialog.v2" timestamp="1620152347081">
+    <state x="239" y="150" key="SettingsEditor" timestamp="1630492571367">
       <screen x="0" y="0" width="1442" height="864" />
     </state>
-    <state x="314" y="166" key="Vcs.Push.Dialog.v2/0.0.1442.864@0.0.1442.864" timestamp="1620152347081" />
+    <state x="239" y="150" key="SettingsEditor/0.0.1442.864@0.0.1442.864" timestamp="1630492571367" />
+    <state x="437" y="103" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1626586427808" />
     <state x="657" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1626586335478">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="657" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1626586335478" />
+    <state x="694" y="0" width="748" height="864" key="find.popup" timestamp="1630496008706">
+      <screen x="0" y="0" width="1442" height="864" />
+    </state>
+    <state x="694" y="0" width="748" height="864" key="find.popup/0.0.1442.864@0.0.1442.864" timestamp="1630496008706" />
     <state x="384" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1625938549038">
       <screen x="0" y="0" width="1442" height="864" />
     </state>

@@ -1,7 +1,5 @@
 
 import os
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from datetime import timedelta
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'rest_auth.registration',
     'rest_framework.authtoken',
     'rest_framework',
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'tdl',
     'study',
     'main',
+    'yolo',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +54,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'App_BackEnd.urls'
+ASGI_APPLICATION = 'App_BackEnd.routing.application'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
@@ -74,6 +75,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'App_BackEnd.wsgi.application'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
@@ -132,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'ko-kr'
+LANGUAGE_CODE = 'ko'
 
 TIME_ZONE = 'Asia/Seoul'
 
@@ -163,8 +165,13 @@ REST_FRAMEWORK = {
 	'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-      #  'rest_framework.authentication.SessionAuthentication',
-
-      #  'rest_framework.authentication.BasicAuthentication',
 	)
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+       # 'BACKEND': 'asgi_redis.RedisChannelLayer',
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        'ROUTING': 'App_BackEnd.routing.channel_routing',
+    },
 }

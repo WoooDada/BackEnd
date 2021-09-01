@@ -257,6 +257,7 @@ class random_rooms(views.APIView):
                 except:
                     continue
 
+
                 room_inppl = room.f_room.all().count()
                 if room_inppl >= 1:
 
