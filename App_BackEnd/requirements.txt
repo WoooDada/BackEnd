@@ -1,4 +1,3 @@
-channels==2.1.2
 django-scheduler
 asgiref==3.3.4
 astroid==2.5.6
@@ -9,9 +8,10 @@ click==7.1.2
 colorama==0.4.4
 coreapi==2.3.3
 coreschema==0.0.4
+channels==2.1.2
 cryptography==3.4.7
 decorator==5.0.7
-Django==2.0.7
+Django==2.2
 django-cors-headers==3.7.0
 django-cors-middleware==1.5.0
 django-rest-allauth==1.1
