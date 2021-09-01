@@ -1,15 +1,16 @@
 import asyncio
 import json
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 
-class sendConsumer(WebsocketConsumer):
+class sendConsumer(AsyncWebsocketConsumer):
     def connect(self):
         print("connected")
 
 
     def disconnect(self, code):
         print("disconnected")
+
 
 
     def receive(self, text_data):
