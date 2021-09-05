@@ -27,7 +27,7 @@ class sendConsumer(WebsocketConsumer):
         data = json.loads(text_data)
         message = data['message']
         print("receive success")
-        data = base64_file(data, name='profile_picture')
+        data = base64_file(message, name='profile_picture')
 
         with open("d:\\workd2\\wb") as handle:
             # 파일 작성
