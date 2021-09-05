@@ -1,9 +1,41 @@
 import asyncio
 import json
-import websockets
 import base64
 from channels.generic.websocket import WebsocketConsumer
+from django.core.files.base import ContentFile
 
+
+def base64_file(data, name=None):
+    _format, _img_str = data.split(';base64,')
+    _name, ext = _format.split('/')
+    if not name:
+        name = _name.split(":")[-1]
+    return ContentFile(base64.b64decode(_img_str), name='{}.{}'.format(name, ext))
+
+class sendConsumer(WebsocketConsumer):
+    def connect(self):
+      #  print("connected")
+        self.accept()
+
+
+    def disconnect(self, code):
+      #  print("disconnected")
+        pass
+
+
+    def receive(self, text_data):
+        data = json.loads(text_data)
+        message = data['message']
+        print("receive success")
+        data = base64_file(data, name='profile_picture')
+
+        with open("d:\\workd2\\wb") as handle:
+            # 파일 작성
+            handle.write(data)
+        print("craete file - d:\\workd2\\wb 성공")
+
+
+"""
 class Node():
 
     # 생성자
@@ -34,12 +66,13 @@ class Node():
         # byte64를 binary로 디코딩
         byte = base64.b64decode(byte)
         # 파일 IO 오픈
-        with open("d:\\workd2\\"+self.__filename, "wb") as handle:
+       # with open("d:\\workd2\\"+self.__filename, "wb") as handle:
+        with open("d:\\workd2\\wb") as handle:
         # 파일 작성
             handle.write(byte)
         # 콘솔 출력
-        print("craete file - d:\\workd2\\"+self.__filename)
-
+     #   print("craete file - d:\\workd2\\"+self.__filename)
+        print("craete file - d:\\workd2\\wb")
 
 
 
@@ -60,7 +93,41 @@ class sendConsumer(WebsocketConsumer):
         print("receive success")
 
         node = Node()
+        while True:
+        # cmd를 받는다.
+            cmd = await websocket.recv();
+        # 처음 접속시 웹소켓에서 START 명령어가 온다.
+        if cmd == 'START':
+        # 파일 이름을 요청한다.
+        await websocket.send("FILENAME");
+        # 파일 이름에 대한 명령어가 오면,
+        elif cmd == 'FILENAME':
+        # 파일 이름을 받는다.
+        node.filename = await websocket.recv();
+        # 파일 사이즈를 요청한다.
+        await websocket.send("FILESIZE");
+        # 파일 사이즈에 대한 명령어가 오면
+        elif cmd == 'FILESIZE':
+        # 파일 사이즈를 설정한다.
+        node.filesize = await websocket.recv();
+        # 파일 데이터를 요청한다.
+        await websocket.send("DATA");
+        # 파일 데이터에 대한 명령어가 오면
+        elif cmd == 'DATA':
+        # 파일을 받아서 데이터를 추가한다.
+        node.add_data(await websocket.recv());
+        # 파일 전송이 끝나지 않으면
+        if node.is_complate() == False:
+        # 파일 데이터를 요청한다.
+        await websocket.send("DATA");
+        else:
+        # 파일 전송이 끝나면 저장한다.
+        node.save();
+        # 웹 소켓을 닫는다.
+        await websocket.close();
+        # 종료!
+        break;
 
 
 
-
+"""
