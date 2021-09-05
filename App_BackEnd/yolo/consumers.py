@@ -3,14 +3,18 @@ import json
 import base64
 from channels.generic.websocket import WebsocketConsumer
 from django.core.files.base import ContentFile
-
+from api.models import User
 
 def base64_file(data, name=None):
-    _format, _img_str = data.split(';base64,')
-    _name, ext = _format.split('/')
-    if not name:
-        name = _name.split(":")[-1]
-    return ContentFile(base64.b64decode(_img_str), name='{}.{}'.format(name, ext))
+    format, imgstr = data.split(';base64,')
+    ext = format.split('/')[-1]
+
+    data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+    file_name = "'myphoto." + ext
+    User.image.save(file_name,data,save=True)
+
+
+
 
 class sendConsumer(WebsocketConsumer):
     def connect(self):
@@ -26,13 +30,9 @@ class sendConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         message = data['message']
-        print("receive success")
-        data = base64_file(message, name='profile_picture')
+        base64_file(message, name='profile_picture')
 
-        with open("d:\\workd2\\wb") as handle:
-            # 파일 작성
-            handle.write(data)
-        print("craete file - d:\\workd2\\wb 성공")
+        print("save success")
 
 
 """

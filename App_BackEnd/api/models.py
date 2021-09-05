@@ -51,7 +51,7 @@ class User(AbstractBaseUser):
         ('P', 'PLATINUM'),
         ('D', 'DIAMOND'),
     )
-
+    image = models.ImageField(null=True, blank=True)
     badge = models.CharField(max_length=2, choices=BADGE, default='N', null=True)
     # User 모델의 필수 field
     like_category=models.CharField(max_length=100,null=True, blank=True)   # "-"로 항목 구분해 저장
