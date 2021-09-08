@@ -56,9 +56,11 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'App_BackEnd.urls'
 ASGI_APPLICATION = 'App_BackEnd.routing.application'
 
+"""
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+"""
 
 TEMPLATES = [
     {
@@ -149,6 +151,12 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = "/media/"
+
+DEFAULT_FILE_STORAGE = 'storages.backends.overwrite.OverwriteStorage'
 
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
