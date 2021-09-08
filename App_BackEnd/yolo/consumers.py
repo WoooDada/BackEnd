@@ -28,10 +28,10 @@ class sendConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         message = data['message']
-        nickname = data['nickname'].encode("utf-8") + b" "
+        nickname = str(data['nickname'].encode("utf-8"))
 
         file = base64_file(message, name='yolo_picture')
-        file.name = nickname + ".jpg"
+        file.name = nickname + ".png"
 
         if default_storage.exists("test"+'/'+file.name):
             default_storage.delete("test"+'/'+file.name)
