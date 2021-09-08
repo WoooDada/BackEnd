@@ -31,7 +31,7 @@ class sendConsumer(WebsocketConsumer):
         nickname = data['nickname'].encode('utf-8')
 
         file = base64_file(message, name='yolo_picture')
-        file.name = nickname + ".png"
+        file.name = nickname + ".jpg"
 
         if default_storage.exists("test"+'/'+file.name):
             default_storage.delete("test"+'/'+file.name)
