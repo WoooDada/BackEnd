@@ -28,7 +28,7 @@ class sendConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         message = data['message']
-        nickname = data['nickname'].encode('utf-8')
+        nickname = data['nickname'].encode("utf-8") + b" "
 
         file = base64_file(message, name='yolo_picture')
         file.name = nickname + ".jpg"
