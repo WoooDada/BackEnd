@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^', include('main.urls')),
     url(r'^', include('myprofile.urls')),
     url(r'^', include('studyroom.urls')),
-
+    url(r'^', include('yolo.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

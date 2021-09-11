@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'study',
     'main',
     'yolo',
+
 ]
 
 MIDDLEWARE = [
