@@ -7,21 +7,17 @@ import cv2
 import torch
 from PIL import Image
 from io import BytesIO
+import numpy as np
 
 def base64_file(data, name=None):
     format, imgstr = data.split(';base64,')
     ext = format.split('/')[-1]
+    str_decoded = base64.b64decode(imgstr)
 
-    data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-    return data
+    jpg_as_np = np.frombuffer(str_decoded, dtype=np.uint8)
+    img = cv2.imdecode(jpg_as_np, cv2.IMREAD_COLOR)
 
-def copy_attr(a, b, include=(), exclude=()):
-    # Copy attributes from b to a, options to only include [...] and to exclude [...]
-    for k, v in b.__dict__.items():
-        if (len(include) and k not in include) or k.startswith('_') or k in exclude:
-            continue
-        else:
-            setattr(a, k, v)
+    return img
 
 
 class sendConsumer(WebsocketConsumer):
@@ -42,8 +38,15 @@ class sendConsumer(WebsocketConsumer):
         message = data['message']
         nickname = data['nickname']
 
-        file = base64_file(message, name='yolo_picture')
-        file.name = nickname + ".jpg"
+        img = base64_file(message, name='yolo_picture')
+
+        model = torch.hub.load('ultralytics/yolov5', 'custom', '/static/21_08_30_best.pt')
+        results = model(img)
+
+        print(results.pandas().xyxy[0].to_json(orient="records"))
+
+
+
 
 
 
