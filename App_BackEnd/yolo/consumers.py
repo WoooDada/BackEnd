@@ -40,7 +40,7 @@ class sendConsumer(WebsocketConsumer):
 
         img = base64_file(message, name='yolo_picture')
 
-        model = torch.hub.load('ultralytics/yolov5', 'custom', path='/static/21_08_30_best.pt',source='local',force_reload=True)
+        model = torch.hub.load('../yolov5', 'custom', path='/static/21_08_30_best.pt',source='local',force_reload=True)
         results = model(img)
 
         print(results.pandas().xyxy[0].to_json(orient="records"))
