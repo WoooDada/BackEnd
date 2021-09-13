@@ -36,11 +36,11 @@ class sendConsumer(WebsocketConsumer):
 
         data = json.loads(text_data)
         message = data['message']
-        nickname = data['nickname']
+      #  nickname = data['nickname']
 
         img = base64_file(message, name='yolo_picture')
 
-        model = torch.hub.load('ultralytics/yolov5', 'custom', '/static/21_08_30_best.pt')
+        model = torch.hub.load('ultralytics/yolov5', 'custom', '/static/21_08_30_best.pt',force_reload=True)
         results = model(img)
 
         print(results.pandas().xyxy[0].to_json(orient="records"))
