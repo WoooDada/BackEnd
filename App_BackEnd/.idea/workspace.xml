@@ -18,7 +18,6 @@
       <change afterPath="$PROJECT_DIR$/yolo/routing.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/yolo/static/21_08_30_best.pt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/yolo/static/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolo/static/aa.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/yolo/test/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/App_BackEnd.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/App_BackEnd.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />

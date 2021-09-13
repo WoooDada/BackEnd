@@ -182,11 +182,9 @@ CHANNEL_LAYERS = {
        # 'BACKEND': 'asgi_redis.RedisChannelLayer',
        # "BACKEND": "asgiref.inmemory.ChannelLayer",
        # 'ROUTING': 'App_BackEnd.routing.channel_routing',
-        "CONFIG": {
-           # "hosts": [(os.getenv('MY_IP'), 6379)],
-           "hosts": [('localhost','6379')],
-        },
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        #"BACKEND": "channels.layers.InMemoryChannelLayer"
+
+
+        #"BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
     },
 }
