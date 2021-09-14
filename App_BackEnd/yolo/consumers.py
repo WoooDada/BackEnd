@@ -1,8 +1,6 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
-from django.core.files.base import ContentFile
 import base64
-from django.core.files.storage import default_storage
 import cv2
 import torch
 from PIL import Image
@@ -38,12 +36,43 @@ class sendConsumer(WebsocketConsumer):
         message = data['message']
       #  nickname = data['nickname']
 
-        img = base64_file(message, name='yolo_picture')
+        img = base64_file(message, name='yolo_picture')             #base64로 이미지 decode하기
 
+        #모델에 적용
         model = torch.hub.load('yolov5', 'custom', path='yolo/static/21_08_30_best.pt',source='local',force_reload=True)
         results = model(img)
 
-        print(results.pandas().xyxy[0].to_json(orient="records"))
+        results_array = results.pandas().xyxy[0].to_json(orient="records")      #결과값 json변환
+
+       # print(type(results_array))  -> results_array : String타입
+        print(results_array)
+
+        results_array = results_array.replace("'","\"")     #'을 "로 치환해야 json으로 변환 가능함
+        results_array = json.loads(results_array)       #string을 json(dict)형식으로 변환
+
+
+        class_array = []
+        for result in results_array:
+            get_confidence = result['confidence']
+            get_class = result['name']
+
+            if get_confidence >= 0.65 :
+                class_array.append(get_class)
+
+
+        print(json.dumps({
+                'class': class_array
+            }))
+
+        #client로 데이터 보내기기
+        self.send(
+            text_data=json.dumps({
+                'class': class_array
+            })
+        )
+
+
+
 
 
 
