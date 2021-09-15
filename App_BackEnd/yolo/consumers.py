@@ -64,29 +64,26 @@ class sendConsumer(WebsocketConsumer):
 
         if 'face' in class_array:
             type = 'P'
-            message = 'no backhead yes face'
+            message = 'yes face'
         else :
-            if 'desk' in class_array:
-                if ('book' in class_array) or ('tablet' in class_array):
-                    if 'handphone' in class_array:
+            if ('book' in class_array) or ('tablet' in class_array):
+                if 'handphone' in class_array:
+                    type='C'
+                    message = 'handphone'
+                else:
+                    if 'handonly' in class_array:
                         type='C'
-                        message = 'handphone'
+                        message = 'handonly'
+                    elif 'handpen' in class_array:
+                        type='C'
+                        message='handpen'
                     else:
-                        if 'handonly' in class_array:
-                            type='C'
-                            message = 'handonly'
-                        elif 'handpen' in class_array:
-                            type='C'
-                            message='handpen'
-                        else:
-                            type='P'
-                            message='none'
-                else :
-                    type = 'P'
-                    message = 'yes desk no book or tablet'
+                        type='P'
+                        message='none'
+
             else :
                 type = 'P'
-                message = 'no backhead no face no desk'
+                message = 'no face no desk'
 
         print(json.dumps({
             'class': class_array,
