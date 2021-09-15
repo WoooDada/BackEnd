@@ -56,7 +56,7 @@ class sendConsumer(WebsocketConsumer):
             get_confidence = result['confidence']
             get_class = result['name']
 
-            if get_confidence >= 0.5 :
+            if get_confidence >= 0.1 :
                 class_array.append(get_class)
 
 
