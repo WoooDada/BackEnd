@@ -60,14 +60,49 @@ class sendConsumer(WebsocketConsumer):
                 class_array.append(get_class)
 
 
+
+        if 'backhead' in class_array:
+            type = 'P'
+            message = 'yes backhead'
+        else :
+            if 'face' in class_array:
+                type = 'P'
+                message = 'no backhead yes face'
+            else :
+                if 'desk' in class_array:
+                    if ('book' in class_array) or ('tablet' in class_array):
+                        if 'handphone' in class_array:
+                            type='C'
+                            message = 'handphone'
+                        else:
+                            if 'handonly' in class_array:
+                                type='C'
+                                message = 'handonly'
+                            elif 'handpen' in class_array:
+                                type='C'
+                                message='handpen'
+                            else:
+                                type='P'
+                                message='none'
+                    else :
+                        type = 'P'
+                        message = 'yes desk no book or tablet'
+                else :
+                    type = 'P'
+                    message = 'no backhead no face no desk'
+
         print(json.dumps({
-                'class': class_array
-            }))
+            'class': class_array,
+            'type':type,
+            'message':message
+        }))
 
         #client로 데이터 보내기기
         self.send(
             text_data=json.dumps({
-                'class': class_array
+                'class': class_array,
+                'type':type,
+                'message':message
             })
         )
 
