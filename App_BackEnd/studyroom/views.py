@@ -76,7 +76,14 @@ class studyroom(views.APIView):
             dict['language'] = language
             etc=self.request.query_params.get('etc')
             dict['etc']=etc
+            university = self.request.query_params.get('university')
+            dict['university'] = university
+            sooneung = self.request.query_params.get('sooneung')
+            dict['sooneung'] = sooneung
+
             keyword=self.request.query_params.get('keyword')
+
+
 
             for key,value in dict.items():
                 if key=='all':
@@ -106,6 +113,24 @@ class studyroom(views.APIView):
         except Exception as e:
             print(e)
             return Response({"message": "fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+
+        try:
+            get_room_id = request.data.get("room_id")
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
+
+
+            room_obj = Room_Enroll.objects.get(room_id=get_room_id, user_id=user)
+            room_obj.delete()
+
+            return Response(status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response({"message": "room delete fail"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

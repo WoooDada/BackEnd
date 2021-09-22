@@ -7,9 +7,9 @@
       <change afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/main/serializers.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/main/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/test/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/test/캡처.JPG" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/myprofile/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/consumers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/routing.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/study/serializers.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/study/urls.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tdl/serializers.py" afterDir="false" />
@@ -359,6 +359,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="2021.05.05" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="805" y="46" key="CommitChangelistDialog2" timestamp="1631712905011">
+      <screen x="0" y="0" width="1442" height="864" />
+    </state>
+    <state x="805" y="46" key="CommitChangelistDialog2/0.0.1442.864@0.0.1442.864" timestamp="1631712905011" />
     <state x="537" y="179" key="FileChooserDialogImpl" timestamp="1630383080757">
       <screen x="0" y="0" width="1442" height="864" />
     </state>

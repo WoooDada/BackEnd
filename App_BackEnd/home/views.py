@@ -117,6 +117,8 @@ class today_concent(views.APIView):
                     tot_con_time = tot_con_time + 1
 
             tot_time = user.daily_1m_uid.count()
+            play_time = tot_time - tot_con_time
+
             concent_rate = round(tot_con_time / tot_time * 100, 1)
 
             tot_concent_hour = tot_con_time // 60
@@ -125,16 +127,27 @@ class today_concent(views.APIView):
             tot_time_hour = tot_time // 60
             tot_time_minute = tot_time - tot_time_hour * 60
 
+            tot_play_hour = play_time // 60
+            tot_play_minute = play_time - tot_play_hour * 60
+
             if tot_concent_minute // 10 == 0:
                 tot_concent_minute = "0"+str(tot_concent_minute)
 
             if tot_time_minute // 10 == 0:
                 tot_time_minute = "0"+str(tot_time_minute)
 
+            if tot_play_minute // 10 == 0:
+                tot_play_minute = "0"+str(tot_play_minute)
+
             final_tot_concent = str(tot_concent_hour) + ':' + str(tot_concent_minute)
             final_tot_time = str(tot_time_hour) + ':' + str(tot_time_minute)
+            final_play_time = str(tot_play_hour) + ":" + str(tot_play_minute)
 
-            return Response({"tot_concent_rate":concent_rate,"tot_concent_time": final_tot_concent, "tot_time": final_tot_time},
+            return Response({"tot_concent_rate":concent_rate,
+                             "tot_concent_time": final_tot_concent,
+                             "tot_time": final_tot_time,
+                             "tot_play_time" : final_play_time
+                             },
                             status=status.HTTP_200_OK)
 
         except:

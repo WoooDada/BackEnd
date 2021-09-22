@@ -276,7 +276,8 @@ class random_rooms(views.APIView):
                             'room_name': this_room.room_name,
                             'inppl': inppl,
                             'maxppl': this_room.maxppl,
-                            'room_color': this_room.room_color
+                            'room_color': this_room.room_color,
+                            'is_secret':this_room.is_secret
                         })
 
             return Response({'all_room_list': all_room_list}, status=status.HTTP_200_OK)
@@ -303,7 +304,8 @@ class my_rooms(views.APIView):
                     'room_name':room.room_name,
                     'inppl': num,
                     'maxppl' : room.maxppl,
-                    'room_color':room.room_color
+                    'room_color':room.room_color,
+                    'is_secret': room.is_secret
                 })
             return Response({'my_room_list': my_room_list}, status=status.HTTP_200_OK)
         except Exception as e:
