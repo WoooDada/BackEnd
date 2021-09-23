@@ -39,7 +39,8 @@ class sendConsumer(WebsocketConsumer):
         img = base64_file(message, name='yolo_picture')             #base64로 이미지 decode하기
 
         #모델에 적용
-        model = torch.hub.load('yolov5', 'custom', path='yolo/static/21_08_30_best.pt',source='local',force_reload=True)
+      #  model = torch.hub.load('yolov5', 'custom', path='yolo/static/21_08_30_best.pt',source='local',force_reload=True)
+        model = torch.hub.load('yolov5', 'custom', path='yolo/static/best.pt', source='local',force_reload=True)
         results = model(img)
 
         results_array = results.pandas().xyxy[0].to_json(orient="records")      #결과값 json변환

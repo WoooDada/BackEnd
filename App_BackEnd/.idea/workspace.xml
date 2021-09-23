@@ -18,6 +18,7 @@
       <change afterPath="$PROJECT_DIR$/yolo/routing.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/yolo/static/21_08_30_best.pt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/yolo/static/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yolo/static/best.pt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/yolo/test/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/App_BackEnd.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/App_BackEnd.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
@@ -88,21 +89,22 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/yolo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/yolo/static" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\BackEnd\App_BackEnd\yolo\static" />
+      <recent name="C:\BackEnd\App_BackEnd\yolo" />
+      <recent name="C:\BackEnd\App_BackEnd\yolo\test" />
+      <recent name="C:\BackEnd\App_BackEnd\test_image" />
+      <recent name="C:\BackEnd\App_BackEnd\test_image\test" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\BackEnd\App_BackEnd\yolo\static" />
       <recent name="C:\BackEnd\App_BackEnd\test_image\test" />
       <recent name="C:\BackEnd\App_BackEnd\media\test" />
       <recent name="C:\BackEnd\App_BackEnd\App_BackEnd" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\BackEnd\App_BackEnd\yolo" />
-      <recent name="C:\BackEnd\App_BackEnd\yolo\test" />
-      <recent name="C:\BackEnd\App_BackEnd\test_image" />
-      <recent name="C:\BackEnd\App_BackEnd\test_image\test" />
     </key>
   </component>
   <component name="RunManager">
