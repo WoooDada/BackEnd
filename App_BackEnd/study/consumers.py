@@ -51,14 +51,17 @@ class sendMate(WebsocketConsumer):
 
         #토큰으로 user 식별하기
         headers = dict(self.scope['headers'])
-    #    print(headers)
 
-        token = headers[b'authorization'].decode().split(' ')[1]
+        data = json.loads(text_data)
+
+      #  token = headers[b'authorization'].decode().split(' ')[1]
+        token=data['token'].decode().split(' ')[1]
         payload = jwt.decode(token, 'secret', algorithm='HS256')
         token_uid = payload['id']
    #     print(token_uid)
 
-        data = json.loads(text_data)
+
+
         room_id = data['room_id']
         room_query=Room_Enroll.objects.filter(room_id=room_id)
         global me
