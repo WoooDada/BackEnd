@@ -113,7 +113,8 @@ class studyroom(views.APIView):
         except Exception as e:
             print(e)
             return Response({"message": "fail"}, status=status.HTTP_400_BAD_REQUEST)
-
+    """
+    
     def put(self, request):
 
         try:
@@ -133,7 +134,7 @@ class studyroom(views.APIView):
             print(e)
             return Response({"message": "room delete fail"}, status=status.HTTP_400_BAD_REQUEST)
 
-
+    """
 
 
 class studyroom_pw(views.APIView):
