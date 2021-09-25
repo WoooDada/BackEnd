@@ -25,7 +25,7 @@ class myprofile(views.APIView):
                 sex = 'U'
             if birth is None:
                 birth = datetime.datetime.now().date()
-            if like_category is not None:
+            if like_category is not '':
                 like_category = like_category.split("-")
                 for like in like_category:
                     like_index = categ_array.index(like)
