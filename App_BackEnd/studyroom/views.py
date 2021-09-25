@@ -114,7 +114,7 @@ class studyroom(views.APIView):
             print(e)
             return Response({"message": "fail"}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request):
+    def put(self, request):
 
         try:
             get_room_id = request.data.get("room_id")
@@ -124,7 +124,8 @@ class studyroom(views.APIView):
 
 
             room_obj = Room_Enroll.objects.get(room_id=get_room_id, user_id=user)
-            room_obj.delete()
+            room_obj.current = False            #현재활동중 false로
+            room_obj.save()
 
             return Response(status=status.HTTP_200_OK)
 

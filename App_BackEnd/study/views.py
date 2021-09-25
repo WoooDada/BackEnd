@@ -7,7 +7,7 @@ from api.models import User
 from main.models import Room, Room_Enroll
 from .models import Daily_1m_content, Study_analysis, One_week_study_data, today_date
 from .serializers import daily_1m_serializer, study_ana_serializer
-
+import jwt
 
 #delete해서 Daily_1m_concent 데이터 사라지기 전에 저장. 즉, 00:00 ~ 04:00 사이의 데이터 저장하는 부분
 temp_list =[]
@@ -20,28 +20,17 @@ stop = True
 
 class study_button(views.APIView):
 
-    def post(self, request):
+    def put(self, request):
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])
 
-        current_user_uid = request.data.get('uid')  # 요청한 사용자 받아오기
-        user = User.objects.get(uid=current_user_uid)
+        get_room_id = request.data.get("room_id")
+        data = Room_Enroll.objects.get(room_id=get_room_id, user_id=user)
+        data.current = True     #현재활동중 true로
+        data.save()
 
-        if user:
-            try:
-                if (request.data.get('type')=='start'):
-                    start = True
-                    stop = False
-
-                else:
-                    start = False
-                    stop = True
-
-                return HttpResponse(status=status.HTTP_200_OK)
-
-            except:
-                return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
-
-        else :
-            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse(status=status.HTTP_200_OK)
 
 
 
