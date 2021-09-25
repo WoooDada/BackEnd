@@ -81,10 +81,11 @@ class sendMate(AsyncWebsocketConsumer):
                             play += 1
 
                     tot_time = study_info.count()
-                    concent_time = get_time(concent)
+
+                    concent_time = get_time(concent//20)
                     concent_time = concent_time.split(":")[0] + ":" + concent_time.split(":")[1]
 
-                    play_time = get_time(play)
+                    play_time = get_time(play//20)
                     play_time = play_time.split(":")[0] + ":" + play_time.split(":")[1]
 
                     me = {
@@ -111,14 +112,14 @@ class sendMate(AsyncWebsocketConsumer):
                     else:
                         concent_rate = round(concent / tot_time, 2) * 100
 
-                    concent_time = get_time(concent)
+                    concent_time = get_time(concent//20)
                     if int(concent_time.split(":")[0]) == 0:
                         concent_time = concent_time.split(":")[1] + "분"
 
                     else:
                         concent_time = concent_time.split(":")[0] + "시간 " + concent_time.split(":")[1] + "분"
 
-                    play_time = get_time(play)
+                    play_time = get_time(play//20)
                     if int(play_time.split(":")[0]) == 0:
                         play_time = play_time.split(":")[1] + "분"
                     else:
