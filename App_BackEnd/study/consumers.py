@@ -1,11 +1,8 @@
 import threading
 from time import sleep
 from channels.exceptions import StopConsumer
-from channels.generic.websocket import WebsocketConsumer
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-
-from websockets.exceptions import ConnectionClosedOK
 
 from main.models import Room_Enroll
 from .models import Daily_1m_content
@@ -27,8 +24,7 @@ def get_time(count):
     time = str(hour) + ":" + str(minute)
     return time
 
-def wait():
-    sleep(10)
+
 
 class sendMate(AsyncWebsocketConsumer):
 
