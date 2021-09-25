@@ -1,6 +1,7 @@
 from django.db import models
 from api.models import User
 
+
 class Daily_1m_content(models.Model):
 
     objects = models.Manager()

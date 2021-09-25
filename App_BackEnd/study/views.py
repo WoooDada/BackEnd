@@ -8,37 +8,17 @@ from main.models import Room, Room_Enroll
 from .models import Daily_1m_content, Study_analysis, One_week_study_data, today_date
 from .serializers import daily_1m_serializer, study_ana_serializer
 import jwt
+from main.models import Recent_Room
+
 
 #delete해서 Daily_1m_concent 데이터 사라지기 전에 저장. 즉, 00:00 ~ 04:00 사이의 데이터 저장하는 부분
 temp_list =[]
+member_array =[]
 
-#전역변수로 버튼 초기화
-start = False
-stop = True
-
-
-"""
-
-class study_button(views.APIView):
-
-    def put(self, request):
-        access_token = request.headers.get('Authorization', None).split(' ')[1]
-        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
-        user = User.objects.get(uid=payload['id'])
-
-        get_room_id = request.data.get("room_id")
-        data = Room_Enroll.objects.get(room_id=get_room_id, user_id=user)
-        data.current = True     #현재활동중 true로
-        data.save()
-
-        return HttpResponse(status=status.HTTP_200_OK)
-"""
 
 class inout(views.APIView):
 
-
     #룸 입장
-    #입장할때 최근 방들 db에 넣기!!!!!!!!!!!!!
     def post(self,request):
 
         access_token = request.headers.get('Authorization', None).split(' ')[1]
@@ -49,13 +29,27 @@ class inout(views.APIView):
 
         room = Room.objects.get(room_id=get_room_id)
 
-        room_enroll = Room_Enroll.objects.create(
-            room_id=room,
-            user_id = user,
-            current = True,
-            room_color = room.room_color
-        )
-        room_enroll.save()
+        if [room.room_id, user.uid] not in member_array:
+
+            #최근 방에 저장하기
+            recent_room = Recent_Room.objects.create(
+                room_array = room,
+                user_id=user
+            )
+            recent_room.save()
+
+            #현재활동중 표시 위해
+            room_enroll = Room_Enroll.objects.create(
+                room_id=room,
+                user_id = user,
+                current = True,
+                room_color = room.room_color
+            )
+            room_enroll.save()
+            member_array.append([room.room_id, user.uid])
+
+
+
         return HttpResponse(status=status.HTTP_200_OK)
 
 
@@ -69,8 +63,9 @@ class inout(views.APIView):
         get_room_id = request.data.get("room_id")
 
         room = Room.objects.get(room_id=get_room_id)
-
+        member_array.remove([room.room_id, user.uid])
         Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+
 
         return HttpResponse(status=status.HTTP_200_OK)
 
@@ -94,7 +89,7 @@ class study_data(views.APIView):
             elif qs.type == 'P':
                 tot_play_tme = tot_play_tme + 1
 
-        return {"concent":tot_con_time, "play":tot_play_tme}
+        return {"concent":tot_con_time//20, "play":tot_play_tme//20}
 
 
     def post(self, request):
@@ -183,8 +178,8 @@ class study_data(views.APIView):
 
             serializer_2.save()
 
-            tot_time = int(qs[count][1])
-            tot_con = int(qs[count][2])
+            tot_time = int(qs[count][1])//20
+            tot_con = int(qs[count][2])//20
             obj = Study_analysis.objects.filter(uid=user).last()
 
             if get_type == 'C':

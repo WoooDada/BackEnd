@@ -1,5 +1,6 @@
 from django.db import models
 from api.models import User
+from django.contrib.postgres.fields import ArrayField
 
 class Room(models.Model):
 
@@ -27,3 +28,13 @@ class Room_Enroll(models.Model):
 
     def __str__(self):
         return str(self.room_id)
+
+
+class Recent_Room(models.Model) :
+
+
+    room_array = models.ForeignKey(Room, on_delete=models.CASCADE)
+    user_id= models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user_id)
