@@ -29,7 +29,7 @@ class myprofile(views.APIView):
                 like_category = like_category.split("-")
                 for like in like_category:
                     like_index = like_category.index(like)
-                    categ_bool_array[like_index]='T'
+                    categ_bool_array[like_index-1]='T'
 
 
             send_data = {
