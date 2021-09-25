@@ -49,20 +49,21 @@ class sendMate(WebsocketConsumer):
         global isReceived
         isReceived = True
 
+
+        """
         #토큰으로 user 식별하기
         headers = dict(self.scope['headers'])
-
         data = json.loads(text_data)
-
-      #  token = headers[b'authorization'].decode().split(' ')[1]
-        token=data['token'].decode().split(' ')[1]
+        token = headers[b'authorization'].decode().split(' ')[1]
+       # token=data['token'].decode().split(' ')[1]
         payload = jwt.decode(token, 'secret', algorithm='HS256')
         token_uid = payload['id']
-   #     print(token_uid)
+        print(token_uid)
+        """
 
-
-
+        data = json.loads(text_data)
         room_id = data['room_id']
+        uid=data['uid']
         room_query=Room_Enroll.objects.filter(room_id=room_id)
         global me
 
@@ -73,7 +74,7 @@ class sendMate(WebsocketConsumer):
                 for room in room_query:
                     user = room.user_id
 
-                    if user.uid == token_uid:           #나
+                    if user.uid == uid:           #나
 
                         study_info = Daily_1m_content.objects.filter(uid=user)
                         concent = 0
@@ -132,7 +133,7 @@ class sendMate(WebsocketConsumer):
 
 
 
-                            if user.uid != token_uid:
+                            if user.uid != uid:
                                 studymates.append({
                                     "nickname": user.nickname,
                                     "concent_rate": str(concent_rate) + "%",
