@@ -7,13 +7,17 @@ from rest_framework.response import Response
 from api.models import User
 from study.models import One_week_study_data, Daily_1m_content
 import datetime
-
+import jwt
 
 class badge_profile(views.APIView):
 
     def get(self,request):
-        current_user_uid = self.request.query_params.get('uid')
-        user = User.objects.get(uid=current_user_uid)
+
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])
+     #   current_user_uid = self.request.query_params.get('uid')
+      #  user = User.objects.get(uid=current_user_uid)
 
 
         if user:
@@ -44,8 +48,13 @@ class concent_graph(views.APIView):
         """
 
         graph = []
-        current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
-        user = User.objects.get(uid=current_user_uid)
+
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])
+
+       # current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+       # user = User.objects.get(uid=current_user_uid)
 
         now = timezone.now()
         date = now.date()   #오늘 날짜
@@ -105,8 +114,14 @@ class today_concent(views.APIView):
     def get(self, request):
 
         try :
-            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
-            user = User.objects.get(uid=current_user_uid)
+
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
+
+
+   #         current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+    #        user = User.objects.get(uid=current_user_uid)
 
             query_set = user.daily_1m_uid.all()
             tot_con_time = 0

@@ -57,8 +57,10 @@ class study_data(views.APIView):
 
     def post(self, request):
 
-        uid = request.data.get("uid")
-        user = User.objects.get(uid=uid)
+
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])
 
         time = request.data.get('time')  # char형태로 받음
         get_type = request.data.get('type')
@@ -310,7 +312,8 @@ class ten_min_data(views.APIView):
 
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
-        user = User.objects.get(uid=payload['id'])[0]
+        user = User.objects.get(uid=payload['id'])
+
 
      #   user = User.objects.get(uid=current_user_uid)[0]
 

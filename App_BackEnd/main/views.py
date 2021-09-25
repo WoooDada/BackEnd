@@ -6,7 +6,7 @@ from rest_framework import views, status
 from api.models import User
 from study.models import Study_analysis,Daily_1m_content
 from .models import Room, Room_Enroll
-
+import jwt
 
 now = timezone.now()
 hour = now.hour
@@ -35,8 +35,13 @@ class studyrank(views.APIView):
         try :
             rank_study_list = []
 
-            uid = self.request.query_params.get('uid')
-            my_nickname = User.objects.get(uid=uid)
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
+
+          #  uid = self.request.query_params.get('uid')
+            uid = user.uid
+            my_nickname = User.objects.get(uid=user.uid)
 
             user_query = User.objects.all()
             study_list = []
@@ -143,8 +148,12 @@ class playrank(views.APIView):
         try :
             rank_play_list = []
 
-            uid = self.request.query_params.get('uid')
-            my_nickname = User.objects.get(uid=uid)
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
+
+        #    uid = self.request.query_params.get('uid')
+            my_nickname = User.objects.get(uid=user.uid)
 
             user_query = User.objects.all()
             study_list = []
@@ -291,8 +300,11 @@ class my_rooms(views.APIView):
         my_room_list = []
         num = 0
         try:
-            uid = self.request.query_params.get('uid')
-            user = User.objects.get(uid=uid)
+
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
+
             myroom_queryset = user.f_uid.all().order_by('-room_id')[:10]
 
             for query in myroom_queryset:

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from api.models import User
 from .serializers import monthly_serializer, weekly_serializer, daily_serializer
 from .models import Monthly_tdl, Weekly_tdl, Daily_tdl
+import jwt
 
 
 class monthly_tdl(views.APIView):
@@ -15,9 +16,10 @@ class monthly_tdl(views.APIView):
         data = request.data
         serializer = monthly_serializer(data=data)
 
-        current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
 
-        user = User.objects.get(uid=current_user_uid)
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])
 
 
         if not serializer.is_valid(raise_exception=False):
@@ -35,8 +37,13 @@ class monthly_tdl(views.APIView):
     def get(self, request):
 
         try:
-            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
-            user = User.objects.get(uid=current_user_uid)
+
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
+
+  #          current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+   #         user = User.objects.get(uid=current_user_uid)
 
             if user :
                 #queryset = user.Monthly_tdl.all().values()
@@ -74,8 +81,9 @@ class monthly_tdl(views.APIView):
     def delete(self, request):
 
         try:
-            current_user_uid = request.data.get('uid')  # 요청한 사용자 받아오기
-            user = User.objects.get(uid=current_user_uid)
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
 
             if user:
                 m_todo_id = request.data.get("m_todo_id")
@@ -97,8 +105,10 @@ class weekly_tdl(views.APIView):
 
 
         try:
-            current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
-            user = User.objects.get(uid=current_user_uid)
+
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
 
             #dates_param = request.GET.getlist('dates')
             dates_param = self.request.query_params.get('dates')
@@ -126,8 +136,9 @@ class weekly_tdl(views.APIView):
             data = request.data
             serializer = weekly_serializer(data=data)
 
-            current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
-            user = User.objects.get(uid=current_user_uid)
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
 
             if not serializer.is_valid(raise_exception=False):
                 return Response({"message": "wtdl post fail"}, status=status.HTTP_400_BAD_REQUEST)
@@ -164,8 +175,9 @@ class weekly_tdl(views.APIView):
     def delete(self, request):
 
         try:
-            current_user_uid = request.data.get('uid')  # 요청한 사용자 받아오기
-            user = User.objects.get(uid=current_user_uid)
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
 
 
             w_todo_id = request.data.get("w_todo_id")
@@ -187,8 +199,12 @@ class daily_tdl(views.APIView):
 
     def get(self, request):
 
-        current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
-        user = User.objects.get(uid=current_user_uid)
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])
+
+     #   current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+      #  user = User.objects.get(uid=current_user_uid)
 
         if user:
             try:
@@ -211,8 +227,9 @@ class daily_tdl(views.APIView):
             data = request.data
             serializer = daily_serializer(data=data)
 
-            current_user_uid = request.data.get("uid")  # 요청한 사용자 받아오기
-            user = User.objects.get(uid=current_user_uid)
+            access_token = request.headers.get('Authorization', None).split(' ')[1]
+            payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+            user = User.objects.get(uid=payload['id'])
 
             if not serializer.is_valid(raise_exception=False):
                 return Response({"message": "dtdl post fail"}, status=status.HTTP_400_BAD_REQUEST)
