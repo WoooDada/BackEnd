@@ -6,7 +6,7 @@ import torch
 from PIL import Image
 from io import BytesIO
 import numpy as np
-
+from django.utils import timezone
 from api.models import User
 from study.models import Daily_1m_content
 from study.serializers import daily_1m_serializer
@@ -103,15 +103,16 @@ class sendConsumer(WebsocketConsumer):
             })
         )
 
-        now = datetime.timezone.now()
+        now = timezone.now()
         hour = now.hour
         minute = now.minute
-        time = hour+":"+minute
+        time = str(hour)+":"+str(minute)
 
         uid = data['uid']
         user = User.objects.get(uid=uid)
 
         Daily_1m_content.objects.create(uid=user, type=type, time=time)
+        print("Aa")
 
 
 
