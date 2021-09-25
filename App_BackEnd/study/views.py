@@ -306,8 +306,13 @@ class ten_min_data(views.APIView):
 
     def get(self,request):
 
-        current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
-        user = User.objects.get(uid=current_user_uid)[0]
+     #   current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
+
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])[0]
+
+     #   user = User.objects.get(uid=current_user_uid)[0]
 
         update = self.request.query_params.get("update")
 
