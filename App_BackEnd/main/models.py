@@ -22,8 +22,6 @@ class Room_Enroll(models.Model):
 
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='f_room')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='f_uid')
-    start_date = models.DateField(null=True, blank=True)  #가장 최근 방에 접속한 날짜와 시간
-    end_date = models.DateField(null=True, blank=True)      #가장 최근 방을 나간 날짜와 시간
     current = models.BooleanField(null=True, blank=True)
     room_color = models.CharField(max_length=10)
 

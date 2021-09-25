@@ -36,28 +36,45 @@ class study_button(views.APIView):
 
 class inout(views.APIView):
 
-    def put(self, request):
 
+    #룸 입장
+    #입장할때 최근 방들 db에 넣기!!!!!!!!!!!!!
+    def post(self,request):
 
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
 
         get_room_id = request.data.get("room_id")
-        get_type = request.data.get("type")
 
         room = Room.objects.get(room_id=get_room_id)
-        data = Room_Enroll.objects.get(room_id=room, user_id=user)
 
-        if get_type=="ON":
-            data.current = True  # 현재활동중 true로
-            data.save()
+        room_enroll = Room_Enroll.objects.create(
+            room_id=room,
+            user_id = user,
+            current = True,
+            room_color = room.room_color
+        )
+        room_enroll.save()
+        return HttpResponse(status=status.HTTP_200_OK)
 
-        elif get_type=="OFF":
-            data.current = False  # 현재활동중 true로
-            data.save()
+
+    #룸 퇴장
+    def delete(self, request):
+
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])
+
+        get_room_id = request.data.get("room_id")
+
+        room = Room.objects.get(room_id=get_room_id)
+
+        Room_Enroll.objects.get(room_id=room, user_id=user).delete()
 
         return HttpResponse(status=status.HTTP_200_OK)
+
+
 
 
 class study_data(views.APIView):
