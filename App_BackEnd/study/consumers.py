@@ -7,6 +7,7 @@ from main.models import Room_Enroll
 from .models import Daily_1m_content
 import jwt
 from api.models import User
+from main.models import Room
 
 def get_time(count):
 
@@ -64,7 +65,11 @@ class sendMate(WebsocketConsumer):
         data = json.loads(text_data)
         room_id = data['room_id']
         uid=data['uid']
-        room_query=Room_Enroll.objects.filter(room_id=room_id)
+        room = Room.objects.get(room_id=room_id)
+        uid = User.objects.get(uid=uid).uid
+
+
+        room_query=Room_Enroll.objects.filter(room_id=room)
         global me
 
 

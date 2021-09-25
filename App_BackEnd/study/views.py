@@ -37,6 +37,8 @@ class study_button(views.APIView):
 class inout(views.APIView):
 
     def put(self, request):
+
+
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
@@ -44,7 +46,8 @@ class inout(views.APIView):
         get_room_id = request.data.get("room_id")
         get_type = request.data.get("type")
 
-        data = Room_Enroll.objects.get(room_id=get_room_id, user_id=user)
+        room = Room.objects.get(room_id=get_room_id)
+        data = Room_Enroll.objects.get(room_id=room, user_id=user)
 
         if get_type=="ON":
             data.current = True  # 현재활동중 true로
