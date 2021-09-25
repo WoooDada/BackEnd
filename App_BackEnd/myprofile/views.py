@@ -28,8 +28,8 @@ class myprofile(views.APIView):
             if like_category is not None:
                 like_category = like_category.split("-")
                 for like in like_category:
-                    like_index = like_category.index(like)
-                    categ_bool_array[like_index-1]='T'
+                    like_index = categ_array.index(like)
+                    categ_bool_array[like_index]='T'
 
 
             send_data = {
