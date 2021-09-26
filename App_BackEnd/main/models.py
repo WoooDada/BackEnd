@@ -33,8 +33,8 @@ class Room_Enroll(models.Model):
 class Recent_Room(models.Model) :
 
 
-    room_array = models.ForeignKey(Room, on_delete=models.CASCADE)
-    user_id= models.ForeignKey(User, on_delete=models.CASCADE)
+    room_array = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='f_room_array')
+    user_id= models.ForeignKey(User, on_delete=models.CASCADE, related_name='u_room_array')
 
     def __str__(self):
         return str(self.user_id)
