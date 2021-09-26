@@ -394,13 +394,13 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="657" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1626586335478" />
-    <state x="575" y="0" width="748" height="864" key="find.popup" timestamp="1632575894845">
+    <state x="490" y="0" width="748" height="864" key="find.popup" timestamp="1632627594933">
       <screen x="0" y="0" width="1442" height="864" />
     </state>
-    <state x="575" y="0" width="748" height="864" key="find.popup/0.0.1442.864@0.0.1442.864" timestamp="1632575894845" />
-    <state x="384" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1625938549038">
+    <state x="490" y="0" width="748" height="864" key="find.popup/0.0.1442.864@0.0.1442.864" timestamp="1632627594933" />
+    <state x="384" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1632628152010">
       <screen x="0" y="0" width="1442" height="864" />
     </state>
-    <state x="384" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1442.864@0.0.1442.864" timestamp="1625938549038" />
+    <state x="384" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1442.864@0.0.1442.864" timestamp="1632628152010" />
   </component>
 </project>
