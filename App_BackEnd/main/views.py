@@ -43,6 +43,7 @@ class studyrank(views.APIView):
             uid = user.uid
             my_nickname = user
 
+
             user_query = User.objects.all()
             study_list = []
 
