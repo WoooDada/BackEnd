@@ -1,8 +1,8 @@
 import threading
 from time import sleep
 from channels.exceptions import StopConsumer
-from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
-
+from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
 import json
 
 from main.models import Room_Enroll
@@ -27,24 +27,24 @@ def get_time(count):
 
 
 
-#lass sendMate(AsyncWebsocketConsumer):
-class sendMate(WebsocketConsumer):
+class sendMate(AsyncWebsocketConsumer):
+#class sendMate(WebsocketConsumer):
     global isReceived
     global disconnected
     global me
 
 
-    #async def connect(self):
-    def connect(self):
+    async def connect(self):
+    #def connect(self):
         global isReceived
         isReceived = False
-       # await self.accept()
-        self.accept()
+        await self.accept()
+        #self.accept()
 
 
 
-    #async def disconnect(self, code):
-    def disconnect(self, code):
+    async def disconnect(self, code):
+    #def disconnect(self, code):
         global isReceived
         isReceived = True
         raise StopConsumer
@@ -153,16 +153,16 @@ class sendMate(WebsocketConsumer):
                         })
 
 
-            #await self.send(
-            self.send(
+            await self.send(
+            #self.send(
                 text_data=json.dumps({
                     "myStatus": me,
                     "studymates": studymates
                 }, ensure_ascii=False)
             )
 
-            #await asyncio.sleep(10)
-            sleep(10)
+            await asyncio.sleep(10)
+            #sleep(10)
             print("finished")
 
 
