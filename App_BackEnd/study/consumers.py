@@ -67,29 +67,35 @@ class sendMate(AsyncWebsocketConsumer):
                 user = room.user_id
 
                 if user.uid == uid:  # 나
-
-                    study_info = Daily_1m_content.objects.filter(uid=user)
-                    concent = 0
-                    play = 0
-
-
-                    for info in study_info:  # 실시간 play/concent 개수 가져오기
-                        if info.type == 'C':
-                            concent += 1
-                        elif info.type == 'P':
-                            play += 1
+                    if Daily_1m_content.objects.filter(uid=user).exists():
+                        study_info = Daily_1m_content.objects.filter(uid=user)
+                        concent = 0
+                        play = 0
 
 
-                    concent_time = get_time(concent)
-                    concent_time = concent_time.split(":")[0] + ":" + concent_time.split(":")[1]
+                        for info in study_info:  # 실시간 play/concent 개수 가져오기
+                            if info.type == 'C':
+                                concent += 1
+                            elif info.type == 'P':
+                                play += 1
 
-                    play_time = get_time(play)
-                    play_time = play_time.split(":")[0] + ":" + play_time.split(":")[1]
 
-                    me = {
-                        "concent_time": concent_time,
-                        "play_time": play_time
-                    }
+                        concent_time = get_time(concent)
+                        concent_time = concent_time.split(":")[0] + ":" + concent_time.split(":")[1]
+
+                        play_time = get_time(play)
+                        play_time = play_time.split(":")[0] + ":" + play_time.split(":")[1]
+
+                        me = {
+                            "concent_time": concent_time,
+                            "play_time": play_time
+                        }
+                    else :
+                        me = {
+                            "concent_time": 0,
+                            "play_time": 0
+                        }
+
 
 
                 else:  # 다른 사람들
