@@ -32,7 +32,7 @@ class myprofile(views.APIView):
             if like_category is not None and like_category!= '':
 
                 like_categ_array = like_category.split('-')
-                print("Aa")
+
                 for categ in like_categ_array :
                     if categ in categ_array:
                         like_index = categ_array.index(categ)

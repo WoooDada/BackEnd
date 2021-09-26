@@ -9,6 +9,9 @@ from api.models import User
 from study.models import Daily_1m_content
 
 
+global total_play
+global total_con
+
 def convert(size, box):
     dw = 1./size[0]
     dh = 1./size[1]
@@ -44,6 +47,13 @@ def base64_file(data, name=None):
 class sendConsumer(WebsocketConsumer):
     def connect(self):
        # print("connected")
+
+        global total_play
+        global total_con
+
+        total_con=0
+        total_play=0
+
         self.accept()
 
 
@@ -54,6 +64,7 @@ class sendConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
 
+        global total_play, total_con
 
         data = json.loads(text_data)
         message = data['message']
@@ -74,7 +85,84 @@ class sendConsumer(WebsocketConsumer):
         results_array = results_array.replace("'","\"")     #'을 "로 치환해야 json으로 변환 가능함
         results_array = json.loads(results_array)       #string을 json(dict)형식으로 변환
 
+        class_array = []
+        for result in results_array:
+            get_confidence = result['confidence']
+            get_class = result['name']
 
+            if get_confidence >= 0.1:
+                class_array.append(get_class)
+
+
+
+        if 'face' in class_array:
+            type = 'P'
+            # message = 'yes face'
+        else:
+            if ('book' in class_array) or ('tablet' in class_array):
+                if 'phone' in class_array:
+                    type = 'C'
+                #   message = 'handphone'
+
+                else:
+                    if 'handonly' in class_array:
+                        type = 'C'
+                    #   #     message = 'handonly'
+                    elif 'pen' in class_array:
+                        type = 'C'
+
+                    else:
+                        type = 'P'
+                    #       message='none'
+
+            else:
+                type = 'P'
+                # message = 'no face no desk'
+
+
+            def receive(self, text_data):
+                now = timezone.now()
+                hour = now.hour
+                minute = now.minute
+                time = str(hour) + ":" + str(minute)
+
+
+
+            if type == 'C':
+                total_con += 1
+            elif type == 'P':
+                total_play += 1
+
+            if total_con + total_play == 20:
+                now = timezone.now()
+                hour = now.hour
+                minute = now.minute
+
+                if hour < 10:
+                    hour = "0" + str(hour)
+                else:
+                    hour = str(hour)
+                if minute < 10:
+                    minute = "0" + str(minute)
+                else:
+                    minute = str(minute)
+
+                time = hour + ":" + minute
+
+                uid = data['uid']
+                user = User.objects.get(uid=uid)
+
+                Daily_1m_content.objects.create(uid=user, type=type, time=time)
+
+                total_con = 0
+                total_play = 0
+
+
+
+"""
+        
+        겹치는 네모 존재하는 걸로 판단하는 버젼 
+        
         print(results_array)
         handonly = []
         pen=[]
@@ -150,34 +238,40 @@ class sendConsumer(WebsocketConsumer):
             })
         )
 
-        now = timezone.now()
-        hour = now.hour
-        minute = now.minute
 
-        if hour < 10 :
-            hour = "0" + str(hour)
-        else :
-            hour = str(hour)
-        if minute < 10 :
-            minute = "0" + str(minute)
-        else:
-            minute=str(minute)
+        if type == 'C': total_con += 1
+        elif type == 'P' :total_play += 1
 
-        time = hour+":"+minute
+        if total_con + total_play == 20 :
+            now = timezone.now()
+            hour = now.hour
+            minute = now.minute
 
-        uid = data['uid']
-        user = User.objects.get(uid=uid)
+            if hour < 10 :
+                hour = "0" + str(hour)
+            else :
+                hour = str(hour)
+            if minute < 10 :
+                minute = "0" + str(minute)
+            else:
+                minute=str(minute)
+
+            time = hour+":"+minute
+
+            uid = data['uid']
+            user = User.objects.get(uid=uid)
+
+            Daily_1m_content.objects.create(uid=user, type=type, time=time)
+
+            total_con = 0
+            total_play = 0
 
 
 
-        Daily_1m_content.objects.create(uid=user, type=type, time=time)
 
 
 
-
-
-
-
+"""
 
 
 

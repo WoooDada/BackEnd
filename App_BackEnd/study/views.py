@@ -90,7 +90,7 @@ class study_data(views.APIView):
             elif qs.type == 'P':
                 tot_play_tme = tot_play_tme + 1
 
-        return {"concent":tot_con_time//20, "play":tot_play_tme//20}
+        return {"concent":tot_con_time, "play":tot_play_tme}
 
 
     def post(self, request):
@@ -179,8 +179,8 @@ class study_data(views.APIView):
 
             serializer_2.save()
 
-            tot_time = int(qs[count][1])//20
-            tot_con = int(qs[count][2])//20
+            tot_time = int(qs[count][1])
+            tot_con = int(qs[count][2])
             obj = Study_analysis.objects.filter(uid=user).last()
 
             if get_type == 'C':
@@ -212,7 +212,9 @@ class study_data(views.APIView):
             final_tot_play = str(tot_play_hour) + ':' + str(tot_play_minute)
             final_tot_concent = str(tot_concent_hour) + ':' + str(tot_concent_minute)
 
-            return Response({"tot_concent_time": final_tot_concent, "tot_play_time": final_tot_play},status=status.HTTP_200_OK)
+            return Response({"tot_concent_time": final_tot_concent,
+                             "tot_play_time": final_tot_play},
+                            status=status.HTTP_200_OK)
 
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

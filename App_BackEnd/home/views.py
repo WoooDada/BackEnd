@@ -33,7 +33,68 @@ class badge_profile(views.APIView):
 
 
 
+def today():
+    now = timezone.now()
+    index_num = now.weekday()  # 오늘 요일 인덱스로
+    # 0 -> 월
+    daylist = ['월', '화', '수', '목', '금', '토', '일']
+    day_list = []
+    data_set = []
+    # 0->  1,2,3,4,5,6,0
+    # 1 -> 2,3,4,5,6,0,1
+    # 2 -> 3,4,5,6,0,1,2
 
+    # 6 -> 0,1,2,3,4,5,6
+
+    if index_num == 0:
+        for i in (0, 7):
+            if i != 6:
+                day_list.append(daylist[i + 1])
+            else:
+                day_list.append(daylist[6 - i])
+
+    elif index_num == 1:
+        for i in (0, 7):
+            if i != 5 and i != 6:
+                day_list.append(daylist[index_num + i + 1])
+            else:
+                day_list.append(daylist[-6 + i + index_num])
+
+    elif index_num == 2:
+        for i in (0, 7):
+            if i != 5 and i != 6 and i != 4:
+                day_list.append(daylist[index_num + i + 1])
+            else:
+                day_list.append(daylist[-6 + i + index_num])
+
+    elif index_num == 3:
+        for i in (0, 7):
+            if i != 5 and i != 6 and i != 4 and i != 3:
+                day_list.append(daylist[index_num + i + 1])
+            else:
+                day_list.append(daylist[-6 + i + index_num])
+
+    elif index_num == 4:
+        for i in (0, 7):
+            if i != 5 and i != 6 and i != 4 and i != 3 and i != 2:
+                day_list.append(daylist[index_num + i + 1])
+            else:
+                day_list.append(daylist[-6 + i + index_num])
+    elif index_num == 5:
+        for i in (0, 7):
+            if i != 5 and i != 6 and i != 4 and i != 3 and i != 2 and i != 1:
+                day_list.append(daylist[index_num + i + 1])
+            else:
+                day_list.append(daylist[-6 + i + index_num])
+
+    elif index_num == 6:
+        for i in range(0, 7):
+            if i != 5 and i != 6 and i != 4 and i != 3 and i != 2 and i != 1:
+                print("A")
+                day_list.append(daylist[6 - index_num - i])
+            else:
+                day_list.append(daylist[-6 + i + index_num])
+    return day_list
 
 class concent_graph(views.APIView):
 
@@ -63,14 +124,10 @@ class concent_graph(views.APIView):
         day_array = []
         count = 0
 
-        days = ['월', '화', '수', '목', '금', '토','일']
-        for i in range(1,8):     #어제부터 1주일 전까지 날짜 들어간 배열 date_array 생성
-            a = date - datetime.timedelta(days=i)
-            date_array.append(a)
-            day_array.append(days[a.weekday()])
 
-        if user:
+        date_array=today()
 
+        if One_week_study_data.objects.filter(uid=user).exists():
             query_set = One_week_study_data.objects.filter(uid=user)
 
             for k in date_array :
@@ -106,7 +163,17 @@ class concent_graph(views.APIView):
 
             return JsonResponse({"graph":graph}, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
         else :
-            return JsonResponse({"message": "no uid"}, status=status.HTTP_400_BAD_REQUEST)
+            day_list=today()
+
+            for i in day_list :
+                data_set = {
+                    "date": i,
+                    "concent_time": 0,
+                    "play_time": 0
+                }
+                graph.append(data_set)
+
+            return JsonResponse({"graph":graph},status=status.HTTP_200_OK)
 
 
 class today_concent(views.APIView):
@@ -122,6 +189,7 @@ class today_concent(views.APIView):
 
    #         current_user_uid = self.request.query_params.get('uid')  # 요청한 사용자 받아오기
     #        user = User.objects.get(uid=current_user_uid)
+
 
             query_set = user.daily_1m_uid.all()
             tot_con_time = 0
@@ -166,6 +234,11 @@ class today_concent(views.APIView):
                             status=status.HTTP_200_OK)
 
         except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"tot_concent_rate":"0%",
+                             "tot_concent_time": "00:00",
+                             "tot_time": "00:00",
+                             "tot_play_time" : "00:00",
+                             },
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
