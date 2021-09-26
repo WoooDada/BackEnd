@@ -26,10 +26,9 @@ class myprofile(views.APIView):
             if birth is None:
                 birth = datetime.datetime.now().date()
             if like_category is not None and like_category!= '':
-                like_category = like_category.split("-")
-                for like in like_category:
-                    like_index = categ_array.index(like)
-                    categ_bool_array[like_index]='T'
+                like_index = categ_array.index(like_category)
+                categ_bool_array[like_index] = 'T'
+
 
 
             send_data = {
