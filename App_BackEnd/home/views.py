@@ -20,6 +20,7 @@ class badge_profile(views.APIView):
       #  user = User.objects.get(uid=current_user_uid)
 
 
+
         if user:
             uid = user.uid
             nickname = user.nickname
