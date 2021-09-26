@@ -119,49 +119,50 @@ class sendConsumer(WebsocketConsumer):
                 type = 'P'
                 # message = 'no face no desk'
 
-            # client로 데이터 보내기기
-            self.send(
-                text_data=json.dumps({
-                    'type': type
-                })
-            )
-
-            def receive(self, text_data):
-                now = timezone.now()
-                hour = now.hour
-                minute = now.minute
-                time = str(hour) + ":" + str(minute)
+        # client로 데이터 보내기기
+        self.send(
+            text_data=json.dumps({
+                'type': type
+            })
+        )
 
 
+        def receive(self, text_data):
+            now = timezone.now()
+            hour = now.hour
+            minute = now.minute
+            time = str(hour) + ":" + str(minute)
 
-            if type == 'C':
-                total_con += 1
-            elif type == 'P':
-                total_play += 1
 
-            if total_con + total_play == 20:
-                now = timezone.now()
-                hour = now.hour
-                minute = now.minute
 
-                if hour < 10:
-                    hour = "0" + str(hour)
-                else:
-                    hour = str(hour)
-                if minute < 10:
-                    minute = "0" + str(minute)
-                else:
-                    minute = str(minute)
+        if type == 'C':
+            total_con += 1
+        elif type == 'P':
+            total_play += 1
 
-                time = hour + ":" + minute
+        if total_con + total_play == 20:
+            now = timezone.now()
+            hour = now.hour
+            minute = now.minute
 
-                uid = data['uid']
-                user = User.objects.get(uid=uid)
+            if hour < 10:
+                hour = "0" + str(hour)
+            else:
+                hour = str(hour)
+            if minute < 10:
+                minute = "0" + str(minute)
+            else:
+                minute = str(minute)
 
-                Daily_1m_content.objects.create(uid=user, type=type, time=time).save()
+            time = hour + ":" + minute
 
-                total_con = 0
-                total_play = 0
+            uid = data['uid']
+            user = User.objects.get(uid=uid)
+
+            Daily_1m_content.objects.create(uid=user, type=type, time=time).save()
+
+            total_con = 0
+            total_play = 0
 
 
 
