@@ -34,8 +34,8 @@ class inout(views.APIView):
 
         if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
             Room_Enroll.objects.get(room_id=room, user_id=user).delete()
-
-            member_array.remove([room.room_id, user.uid])
+            if [room.room_id, user.uid] in member_array :
+                member_array.remove([room.room_id, user.uid])
 
 
         if [room.room_id, user.uid] not in member_array:

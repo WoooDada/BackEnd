@@ -41,24 +41,26 @@ class studyrank(views.APIView):
 
           #  uid = self.request.query_params.get('uid')
             uid = user.uid
-            my_nickname = User.objects.get(uid=user.uid)
+            my_nickname = user
 
             user_query = User.objects.all()
             study_list = []
+
             for user in user_query:
                 sub_list = []
                 user_1m_data_query = Daily_1m_content.objects.filter(uid=user.uid)
                 concent = 0
 
-                tot_count = user_1m_data_query.count()
-                if tot_count != 0:   # 오늘 안들어온 사람은 쿼리에 추가 x
-                    for one_min in user_1m_data_query:  # c / p 개수 세기
-                        if one_min.type == 'C':
-                            concent += 1
+               # tot_count = user_1m_data_query.count()
+             #   if tot_count != 0:   # 오늘 안들어온 사람은 쿼리에 추가 x
+                for one_min in user_1m_data_query:  # c / p 개수 세기
+                    if one_min.type == 'C':
+                        concent += 1
 
                     sub_list.append(user)
                     sub_list.append(concent)
                     study_list.append(sub_list)     #study_list에 [user, tot_concent] 추가
+            """
 
             if len(study_list) == 0:
                 rank_study_list.append({
@@ -68,7 +70,7 @@ class studyrank(views.APIView):
 
                 })
                 return Response({'rank_study_list': rank_study_list}, status=status.HTTP_200_OK)
-
+            """
             study_list.sort(key=lambda x:-x[1])   #tot_concent 순서로 정렬
 
             num=1
@@ -86,7 +88,7 @@ class studyrank(views.APIView):
                         'nickname': my_nickname.nickname,
                         'tot_concent_time': time_string
                     })
-
+                    print("num:"+num)
                     break
                 else:
                     num += 1
