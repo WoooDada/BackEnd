@@ -391,7 +391,8 @@ class room_info(views.APIView):
             "room_tag":room.room_tag,
             "in_ppl":Room_Enroll.objects.filter(room_id=room).count(),
             "max_ppl":room.maxppl,
-            "room_manner":room.room_comment
+            "room_manner":room.room_comment,
+            "room_issecret":room.is_secret
         }
 
         return Response(response,status=status.HTTP_200_OK)
