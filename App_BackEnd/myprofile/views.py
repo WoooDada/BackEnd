@@ -19,14 +19,20 @@ class myprofile(views.APIView):
 
             user = User.objects.get(uid=uid)
             like_category = user.like_category
-            like_categ_array = like_category.split['-']
+     #       like_categ_array = like_category.split['-']
             birth = user.birth
             sex = user.sex
             if sex is None:
                 sex = 'U'
             if birth is None:
                 birth = datetime.datetime.now().date()
+
+            print(like_category)
+
             if like_category is not None and like_category!= '':
+
+                like_categ_array = like_category.split('-')
+                print("Aa")
                 for categ in like_categ_array :
                     if categ in categ_array:
                         like_index = categ_array.index(categ)
