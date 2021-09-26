@@ -13,6 +13,7 @@ class badge_profile(views.APIView):
 
     def get(self,request):
 
+
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
