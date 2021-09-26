@@ -24,7 +24,6 @@ class inout(views.APIView):
         global isFinished
         isFinished = False
 
-
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
@@ -390,10 +389,12 @@ class ten_min_data(views.APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class room_info(views.APIView):
 
     def get(self, request):
+
+        global isFinished
+        isFinished = False
 
         while not isFinished :
             if isFinished :
