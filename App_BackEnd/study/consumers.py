@@ -33,21 +33,24 @@ class sendMate(AsyncWebsocketConsumer):
     global me
 
 
-    async def connect(self):
+    #async def connect(self):
+    def connect(self):
         global isReceived
         isReceived = False
         await self.accept()
 
 
 
-    async def disconnect(self, code):
+    #async def disconnect(self, code):
+    def disconnect(self, code):
         global isReceived
         isReceived = True
         raise StopConsumer
 
 
 
-    async def receive(self, text_data):
+    #async def receive(self, text_data):
+    def receive(self, text_data):
         global isReceived
         data = json.loads(text_data)
         room_id = data['room_id']
@@ -60,6 +63,7 @@ class sendMate(AsyncWebsocketConsumer):
 
         #만약 connected 되어잇음 isreceived=false이면
         while True:
+
             room = Room.objects.get(room_id=room_id)
             room_query = Room_Enroll.objects.filter(room_id=room)
             studymates = []
@@ -137,14 +141,16 @@ class sendMate(AsyncWebsocketConsumer):
                             "play_time": play_time
                         })
 
-            await self.send(
+            #await self.send(
+            self.send(
                 text_data=json.dumps({
                     "myStatus": me,
                     "studymates": studymates
                 }, ensure_ascii=False)
             )
 
-            await asyncio.sleep(10)
+            #await asyncio.sleep(10)
+            sleep(10)
             print("finished")
 
 
