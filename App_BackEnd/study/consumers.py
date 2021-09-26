@@ -52,6 +52,7 @@ class sendMate(WebsocketConsumer):
 
 
 
+
     #async def receive(self, text_data):
     def receive(self, text_data):
         global isReceived
