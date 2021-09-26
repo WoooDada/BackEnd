@@ -389,6 +389,7 @@ class ten_min_data(views.APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class room_info(views.APIView):
 
     def get(self, request):
