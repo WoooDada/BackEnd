@@ -49,18 +49,25 @@ class studyrank(views.APIView):
 
             for user in user_query:
                 sub_list = []
-                user_1m_data_query = Daily_1m_content.objects.filter(uid=user.uid)
-                concent = 0
+                if Daily_1m_content.objects.filter(uid=user.uid).exists():
+                    user_1m_data_query = Daily_1m_content.objects.filter(uid=user.uid)
+                    concent = 0
 
-               # tot_count = user_1m_data_query.count()
-             #   if tot_count != 0:   # 오늘 안들어온 사람은 쿼리에 추가 x
-                for one_min in user_1m_data_query:  # c / p 개수 세기
-                    if one_min.type == 'C':
-                        concent += 1
+                   # tot_count = user_1m_data_query.count()
+                 #   if tot_count != 0:   # 오늘 안들어온 사람은 쿼리에 추가 x
+                    for one_min in user_1m_data_query:  # c / p 개수 세기
+                        if one_min.type == 'C':
+                            concent += 1
 
                     sub_list.append(user)
                     sub_list.append(concent)
                     study_list.append(sub_list)     #study_list에 [user, tot_concent] 추가
+                else :
+                    concent = 0
+                    sub_list.append(user)
+                    sub_list.append(concent)
+                    study_list.append(sub_list)
+
             """
 
             if len(study_list) == 0:
@@ -162,19 +169,28 @@ class playrank(views.APIView):
             study_list = []
             for user in user_query:
                 sub_list = []
-                user_1m_data_query = Daily_1m_content.objects.filter(uid=user.uid)
-                concent = 0
+                if Daily_1m_content.objects.filter(uid=user.uid).exists():
+                    user_1m_data_query = Daily_1m_content.objects.filter(uid=user.uid)
+                    concent = 0
 
-                tot_count = user_1m_data_query.count()
-                if tot_count != 0:  # 오늘 안들어온 사람은 쿼리에 추가 x
-                    for one_min in user_1m_data_query:  # c / p 개수 세기
-                        if one_min.type == 'C':
-                            concent += 1
-                    concent_rate = concent / tot_count * 100
+                    tot_count = user_1m_data_query.count()
+                    if tot_count != 0:  # 오늘 안들어온 사람은 쿼리에 추가 x
+                        for one_min in user_1m_data_query:  # c / p 개수 세기
+                            if one_min.type == 'C':
+                                concent += 1
+                        concent_rate = concent / tot_count * 100
+                        sub_list.append(user)
+                        sub_list.append(concent_rate)
+                        study_list.append(sub_list)  # study_list에 [user, concent_rate] 추가
+                else :
+                    sub_list = []
+                    concent_rate= 0.0
                     sub_list.append(user)
                     sub_list.append(concent_rate)
                     study_list.append(sub_list)  # study_list에 [user, concent_rate] 추가
 
+
+            """
             if len(study_list) == 0:
                 rank_play_list.append({
                     'rank': 1,
@@ -183,7 +199,7 @@ class playrank(views.APIView):
 
                 })
                 return Response({'rank_play_list': rank_play_list}, status=status.HTTP_200_OK)
-
+            """
             study_list.sort(key=lambda x: x[1])  # concent_rate 순서로 오름차순 정렬
 
             num = 1
