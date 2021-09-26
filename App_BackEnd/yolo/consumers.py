@@ -157,6 +157,13 @@ class sendConsumer(WebsocketConsumer):
                 total_con = 0
                 total_play = 0
 
+                # client로 데이터 보내기기
+                self.send(
+                    text_data=json.dumps({
+                        'type': type
+                    })
+                )
+
 
 
 """
