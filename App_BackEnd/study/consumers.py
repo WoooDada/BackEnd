@@ -27,25 +27,25 @@ def get_time(count):
 
 
 
-#lass sendMate(AsyncWebsocketConsumer):
-class sendMate(WebsocketConsumer):
+class sendMate(AsyncWebsocketConsumer):
+#class sendMate(WebsocketConsumer):
     global isReceived
     global disconnected
     global me
 
 
 
-    #async def connect(self):
-    def connect(self):
+    async def connect(self):
+    #def connect(self):
         global isReceived
         isReceived = False
-       # await self.accept()
-        self.accept()
+        await self.accept()
+       # self.accept()
 
 
 
-    #async def disconnect(self, code):
-    def disconnect(self, code):
+    async def disconnect(self, code):
+    #def disconnect(self, code):
         global isReceived
         isReceived = True
         raise StopConsumer
@@ -53,8 +53,8 @@ class sendMate(WebsocketConsumer):
 
 
 
-    #async def receive(self, text_data):
-    def receive(self, text_data):
+    async def receive(self, text_data):
+    #def receive(self, text_data):
         global isReceived
         data = json.loads(text_data)
         room_id = data['room_id']
@@ -145,16 +145,16 @@ class sendMate(WebsocketConsumer):
                             "play_time": play_time
                         })
 
-            #await self.send(
-            self.send(
+            await self.send(
+            #self.send(
                 text_data=json.dumps({
                     "myStatus": me,
                     "studymates": studymates
                 }, ensure_ascii=False)
             )
 
-            #await asyncio.sleep(10)
-            sleep(10)
+            await asyncio.sleep(10)
+            #sleep(10)
             print("finished")
 
 
