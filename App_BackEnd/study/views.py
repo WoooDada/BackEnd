@@ -313,14 +313,15 @@ class ten_min_data(views.APIView):
                         elif type == 'P':
                             check_play = check_play + 1
 
+
                     stt_time = now_hour + ":" + minute_array[temp_tag]    #stt_time
                     now_minute = minute_array[temp_tag]
                     end_minute = str(now_minute[0]) + "9"
                     end_time = now_hour + ":" + end_minute      #end_time
 
 
-
-                    if check_concent > check_play and (check_concent + check_play) >= 5 :
+#1분에 3개씩 -> 10분 30개이므로 과반수인 15가 c면 c리턴
+                    if check_concent > check_play and (check_concent + check_play) >= 15 :
                         concent_type = 'C'
                         qs_data = {
                             "stt_time": stt_time,
@@ -328,7 +329,7 @@ class ten_min_data(views.APIView):
                             "concent_type": concent_type
                         }
                         whole_min_list.append(qs_data)
-                    elif check_concent <= check_play and (check_concent + check_play) >= 5 :
+                    elif check_concent <= check_play and (check_concent + check_play) >= 15 :
                         concent_type = 'P'
 
                         qs_data = {
