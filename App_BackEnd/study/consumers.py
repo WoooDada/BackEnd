@@ -27,12 +27,12 @@ def get_time(count):
 
 
 
-
 #lass sendMate(AsyncWebsocketConsumer):
 class sendMate(WebsocketConsumer):
     global isReceived
     global disconnected
     global me
+
 
 
     #async def connect(self):
