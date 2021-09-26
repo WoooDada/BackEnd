@@ -96,7 +96,7 @@ class studyrank(views.APIView):
                         'nickname': my_nickname.nickname,
                         'tot_concent_time': time_string
                     })
-                    print("num:"+num)
+              #      print("num:"+num)
                     break
                 else:
                     num += 1
