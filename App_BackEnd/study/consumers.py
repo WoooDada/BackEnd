@@ -72,6 +72,7 @@ class sendMate(AsyncWebsocketConsumer):
                     concent = 0
                     play = 0
 
+
                     for info in study_info:  # 실시간 play/concent 개수 가져오기
                         if info.type == 'C':
                             concent += 1
