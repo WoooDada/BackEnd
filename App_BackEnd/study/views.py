@@ -38,6 +38,7 @@ class inout(views.APIView):
                 member_array.remove([room.room_id, user.uid])
 
 
+
         if [room.room_id, user.uid] not in member_array:
 
             #최근 방에 저장하기
