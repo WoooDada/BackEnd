@@ -32,6 +32,11 @@ class inout(views.APIView):
 
         room = Room.objects.get(room_id=get_room_id)
 
+        if Room_Enroll.objects.get(room_id=get_room_id, user_id=user).exists():
+            Room_Enroll.objects.get(room_id=get_room_id, user_id=user).delete()
+            member_array.remove([room.room_id, user.uid])
+
+
         if [room.room_id, user.uid] not in member_array:
 
             #최근 방에 저장하기
