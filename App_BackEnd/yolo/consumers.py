@@ -168,6 +168,8 @@ class sendConsumer(WebsocketConsumer):
         uid = data['uid']
         user = User.objects.get(uid=uid)
 
+
+
         Daily_1m_content.objects.create(uid=user, type=type, time=time)
 
 
