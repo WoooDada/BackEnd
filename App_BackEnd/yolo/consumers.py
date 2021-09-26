@@ -62,6 +62,7 @@ class sendConsumer(WebsocketConsumer):
         pass
 
 
+
     def receive(self, text_data):
 
         global total_play, total_con
