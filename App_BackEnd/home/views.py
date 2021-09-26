@@ -239,6 +239,6 @@ class today_concent(views.APIView):
                              "tot_time": "00:00",
                              "tot_play_time" : "00:00",
                              },
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_200_OK)
 
 
