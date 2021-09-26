@@ -11,6 +11,7 @@ import jwt
 from main.models import Recent_Room
 
 
+
 #delete해서 Daily_1m_concent 데이터 사라지기 전에 저장. 즉, 00:00 ~ 04:00 사이의 데이터 저장하는 부분
 temp_list =[]
 member_array =[]
