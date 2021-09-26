@@ -29,7 +29,7 @@ class studyroom(views.APIView):
 
         roomname = request.data.get("room_name")
         if Room.objects.filter(room_name=roomname).exists() is True:
-            return Response({"room_id": "-1"}, status=status.HTTP_200_OK)
+            return Response({"room_id": "-1"}, status=status.HTTP_400_BAD_REQUEST)
         if request.data.get("is_secret") == 'T':
             is_secret = True
         else :
