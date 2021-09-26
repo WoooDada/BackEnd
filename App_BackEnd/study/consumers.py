@@ -60,7 +60,7 @@ class sendMate(AsyncWebsocketConsumer):
 
         #만약 connected 되어잇음 isreceived=false이면
         while True:
-
+            room = Room.objects.get(room_id=room_id)
             room_query = Room_Enroll.objects.filter(room_id=room)
             studymates = []
             for room in room_query:
