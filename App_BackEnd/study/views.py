@@ -32,8 +32,9 @@ class inout(views.APIView):
 
         room = Room.objects.get(room_id=get_room_id)
 
-        if Room_Enroll.objects.get(room_id=room, user_id=user).exists():
+        if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
             Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+
             member_array.remove([room.room_id, user.uid])
 
 
