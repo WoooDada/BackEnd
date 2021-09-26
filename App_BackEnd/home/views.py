@@ -13,7 +13,6 @@ class badge_profile(views.APIView):
 
     def get(self,request):
 
-
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
@@ -126,7 +125,7 @@ class concent_graph(views.APIView):
         count = 0
 
 
-        date_array=today()
+       # date_array=today()
         day_list = ['월', '화', '수', '목', '금', '토', '일']
 
         if One_week_study_data.objects.filter(uid=user).exists():
@@ -166,7 +165,7 @@ class concent_graph(views.APIView):
             return JsonResponse({"graph":graph}, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
         else :
 
-            day_list=today()
+      #      day_list=today()
             day_list = ['월', '화', '수', '목', '금', '토', '일']
             for i in day_list :
                 data_set = {
