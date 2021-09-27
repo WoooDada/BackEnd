@@ -53,6 +53,7 @@ class sendMate(AsyncWebsocketConsumer):
             print("aaa")
             Room_Enroll.objects.get(room_id=room, user_id=user).delete()
 
+        await self.close()
         raise StopConsumer
 
 
