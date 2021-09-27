@@ -54,6 +54,7 @@ def today():
             else:
                 day_list.append(daylist[6 - i])
 
+
     elif index_num == 1:
         for i in (0, 7):
             if i != 5 and i != 6:
