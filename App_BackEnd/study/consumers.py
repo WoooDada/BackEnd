@@ -148,20 +148,20 @@ class sendMate(AsyncWebsocketConsumer):
                         else:
                             play_time = play_time.split(":")[0] + "시간 " + play_time.split(":")[1] + "분"
 
-                        if user.uid != uid:
-                            studymates.append({
-                                "nickname": user.nickname,
-                                "concent_rate": str(concent_rate) + "%",
-                                "concent_time": concent_time,
-                                "play_time": play_time
-                            })
-                            
+
+                        studymates.append({
+                            "nickname": user.nickname,
+                            "concent_rate": str(concent_rate) + "%",
+                            "concent_time": concent_time,
+                            "play_time": play_time
+                        })
+
                     else :
                         studymates.append({
                             "nickname": user.nickname,
                             "concent_rate": "0.0%",
-                            "concent_time": 0,
-                            "play_time": 0
+                            "concent_time": "0분",
+                            "play_time": "0분"
                         })
 
 
