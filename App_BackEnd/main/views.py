@@ -99,6 +99,7 @@ class studyrank(views.APIView):
 
                     if nickname == user.nickname :
                         my_rank = 1
+                        print("동점이고 난 1등")
 
 
                     rank_second_list.append({
@@ -131,7 +132,8 @@ class studyrank(views.APIView):
 
             num = 1
             # 내 랭킹 찾기
-            if my_rank == 0:
+            if my_rank == 0:            #랭킹안에없음
+
                 for user_info in study_list:
                     user = user_info[0]
                     concent_rate = user_info[1]
@@ -144,11 +146,12 @@ class studyrank(views.APIView):
                             'nickname': my_nickname.nickname,
                             'tot_concent_rate': str(round(concent_rate, 2)) + "%"
                         })
-
+                        print("랭킹내에없음" + str(my_rank) + "등")
                         break
                     else:
                         num += 1
-            else:
+            else:                   #랭킹 내에 존재
+                print("랭킹 내에 존재!! "+str(my_rank)+"등")
                 for user_info in study_list:
                     user = user_info[0]
                     concent_rate = user_info[1]
