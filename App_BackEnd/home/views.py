@@ -204,6 +204,8 @@ class today_concent(views.APIView):
                     tot_con_time = tot_con_time + 1
 
             tot_time = user.daily_1m_uid.count()
+            print(tot_time)
+            print(tot_con_time)
             play_time = tot_time - tot_con_time
 
             concent_rate = round(tot_con_time / tot_time * 100, 1)
