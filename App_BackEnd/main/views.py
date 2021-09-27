@@ -108,6 +108,8 @@ class studyrank(views.APIView):
 
                 if prev_concent_time == my_concent_time:  # 전 사람과 동점
                     count += 1
+                    if count > 10:
+                        break
 
                     rank_study_list.append({
                         'rank': prev_rank,
@@ -117,6 +119,8 @@ class studyrank(views.APIView):
                     })
 
                 else:
+                    if count > 10:
+                        break
 
                     count += 1
                     rank += 1
