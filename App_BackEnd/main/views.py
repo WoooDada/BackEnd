@@ -141,6 +141,7 @@ class studyrank(views.APIView):
 
 
 
+
 class playrank(views.APIView):
 
     def get(self, request):
