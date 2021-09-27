@@ -131,14 +131,14 @@ class concent_graph(views.APIView):
 
         if One_week_study_data.objects.filter(uid=user).exists():
             query_set = One_week_study_data.objects.filter(uid=user)
-
+            print(query_set)
             for k in day_list :
 
                 flag = False
 
                 for qs in query_set :
 
-                    if k == qs.day :
+                    if k == qs.date :
 
                         data_set = {
                             "date": qs.date,
@@ -148,6 +148,7 @@ class concent_graph(views.APIView):
                         flag= True
                         count = count + 1
                         graph.append(data_set)
+
                         break
 
                 if flag == False :
