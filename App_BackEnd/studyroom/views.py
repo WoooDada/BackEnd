@@ -12,7 +12,7 @@ def append_data(data, room):
                     "maxppl":room.maxppl,
                     "inppl":room.f_room.all().count(),
                     "room_comment":room.room_comment,
-                    "is_secret":room.is_secret,
+                    "issecret":room.is_secret,
                     "room_tag":room.room_tag,
                     "room_color":room.room_color
                 })
