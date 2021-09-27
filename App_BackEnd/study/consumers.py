@@ -140,6 +140,9 @@ class sendMate(AsyncWebsocketConsumer):
                             if count >= 20:
                                 study_info = study_info.reverse()[:20]            #최근 20개 가져오기
                                 tot_time = 20
+                            else :
+
+                                tot_time = study_info.count()
                             for qs in study_info:
                                 if qs.type == 'C' :
                                     c += 1
