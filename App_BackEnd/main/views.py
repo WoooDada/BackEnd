@@ -371,7 +371,7 @@ class my_rooms(views.APIView):
             payload = jwt.decode(access_token, 'secret', algorithm='HS256')
             user = User.objects.get(uid=payload['id'])
 
-            myroom_queryset = user.u_room_array.all().order_by('-room_id')[:10]
+            myroom_queryset = user.u_room_array.all().reverse()
 
             for query in myroom_queryset:
 
