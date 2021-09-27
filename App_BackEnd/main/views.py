@@ -93,14 +93,14 @@ class studyrank(views.APIView):
                         break
 
                     count += 1
-
+                    print(nickname)
                     if prev_rank == 0:
                         prev_rank += 1
                         if nickname == user.nickname :
                             my_rank = 1
                             print("동점이고 난 1등")
                     else :
-                        if nickname == user.nickname:
+                        if nickname == my_nickname.nickname:
                             my_rank = prev_rank
 
 
@@ -119,10 +119,10 @@ class studyrank(views.APIView):
                     count += 1
                     rank += 1
                     prev_rank = count
-
+                    print(nickname)
                     if nickname == user.nickname :
                         my_rank = count
-                        print("count랑똑같")
+                        print("count랑똑같   "+str(count))
 
                     rank_second_list.append({
                         'rank': count,
