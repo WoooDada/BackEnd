@@ -43,6 +43,7 @@ class sendMate(AsyncWebsocketConsumer):
 
 
     async def disconnect(self, code):
+        print("start!!")
         global user
         global room
         global isReceived
