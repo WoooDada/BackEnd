@@ -33,6 +33,7 @@ class studyrank(views.APIView):
 
     def get(self, request):
         try :
+            total_num = 0
             rank_study_list = []
 
             access_token = request.headers.get('Authorization', None).split(' ')[1]
@@ -116,6 +117,9 @@ class studyrank(views.APIView):
                 time_string=get_time(my_concent_time)
 
                 if prev_concent_time == my_concent_time:  # 전 사람과 동점
+                    if count > 10:
+                        break
+
                     count += 1
 
                     rank_study_list.append({
@@ -127,11 +131,12 @@ class studyrank(views.APIView):
 
                 else:
 
+                    if count > 10:
+                        break
+
                     count += 1
                     rank += 1
                     prev_rank = count
-                    if count > 10:
-                        break
 
                     rank_study_list.append({
                         'rank': count,
@@ -235,6 +240,8 @@ class playrank(views.APIView):
 
                 if prev_concent_time == my_concent_rate:  # 전 사람과 동점
                     count += 1
+                    if count > 10:
+                        break
 
                     rank_play_list.append({
                         'rank': prev_rank,
