@@ -34,6 +34,13 @@ class inout(views.APIView):
         get_room_id = request.data.get("room_id")
         room = Room.objects.get(room_id=get_room_id)
 
+        if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
+            print("aaaa")
+            Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+            if [room.room_id, user.uid] in member_array:
+                member_array.remove([room.room_id, user.uid])
+
+
         if [room.room_id, user.uid] not in member_array:
 
             #최근 방에 저장하기
@@ -52,8 +59,6 @@ class inout(views.APIView):
             )
             room_enroll.save()
             member_array.append([room.room_id, user.uid])
-
-
 
         return HttpResponse(status=status.HTTP_200_OK)
 
