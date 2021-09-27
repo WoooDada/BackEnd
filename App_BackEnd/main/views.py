@@ -121,7 +121,7 @@ class studyrank(views.APIView):
                         break
 
                     count += 1
-                    
+
                     if prev_rank == 0:
                         prev_rank += 1
 

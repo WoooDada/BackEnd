@@ -160,7 +160,7 @@ class concent_graph(views.APIView):
                     count = count + 1
                     graph.append(data_set)
                     graph.reverse()
-
+            print(graph)
 
             return JsonResponse({"graph":graph}, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
         else :
@@ -174,7 +174,7 @@ class concent_graph(views.APIView):
                     "play_time": 0
                 }
                 graph.append(data_set)
-
+            print(graph)
             return JsonResponse({"graph":graph},status=status.HTTP_200_OK)
 
 
