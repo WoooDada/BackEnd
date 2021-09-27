@@ -47,8 +47,9 @@ class sendMate(AsyncWebsocketConsumer):
         global room
         global isReceived
         isReceived = True
-
+        print("bbb")
         if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
+            print("aaa")
             Room_Enroll.objects.get(room_id=room, user_id=user).delete()
 
         raise StopConsumer
@@ -63,9 +64,10 @@ class sendMate(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         room_id = data['room_id']
         uid=data['uid']
+
         user = User.objects.get(uid=uid)
         room = Room.objects.get(room_id=room_id)
-        uid = User.objects.get(uid=uid).uid
+        uid = user.uid
 
 
         global me
