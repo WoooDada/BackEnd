@@ -92,20 +92,30 @@ class studyrank(views.APIView):
                     if count > 10:
                         break
 
+
                     count += 1
+                    if count > 10:
+                        break
 
                     if prev_rank == 0:
                         prev_rank += 1
+                        if nickname == user.nickname:
+                            my_rank = 1
+                        rank_second_list.append({
+                            'rank': prev_rank,
+                            'nickname': nickname,
+                            'tot_concent_rate': str(round(my_concent_time, 2)) + "%"
+                            # 'prev': prev_concent_time
+                        })
 
-                    if nickname == user.nickname :
-                        my_rank = 1
-
+                    if nickname == user.nickname:
+                        my_rank = prev_rank
 
                     rank_second_list.append({
-                        'rank': prev_rank,
+                        'rank': 1,
                         'nickname': nickname,
-                        'tot_concent_time': time_string,
-                       # 'prev': prev_concent_time
+                        'tot_concent_rate': str(round(my_concent_time, 2)) + "%"
+                        # 'prev': prev_concent_time
                     })
 
                 else:
@@ -222,8 +232,8 @@ class playrank(views.APIView):
             rank = 0
             count = 0
             prev_rank = 0
-
             my_rank = 0
+
             for study in study_list:  # 상위 10명 데이터 리스트에 넣기
 
                 uid = study[0].uid
@@ -238,9 +248,17 @@ class playrank(views.APIView):
 
                     if prev_rank == 0:
                         prev_rank += 1
+                        if nickname == user.nickname :
+                            my_rank = 1
+                        rank_second_list.append({
+                            'rank': prev_rank,
+                            'nickname': nickname,
+                            'tot_concent_rate': str(round(my_concent_rate, 2)) + "%"
+                            # 'prev': prev_concent_time
+                        })
 
-                    if nickname == user.nickname :
-                        my_rank = 1
+                    if nickname == user.nickname:
+                        my_rank = prev_rank
 
                     rank_second_list.append({
                         'rank': 1,
@@ -274,7 +292,7 @@ class playrank(views.APIView):
 
             num = 1
             # 내 랭킹 찾기
-            if my_rank == 0:
+            if my_rank == 0:                    #10등 안에없음
                 for user_info in study_list:
                     user = user_info[0]
                     concent_rate = user_info[1]
@@ -291,7 +309,7 @@ class playrank(views.APIView):
                         break
                     else:
                         num += 1
-            else :
+            else :          #10등 안에 잇음
                 for user_info in study_list:
                     user = user_info[0]
                     concent_rate = user_info[1]
