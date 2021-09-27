@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import views, status
 from api.models import User
 from study.models import Study_analysis,Daily_1m_content
-from .models import Room, Room_Enroll
+from .models import Room, Room_Enroll, Recent_Room
 import jwt
 
 now = timezone.now()
@@ -371,7 +371,8 @@ class my_rooms(views.APIView):
             payload = jwt.decode(access_token, 'secret', algorithm='HS256')
             user = User.objects.get(uid=payload['id'])
 
-            myroom_queryset = user.u_room_array.all().reverse()
+
+            myroom_queryset = Recent_Room.objects.filter(user_id=user).reverse()
 
             for query in myroom_queryset:
 
