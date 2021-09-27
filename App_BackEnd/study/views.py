@@ -73,12 +73,15 @@ class inout(views.APIView):
         get_room_id = request.data.get("room_id")
 
         room = Room.objects.get(room_id=get_room_id)
+
         if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
             Room_Enroll.objects.get(room_id=room, user_id=user).delete()
-            member_array.remove([room.room_id, user.uid])
+            if [room.room_id, user.uid] in member_array :
+                member_array.remove([room.room_id, user.uid])
 
 
         return HttpResponse(status=status.HTTP_200_OK)
+
 
 
 
