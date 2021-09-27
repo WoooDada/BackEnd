@@ -236,7 +236,7 @@ class today_concent(views.APIView):
                             status=status.HTTP_200_OK)
 
         except:
-            return Response({"tot_concent_rate":"0%",
+            return Response({"tot_concent_rate":"0",
                              "tot_concent_time": "00:00",
                              "tot_time": "00:00",
                              "tot_play_time" : "00:00",
