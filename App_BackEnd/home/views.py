@@ -53,7 +53,6 @@ def today():
             else:
                 day_list.append(daylist[6 - i])
 
-
     elif index_num == 1:
         for i in (0, 7):
             if i != 5 and i != 6:
@@ -100,7 +99,6 @@ def today():
 class concent_graph(views.APIView):
 
 
-
     def get(self,request):
 
         """
@@ -127,7 +125,8 @@ class concent_graph(views.APIView):
         count = 0
 
 
-        date_array=today()
+       # date_array=today()
+        day_list = ['월', '화', '수', '목', '금', '토', '일']
 
         if One_week_study_data.objects.filter(uid=user).exists():
             query_set = One_week_study_data.objects.filter(uid=user)
@@ -153,7 +152,7 @@ class concent_graph(views.APIView):
                 if flag == False :
 
                     data_set = {
-                        "date" : day_array[count],
+                        "date" : date_array[count],
                         "concent_time": 0,
                         "play_time":0
                     }
@@ -165,8 +164,9 @@ class concent_graph(views.APIView):
 
             return JsonResponse({"graph":graph}, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
         else :
-            day_list=today()
 
+      #      day_list=today()
+            day_list = ['월', '화', '수', '목', '금', '토', '일']
             for i in day_list :
                 data_set = {
                     "date": i,
