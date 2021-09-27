@@ -207,7 +207,7 @@ class today_concent(views.APIView):
             print(tot_time)
             print(tot_con_time)
             play_time = tot_time - tot_con_time
-
+            print(play_time)
             concent_rate = round(tot_con_time / tot_time * 100, 1)
 
             tot_concent_hour = tot_con_time // 60
@@ -231,7 +231,7 @@ class today_concent(views.APIView):
             final_tot_concent = str(tot_concent_hour) + ':' + str(tot_concent_minute)
             final_tot_time = str(tot_time_hour) + ':' + str(tot_time_minute)
             final_play_time = str(tot_play_hour) + ":" + str(tot_play_minute)
-
+            print(final_play_time)
             return Response({"tot_concent_rate":concent_rate,
                              "tot_concent_time": final_tot_concent,
                              "tot_time": final_tot_time,
