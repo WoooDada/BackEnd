@@ -148,13 +148,13 @@ class concent_graph(views.APIView):
                         flag= True
                         count = count + 1
                         graph.append(data_set)
-                        print(date_array[count])
+                   #     print(date_array[count])
                         break
 
                 if flag == False :
 
                     data_set = {
-                        "date" : date_array[count],
+                        "date" : day_list[count],
                         "concent_time": 0,
                         "play_time":0
                     }
