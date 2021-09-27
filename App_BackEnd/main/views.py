@@ -97,9 +97,12 @@ class studyrank(views.APIView):
                     if prev_rank == 0:
                         prev_rank += 1
 
-                    if nickname == user.nickname :
-                        my_rank = 1
-                        print("동점이고 난 1등")
+                        if nickname == user.nickname :
+                            my_rank = 1
+                            print("동점이고 난 1등")
+                    else :
+                        if nickname == user.nickname:
+                            my_rank = prev_rank
 
 
                     rank_second_list.append({
@@ -242,8 +245,11 @@ class playrank(views.APIView):
                     if prev_rank == 0:
                         prev_rank += 1
 
-                    if nickname == user.nickname :
-                        my_rank = 1
+                        if nickname == user.nickname :
+                            my_rank = 1
+                    else :
+                        if nickname == user.nickname:
+                            my_rank = prev_rank
 
                     rank_second_list.append({
                         'rank': 1,
