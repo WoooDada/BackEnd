@@ -101,7 +101,7 @@ class sendConsumer(WebsocketConsumer):
         else:
             if ('book' in class_array) or ('tablet' in class_array):
                 if 'phone' in class_array:
-                    type = 'C'
+                    type = 'P'
                 #   message = 'handphone'
 
                 else:
