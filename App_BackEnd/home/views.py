@@ -100,6 +100,7 @@ def today():
 class concent_graph(views.APIView):
 
 
+
     def get(self,request):
 
         """
