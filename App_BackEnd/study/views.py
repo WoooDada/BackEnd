@@ -76,7 +76,13 @@ class inout(views.APIView):
         get_room_id = request.data.get("room_id")
         room = Room.objects.get(room_id=get_room_id)
           """
-        Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+        print(room)
+        print(user)
+        if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
+            print("aaaa")
+            Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+            if [room.room_id, user.uid] in member_array:
+                member_array.remove([room.room_id, user.uid])
 
         """
       
