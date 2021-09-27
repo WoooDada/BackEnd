@@ -60,6 +60,11 @@ class inout(views.APIView):
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
 
+        get_room_id = request.data.get("room_id")
+        room = Room.objects.get(room_id=get_room_id)
+
+        Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+
         """
       
         get_room_id = request.data.get("room_id")
