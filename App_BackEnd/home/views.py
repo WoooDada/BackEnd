@@ -127,11 +127,12 @@ class concent_graph(views.APIView):
 
        # date_array=today()
         day_list = ['월', '화', '수', '목', '금', '토', '일']
+        print(user)
 
         if One_week_study_data.objects.filter(uid=user).exists():
             query_set = One_week_study_data.objects.filter(uid=user)
 
-            for k in date_array :
+            for k in day_list :
 
                 flag = False
 
