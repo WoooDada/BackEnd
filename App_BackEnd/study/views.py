@@ -15,12 +15,14 @@ from main.models import Recent_Room
 #delete해서 Daily_1m_concent 데이터 사라지기 전에 저장. 즉, 00:00 ~ 04:00 사이의 데이터 저장하는 부분
 temp_list =[]
 member_array =[]
-
+global isFinished
 
 class inout(views.APIView):
 
     #룸 입장
     def post(self,request):
+        global isFinished
+        isFinished = False
 
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
@@ -29,6 +31,12 @@ class inout(views.APIView):
         get_room_id = request.data.get("room_id")
 
         room = Room.objects.get(room_id=get_room_id)
+
+        if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
+            Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+            if [room.room_id, user.uid] in member_array :
+                member_array.remove([room.room_id, user.uid])
+
 
         if [room.room_id, user.uid] not in member_array:
 
@@ -49,6 +57,7 @@ class inout(views.APIView):
             room_enroll.save()
             member_array.append([room.room_id, user.uid])
 
+        isFinished=True
 
 
         return HttpResponse(status=status.HTTP_200_OK)
@@ -64,8 +73,9 @@ class inout(views.APIView):
         get_room_id = request.data.get("room_id")
 
         room = Room.objects.get(room_id=get_room_id)
-        member_array.remove([room.room_id, user.uid])
-        Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+        if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
+            Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+            member_array.remove([room.room_id, user.uid])
 
 
         return HttpResponse(status=status.HTTP_200_OK)
@@ -383,6 +393,13 @@ class ten_min_data(views.APIView):
 class room_info(views.APIView):
 
     def get(self, request):
+
+        global isFinished
+        isFinished = False
+
+        while not isFinished :
+            if isFinished :
+                break
 
         room_id = self.request.query_params.get("room_id")
         room = Room.objects.get(room_id=room_id)
