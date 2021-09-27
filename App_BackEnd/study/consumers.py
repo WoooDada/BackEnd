@@ -36,6 +36,7 @@ class sendMate(AsyncWebsocketConsumer):
 
 
     async def connect(self):
+        print("connected")
         global isReceived
         isReceived = False
         await self.accept()
@@ -43,6 +44,7 @@ class sendMate(AsyncWebsocketConsumer):
 
 
     async def disconnect(self, code):
+        print("disconnected")
         print("start!!")
         global user
         global room
