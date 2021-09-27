@@ -31,6 +31,8 @@ class sendMate(AsyncWebsocketConsumer):
     global isReceived
     global disconnected
     global me
+    global user
+    global room
 
 
     async def connect(self):
@@ -41,17 +43,27 @@ class sendMate(AsyncWebsocketConsumer):
 
 
     async def disconnect(self, code):
+        global user
+        global room
         global isReceived
         isReceived = True
+
+        if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
+            Room_Enroll.objects.get(room_id=room, user_id=user).delete()
+
         raise StopConsumer
 
 
 
     async def receive(self, text_data):
+        global user
+        global room
         global isReceived
+
         data = json.loads(text_data)
         room_id = data['room_id']
         uid=data['uid']
+        user = User.objects.get(uid=uid)
         room = Room.objects.get(room_id=room_id)
         uid = User.objects.get(uid=uid).uid
 
