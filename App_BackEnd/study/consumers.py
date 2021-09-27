@@ -155,6 +155,15 @@ class sendMate(AsyncWebsocketConsumer):
                                 "concent_time": concent_time,
                                 "play_time": play_time
                             })
+                            
+                    else :
+                        studymates.append({
+                            "nickname": user.nickname,
+                            "concent_rate": "0.0%",
+                            "concent_time": 0,
+                            "play_time": 0
+                        })
+
 
             await self.send(
                 text_data=json.dumps({
