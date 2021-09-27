@@ -132,9 +132,22 @@ class sendMate(AsyncWebsocketConsumer):
 
                         tot_time = study_info.count()
                         if concent == 0:
-                            concent_rate = '0'
+                            concent_rate = '0.0'
                         else:
-                            concent_rate = round(concent / tot_time, 2) * 100
+                            c = 0
+                            p = 0
+                            count = study_info.count()
+                            if count >= 20:
+                                study_info = study_info.reverse()[:20]            #최근 20개 가져오기
+                                tot_time = 20
+                            for qs in study_info:
+                                if qs.type == 'C' :
+                                    c += 1
+                                elif qs.type =='P' :
+                                    p+= 1
+
+                            concent_rate = c/tot_time
+                            concent_rate = round(concent_rate, 2) * 100
 
                         concent_time = get_time(concent)
                         if int(concent_time.split(":")[0]) == 0:
