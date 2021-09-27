@@ -121,6 +121,9 @@ class studyrank(views.APIView):
                         break
 
                     count += 1
+                    
+                    if prev_rank == 0:
+                        prev_rank += 1
 
                     rank_study_list.append({
                         'rank': prev_rank,
@@ -243,12 +246,16 @@ class playrank(views.APIView):
                     if count > 10:
                         break
 
+                    if prev_rank == 0:
+                        prev_rank += 1
+
                     rank_play_list.append({
-                        'rank': prev_rank,
+                        'rank': 1,
                         'nickname': nickname,
                         'tot_concent_rate': str(round(my_concent_rate,2)) + "%"
                         # 'prev': prev_concent_time
                     })
+
 
                 else:
 
