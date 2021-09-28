@@ -110,7 +110,7 @@ class concent_graph(views.APIView):
                         break
                 if flag is False  :
                     play_tiime_list.append(qs.play_time)
-                    concent_time_list.append(qs.content_time)
+                    concent_time_list.append(qs.concent_time)
 
                     count = count + 1
             graph = {
