@@ -68,25 +68,28 @@ class concent_graph(views.APIView):
         list = []
         if today == '월' :
             list = ['화', '수', '목', '금', '토', '일','월']
-            print('1')
+
         elif today=='화' :
             list = ['수', '목', '금', '토', '일','월', '화']
-            print('2')
+
         elif today=='수' :
             list = ['목', '금', '토', '일','월', '화', '수']
-            print('3')
+
         elif today=='목' :
             list = ['금', '토', '일','월', '화', '수','목']
-            print('4')
+
         elif today=='금':
             list = ['토', '일','월', '화', '수', '목', '금']
-            print('5')
+
         elif today=='토' :
             list = ['일','월', '화', '수', '목', '금', '토']
-            print('6')
+
         elif today=='일' :
             list = ['월', '화', '수', '목', '금', '토', '일']
-            print('7')
+
+
+        play_list = []
+        concent_list = []
 
         if One_week_study_data.objects.filter(uid=user).exists():
             query_set = One_week_study_data.objects.filter(uid=user)
@@ -97,26 +100,23 @@ class concent_graph(views.APIView):
                 count = 0
                 for qs in query_set:
                     if day == qs.date :
-                        data_set = {
-                            "date": qs.date,
-                            "concent_time": qs.concent_time,
-                            "play_time": qs.play_time
-                        }
+                        play_list.append(qs.play_time)
+                        concent_list.append(qs.content_time)
+
                         count += 1
                         flag = True
-                        graph.append(data_set)
+
                         break
                 if flag is False  :
-                    data_set = {
-                        "date": day,
-                        "concent_time": 0,
-                        "play_time": 0
-                    }
+                    play_list.append(qs.play_time)
+                    concent_list.append(qs.content_time)
+
                     count = count + 1
-                    graph.append(data_set)
 
 
-            return JsonResponse({"graph":graph}, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
+
+            return JsonResponse({"concent_list":concent_list,
+                                 "play_list":play_list}, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
         else :
 
 
