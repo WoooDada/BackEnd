@@ -66,13 +66,27 @@ class concent_graph(views.APIView):
         today = day_list[datetime.datetime.today().weekday()]  # 오늘 요일
 
         list = []
-        if today == '월' : list = ['화', '수', '목', '금', '토', '일','월']
-        elif today=='화' : list = ['수', '목', '금', '토', '일','월', '화']
-        elif today=='수' : list = ['목', '금', '토', '일','월', '화', '수']
-        elif today=='목' : list = ['금', '토', '일','월', '화', '수','목']
-        elif today=='금': list = ['토', '일','월', '화', '수', '목', '금']
-        elif today=='토' : list = ['일','월', '화', '수', '목', '금', '토']
-        elif today=='일' : list = ['월', '화', '수', '목', '금', '토', '일']
+        if today == '월' :
+            list = ['화', '수', '목', '금', '토', '일','월']
+            print('1')
+        elif today=='화' :
+            list = ['수', '목', '금', '토', '일','월', '화']
+            print('2')
+        elif today=='수' :
+            list = ['목', '금', '토', '일','월', '화', '수']
+            print('3')
+        elif today=='목' :
+            list = ['금', '토', '일','월', '화', '수','목']
+            print('4')
+        elif today=='금':
+            list = ['토', '일','월', '화', '수', '목', '금']
+            print('5')
+        elif today=='토' :
+            list = ['일','월', '화', '수', '목', '금', '토']
+            print('6')
+        elif today=='일' :
+            list = ['월', '화', '수', '목', '금', '토', '일']
+            print('7')
 
         if One_week_study_data.objects.filter(uid=user).exists():
             query_set = One_week_study_data.objects.filter(uid=user)
