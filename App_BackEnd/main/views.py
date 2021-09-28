@@ -189,6 +189,74 @@ class playrank(views.APIView):
 
             study_list.sort(key=lambda x: x[1])  # concent_rate 순서로 오름차순 정렬
 
+            num = 1
+            # 내 랭킹 찾기
+            for user_info in study_list:
+                user = user_info[0]
+                concent_time = user_info[1]
+
+                if user.uid == my_nickname.uid:
+                    my_rank_num = num
+                    time_string = get_time(concent_time)
+
+                    rank_play_list.append({  # 내 데이터 넣기
+                        'rank': my_rank_num,
+                        'nickname': my_nickname.nickname,
+                        'tot_concent_time': time_string
+                    })
+                    # print("num:"+num)
+                    break
+                else:
+                    num += 1
+
+            # 상위 10명 찾기
+            prev_concent_time = 0
+            rank = 0
+            count = 0
+            prev_rank = 0
+
+            for study in study_list:  # 상위 10명 데이터 리스트에 넣기
+
+                uid = study[0].uid
+                nickname = User.objects.get(uid=uid).nickname
+
+                my_concent_time = study[1]
+                time_string = get_time(my_concent_time)
+
+                if prev_concent_time == my_concent_time:  # 전 사람과 동점
+                    count += 1
+                    if count > 10:
+                        break
+
+                    rank_play_list.append({
+                        'rank': prev_rank,
+                        'nickname': nickname,
+                        'tot_concent_time': time_string,
+                        # 'prev': prev_concent_time
+                    })
+
+                else:
+                    if count > 10:
+                        break
+
+                    count += 1
+                    rank += 1
+                    prev_rank = count
+                    if count > 10:
+                        break
+
+                    rank_play_list.append({
+                        'rank': count,
+                        'nickname': nickname,
+                        'tot_concent_time': time_string,
+                        #     'prev': prev_concent_time
+                    })
+
+                prev_concent_time = my_concent_time
+
+
+            """
+
 
             # 상위 10명 찾기
             prev_concent_time = 0
@@ -282,7 +350,7 @@ class playrank(views.APIView):
 
             for rank in rank_second_list:
                 rank_play_list.append(rank)
-
+            """
             return Response({'rank_play_list': rank_play_list}, status=status.HTTP_200_OK)
 
         except Exception as ex:
