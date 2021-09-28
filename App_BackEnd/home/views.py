@@ -88,8 +88,8 @@ class concent_graph(views.APIView):
             list = ['월', '화', '수', '목', '금', '토', '일']
 
 
-        play_list = []
-        concent_list = []
+        play_tiime_list = []
+        concent_time_list = []
 
         if One_week_study_data.objects.filter(uid=user).exists():
             query_set = One_week_study_data.objects.filter(uid=user)
@@ -100,23 +100,25 @@ class concent_graph(views.APIView):
                 count = 0
                 for qs in query_set:
                     if day == qs.date :
-                        play_list.append(qs.play_time)
-                        concent_list.append(qs.content_time)
+                        play_tiime_list.append(qs.play_time)
+                        concent_time_list.append(qs.content_time)
 
                         count += 1
                         flag = True
 
                         break
                 if flag is False  :
-                    play_list.append(qs.play_time)
-                    concent_list.append(qs.content_time)
+                    play_tiime_list.append(qs.play_time)
+                    concent_time_list.append(qs.content_time)
 
                     count = count + 1
+            graph = {
+                "concent_time_list" : concent_time_list,
+                "play_tiime_list" : play_tiime_list
 
+            }
 
-
-            return JsonResponse({"concent_list":concent_list,
-                                 "play_list":play_list}, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
+            return JsonResponse({"graph":graph},safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
         else :
 
 
