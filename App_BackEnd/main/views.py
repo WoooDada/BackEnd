@@ -202,7 +202,7 @@ class playrank(views.APIView):
                     rank_play_list.append({  # 내 데이터 넣기
                         'rank': my_rank_num,
                         'nickname': my_nickname.nickname,
-                        'tot_concent_time': time_string
+                        'tot_concent_rate': str(round(concent_time, 2)) + "%"
                     })
                     # print("num:"+num)
                     break
@@ -234,7 +234,7 @@ class playrank(views.APIView):
                     rank_play_list.append({
                         'rank': prev_rank,
                         'nickname': nickname,
-                        'tot_concent_time': time_string,
+                        'tot_concent_rate': str(round(my_concent_time, 2)) + "%"
                         # 'prev': prev_concent_time
                     })
 
@@ -251,8 +251,7 @@ class playrank(views.APIView):
                     rank_play_list.append({
                         'rank': count,
                         'nickname': nickname,
-                        'tot_concent_time': time_string,
-                        #     'prev': prev_concent_time
+                        'tot_concent_rate': str(round(my_concent_time, 2)) + "%"
                     })
 
                 prev_concent_time = my_concent_time
