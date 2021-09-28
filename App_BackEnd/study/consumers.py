@@ -109,6 +109,7 @@ class sendMate(AsyncWebsocketConsumer):
                             "play_time": play_time
                         }
 
+
                     else :
                         me = {
                             "concent_time": "00분",
