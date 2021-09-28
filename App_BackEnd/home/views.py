@@ -88,7 +88,7 @@ class concent_graph(views.APIView):
             list = ['월', '화', '수', '목', '금', '토', '일']
 
 
-        play_tiime_list = []
+        play_time_list = []
         concent_time_list = []
 
         if One_week_study_data.objects.filter(uid=user).exists():
@@ -101,7 +101,7 @@ class concent_graph(views.APIView):
                 for qs in query_set:
                     if day == qs.date :
 
-                        play_tiime_list.append(qs.play_time)
+                        play_time_list.append(qs.play_time)
                         concent_time_list.append(qs.concent_time)
 
                         count += 1
@@ -109,13 +109,13 @@ class concent_graph(views.APIView):
 
                         break
                 if flag is False  :
-                    play_tiime_list.append(qs.play_time)
-                    concent_time_list.append(qs.concent_time)
+                    play_time_list.append(0)
+                    concent_time_list.append(0)
 
                     count = count + 1
             graph = {
                 "concent_time_list" : concent_time_list,
-                "play_tiime_list" : play_tiime_list
+                "play_time_list" : play_time_list
 
             }
 
