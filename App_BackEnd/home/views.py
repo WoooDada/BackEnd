@@ -100,9 +100,9 @@ class concent_graph(views.APIView):
                 count = 0
                 for qs in query_set:
                     if day == qs.date :
-                        
+
                         play_tiime_list.append(qs.play_time)
-                        concent_time_list.append(qs.content_time)
+                        concent_time_list.append(qs.concent_time)
 
                         count += 1
                         flag = True
