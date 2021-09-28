@@ -350,7 +350,7 @@ class ten_min_data(views.APIView):
 
 
 #1분에 3개씩 -> 10분 30개이므로 과반수인 15가 c면 c리턴
-                    if check_concent > check_play and (check_concent + check_play) >= 15 :
+                    if check_concent > check_play and (check_concent + check_play) >= 5 :
                         concent_type = 'C'
                         qs_data = {
                             "stt_time": stt_time,
@@ -358,7 +358,7 @@ class ten_min_data(views.APIView):
                             "concent_type": concent_type
                         }
                         whole_min_list.append(qs_data)
-                    elif check_concent <= check_play and (check_concent + check_play) >= 15 :
+                    elif check_concent <= check_play and (check_concent + check_play) >= 5 :
                         concent_type = 'P'
 
                         qs_data = {
