@@ -228,6 +228,9 @@ class playrank(views.APIView):
                     if count > 10:
                         break
 
+                    if prev_rank == 0:
+                        prev_rank += 1
+
                     rank_play_list.append({
                         'rank': prev_rank,
                         'nickname': nickname,
