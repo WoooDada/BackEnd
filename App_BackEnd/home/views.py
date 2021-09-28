@@ -33,69 +33,6 @@ class badge_profile(views.APIView):
 
 
 
-def today():
-    now = timezone.now()
-    index_num = now.weekday()  # 오늘 요일 인덱스로
-    # 0 -> 월
-    daylist = ['월', '화', '수', '목', '금', '토', '일']
-    day_list = []
-    data_set = []
-    # 0->  1,2,3,4,5,6,0
-    # 1 -> 2,3,4,5,6,0,1
-    # 2 -> 3,4,5,6,0,1,2
-
-    # 6 -> 0,1,2,3,4,5,6
-
-    if index_num == 0:
-        for i in (0, 7):
-            if i != 6:
-                day_list.append(daylist[i + 1])
-            else:
-                day_list.append(daylist[6 - i])
-
-    elif index_num == 1:
-        for i in (0, 7):
-            if i != 5 and i != 6:
-                day_list.append(daylist[index_num + i + 1])
-            else:
-                day_list.append(daylist[-6 + i + index_num])
-
-    elif index_num == 2:
-        for i in (0, 7):
-            if i != 5 and i != 6 and i != 4:
-                day_list.append(daylist[index_num + i + 1])
-            else:
-                day_list.append(daylist[-6 + i + index_num])
-
-    elif index_num == 3:
-        for i in (0, 7):
-            if i != 5 and i != 6 and i != 4 and i != 3:
-                day_list.append(daylist[index_num + i + 1])
-            else:
-                day_list.append(daylist[-6 + i + index_num])
-
-    elif index_num == 4:
-        for i in (0, 7):
-            if i != 5 and i != 6 and i != 4 and i != 3 and i != 2:
-                day_list.append(daylist[index_num + i + 1])
-            else:
-                day_list.append(daylist[-6 + i + index_num])
-    elif index_num == 5:
-        for i in (0, 7):
-            if i != 5 and i != 6 and i != 4 and i != 3 and i != 2 and i != 1:
-                day_list.append(daylist[index_num + i + 1])
-            else:
-                day_list.append(daylist[-6 + i + index_num])
-
-    elif index_num == 6:
-        for i in range(0, 7):
-            if i != 5 and i != 6 and i != 4 and i != 3 and i != 2 and i != 1:
-                print("A")
-                day_list.append(daylist[6 - index_num - i])
-            else:
-                day_list.append(daylist[-6 + i + index_num])
-    return day_list
-
 class concent_graph(views.APIView):
 
 
@@ -125,51 +62,51 @@ class concent_graph(views.APIView):
         count = 0
 
 
-       # date_array=today()
         day_list = ['월', '화', '수', '목', '금', '토', '일']
-     #   print(user)
+        today = day_list[datetime.datetime.today().weekday()]  # 오늘 요일
+
+        list = []
+        if today == '월' : list = ['화', '수', '목', '금', '토', '일','월']
+        elif today=='화' : list = ['수', '목', '금', '토', '일','월', '화']
+        elif today=='수' : list = ['목', '금', '토', '일','월', '화', '수']
+        elif today=='목' : list = ['금', '토', '일','월', '화', '수','목']
+        elif today=='금': list = ['토', '일','월', '화', '수', '목', '금']
+        elif today=='토' : list = ['일','월', '화', '수', '목', '금', '토']
+        elif today=='일' : list = ['월', '화', '수', '목', '금', '토', '일']
 
         if One_week_study_data.objects.filter(uid=user).exists():
             query_set = One_week_study_data.objects.filter(uid=user)
-         #   print(query_set)
-            for k in day_list :
 
+            for day in list :
                 flag = False
-
-                for qs in query_set :
-
-                    if k == qs.date :
+                count = 0
+                for qs in query_set:
+                    if day[count] == qs.date :
 
                         data_set = {
                             "date": qs.date,
                             "concent_time": qs.concent_time,
                             "play_time": qs.play_time
                         }
-                        flag= True
-                        count = count + 1
+                        count += 1
+                        flag = True
                         graph.append(data_set)
-                   #     print(date_array[count])
                         break
-
-                if flag == False :
-
+                if flag is False  :
                     data_set = {
-                        "date" : day_list[count],
+                        "date": day_list[count],
                         "concent_time": 0,
-                        "play_time":0
+                        "play_time": 0
                     }
-
                     count = count + 1
                     graph.append(data_set)
-                    graph.reverse()
-         #   print(graph)
+
 
             return JsonResponse({"graph":graph}, safe=False, status=status.HTTP_200_OK, json_dumps_params={'ensure_ascii': False})
         else :
 
-      #      day_list=today()
-            day_list = ['월', '화', '수', '목', '금', '토', '일']
-            for i in day_list :
+
+            for i in list :
                 data_set = {
                     "date": i,
                     "concent_time": 0,
