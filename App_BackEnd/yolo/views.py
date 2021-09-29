@@ -115,7 +115,7 @@ class getmessage(views.APIView):
                             time_Exists=True
                             print("2:")
                             print(array)
-                            print("2:" + array)
+                    
                             break
                         if not time_Exists : #같은 시간대 존재하지 않는 경우 새로 저장해 줌
                             a[1].append([time,[type]])
