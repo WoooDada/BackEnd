@@ -110,11 +110,14 @@ class getmessage(views.APIView):
                         if t[0] == time :       #배열 내 time 존재하는 경우
                             t[1].append(type)
                             time_Exists=True
+                            print(array)
                             break
                         if not time_Exists : #같은 시간대 존재하지 않는 경우 새로 저장해 줌
                             a[1].append([time,[type]])
+                            print(array)
         if not user_Exists or len(array) == 0:
             array.append([user,[[time,[type]]]])
+            print(array)
 
 
         for data in array :     #data = [user, [   [time,[type]] ,  [time,[type]] , ... ] ]
