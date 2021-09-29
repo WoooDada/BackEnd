@@ -26,6 +26,7 @@ class inout(views.APIView):
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
+        nowuser = user.uid
 
         get_room_id = request.data.get("room_id")
         room = Room.objects.get(room_id=get_room_id)
@@ -56,7 +57,110 @@ class inout(views.APIView):
             room_enroll.save()
             member_array.append([room.room_id, user.uid])
 
-        return HttpResponse(status=status.HTTP_200_OK)
+
+
+        room_query = Room_Enroll.objects.filter(room_id=room)
+        studymates = []
+
+        me = {
+            "concent_time": "00분",
+            "play_time": "00분"
+        }
+
+        for room in room_query:
+            user = room.user_id
+
+            if user.uid == nowuser:  # 나
+                if Daily_1m_content.objects.filter(uid=user).exists():
+                    study_info = Daily_1m_content.objects.filter(uid=user)
+                    concent = 0
+                    play = 0
+
+                    for info in study_info:  # 실시간 play/concent 개수 가져오기
+                        if info.type == 'C':
+                            concent += 1
+                        elif info.type == 'P':
+                            play += 1
+
+                    concent_time = get_time(concent)
+                    concent_time = concent_time.split(":")[0] + ":" + concent_time.split(":")[1]
+
+                    play_time = get_time(play)
+                    play_time = play_time.split(":")[0] + ":" + play_time.split(":")[1]
+
+                    me = {
+                        "concent_time": concent_time,
+                        "play_time": play_time
+                    }
+
+
+
+            else:  # 다른 사람들
+
+                study_info = Daily_1m_content.objects.filter(uid=user)
+                concent = 0
+                play = 0
+
+                if study_info.exists():
+                    for info in study_info:  # 실시간 play/concent 개수 가져오기
+                        if info.type == 'C':
+                            concent += 1
+                        elif info.type == 'P':
+                            play += 1
+
+                    if concent == 0:
+                        concent_rate = '0.0'
+                    else:
+                        c = 0
+                        p = 0
+                        count = study_info.count()
+                        if count >= 20:
+                            study_info = reversed(study_info)[:20]
+                            tot_time = 20
+                        else:
+
+                            tot_time = study_info.count()
+                        for qs in study_info:
+                            if qs.type == 'C':
+                                c += 1
+                            elif qs.type == 'P':
+                                p += 1
+
+                        concent_rate = c / tot_time
+                        concent_rate = round(concent_rate, 2) * 100
+                        print("c개수" + str(c))
+                        print("p개수" + str(p))
+                        print("rate" + str(concent_rate))
+
+                    concent_time = get_time(concent)
+                    if int(concent_time.split(":")[0]) == 0:
+                        concent_time = concent_time.split(":")[1] + "분"
+
+                    else:
+                        concent_time = concent_time.split(":")[0] + "시간 " + concent_time.split(":")[1] + "분"
+
+                    play_time = get_time(play)
+                    if int(play_time.split(":")[0]) == 0:
+                        play_time = play_time.split(":")[1] + "분"
+                    else:
+                        play_time = play_time.split(":")[0] + "시간 " + play_time.split(":")[1] + "분"
+
+                    studymates.append({
+                        "nickname": user.nickname,
+                        "concent_rate": str(concent_rate) + "%",
+                        "concent_time": concent_time,
+                        "play_time": play_time
+                    })
+
+                else:
+                    studymates.append({
+                        "nickname": user.nickname,
+                        "concent_rate": "0.0%",
+                        "concent_time": "0분",
+                        "play_time": "0분"
+                    })
+
+        return HttpResponse({"myStatus": me, "studymates": studymates},status=status.HTTP_200_OK)
 
 
     #룸 퇴장
@@ -80,7 +184,7 @@ class inout(views.APIView):
           """
         print(room)
         print(user)
-        
+
         if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
             print("aaaa")
             Room_Enroll.objects.get(room_id=room, user_id=user).delete()
