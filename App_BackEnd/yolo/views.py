@@ -115,7 +115,7 @@ class getmessage(views.APIView):
                             time_Exists=True
                             print("2:")
                             print(array)
-                    
+
                             break
                         if not time_Exists : #같은 시간대 존재하지 않는 경우 새로 저장해 줌
                             a[1].append([time,[type]])
@@ -141,7 +141,7 @@ class getmessage(views.APIView):
                                 concent += 1
                             elif t == 'P':
                                 play += 1
-                        if concent + play >= 10 :           #12개면 1m 데이터로 저장하기
+                        if concent + play >= 12 :           #12개면 1m 데이터로 저장하기
                             if concent >= play :        #C 로 저장
                                 Daily_1m_content.objects.create(uid=user, type='C', time=time).save()
 
@@ -149,8 +149,9 @@ class getmessage(views.APIView):
                                 Daily_1m_content.objects.create(uid=user, type='P', time=time).save()
 
                             index = data[1].index(a)  # data[1]에서 a=[time,[type]]의 인덱스 위치
-                            array.remove(data[1][index])  # array에서 해당 유저의 [time,[type]] 삭제
-                            print("20 success and delete from array => " + time + "and type is  => " + type)
+                        array.remove(data[1][index])  # array에서 해당 유저의 [time,[type]] 삭제
+                        print("20 success and delete from array => " + time + "and type is  => " + type)
+
 
 
         return Response({'type': type},status=status.HTTP_200_OK)
