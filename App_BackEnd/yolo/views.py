@@ -98,9 +98,9 @@ class getmessage(views.APIView):
         minute = now.minute
         time = str(hour) + ":" + str(minute)
 
-        array =[]
+        
         #각각 user의 time마다 type저장해줌
-        user_Exists=False
+      #  user_Exists=False
         if len(array) != 0:
             for a in array :
                 if a[0] == user :    #이미 저장된 type이 존재하는 경우
