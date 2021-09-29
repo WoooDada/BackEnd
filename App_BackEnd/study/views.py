@@ -655,12 +655,12 @@ class studymate(views.APIView):
 
                         concent_rate = c / tot_time * 100
                         print("firstrate" + str(concent_rate))
-                        concent_rate = round(concent_rate, 2)
+                        concent_rate = round(concent_rate, 1)
 
                         print("cccccccccccc" + str(c))
                         print("tottttttt" + str(tot_time))
                         print("ratttttttt" + str(concent_rate))
-
+                        print("===================")
                     concent_time = get_time(concent)
                     if int(concent_time.split(":")[0]) == 0:
                         concent_time = concent_time.split(":")[1] + "분"
