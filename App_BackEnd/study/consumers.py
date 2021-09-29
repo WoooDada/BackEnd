@@ -155,7 +155,7 @@ class sendMate(AsyncWebsocketConsumer):
                             print("c개수"+str(c))
                             print("p개수" + str(p))
                             print("rate"+str(concent_rate))
-                            
+
                         concent_time = get_time(concent)
                         if int(concent_time.split(":")[0]) == 0:
                             concent_time = concent_time.split(":")[1] + "분"
