@@ -123,7 +123,7 @@ class getmessage(views.APIView):
                                 concent += 1
                             elif t == 'P':
                                 play += 1
-                        if concent + play == 20 :           #20개면 1m 데이터로 저장하기
+                        if concent + play == 12 :           #12개면 1m 데이터로 저장하기
                             if concent >= play :        #C 로 저장
                                 Daily_1m_content.objects.create(uid=user, type='C', time=time).save()
 
