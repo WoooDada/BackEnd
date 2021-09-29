@@ -115,7 +115,7 @@ class inout(views.APIView):
 
 
 
-                if study_info.exists():
+                if type_array.exists():
                     for info in study_info:  # 실시간 play/concent 개수 가져오기
                         if info.type == 'C':
                             concent += 1
@@ -659,14 +659,14 @@ class studymate(views.APIView):
                 t_concent = 0
                 t_play = 0
 
-                if study_info.exists():
+                if type_array.exists():
                     for info in study_info:  # 실시간 play/concent 개수 가져오기
                         if info.type == 'C':
                             concent += 1
                         elif info.type == 'P':
                             play += 1
 
-                  
+
 
                     if concent == 0:
                         concent_rate = '0.0'
