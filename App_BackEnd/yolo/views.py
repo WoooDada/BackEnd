@@ -28,8 +28,8 @@ global array
 array = []
 
 class getmessage(views.APIView):
-    global array
-    array = []
+   # global array
+   # array = []
 
     def post(self, request):
 
