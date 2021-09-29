@@ -73,8 +73,11 @@ class inout(views.APIView):
             if user.uid == nowuser:  # 나
                 if recent_type.objects.filter(uid=user).exists():
                     study_info = recent_type.objects.filter(uid=user)
+                    type_array = Daily_1m_content.objects.filter(uid=user)
                     concent = 0
                     play = 0
+                    t_concent = 0
+                    t_play = 0
 
                     for info in study_info:  # 실시간 play/concent 개수 가져오기
                         if info.type == 'C':
@@ -82,10 +85,16 @@ class inout(views.APIView):
                         elif info.type == 'P':
                             play += 1
 
-                    concent_time = get_time(concent)
+                    for t in type_array:
+                        if info.type == 'C':
+                            t_concent += 1
+                        elif info.type == 'P':
+                            t_play += 1
+
+                    concent_time = get_time(t_concent)
                     concent_time = concent_time.split(":")[0] + ":" + concent_time.split(":")[1]
 
-                    play_time = get_time(play)
+                    play_time = get_time(t_play)
                     play_time = play_time.split(":")[0] + ":" + play_time.split(":")[1]
 
                     me = {
@@ -98,8 +107,11 @@ class inout(views.APIView):
             else:  # 다른 사람들
 
                 study_info = recent_type.objects.filter(uid=user)
+                type_array = Daily_1m_content.objects.filter(uid=user)
                 concent = 0
                 play = 0
+                t_concent = 0
+                t_play = 0
 
                 if study_info.exists():
                     for info in study_info:  # 실시간 play/concent 개수 가져오기
@@ -107,6 +119,12 @@ class inout(views.APIView):
                             concent += 1
                         elif info.type == 'P':
                             play += 1
+
+                    for t in type_array:
+                        if info.type == 'C':
+                            t_concent += 1
+                        elif info.type == 'P':
+                            t_play += 1
 
                     if concent == 0:
                         concent_rate = '0.0'
@@ -134,14 +152,14 @@ class inout(views.APIView):
                         concent_rate = round(concent_rate, 1)
 
 
-                    concent_time = get_time(concent)
+                    concent_time = get_time(t_concent)
                     if int(concent_time.split(":")[0]) == 0:
                         concent_time = concent_time.split(":")[1] + "분"
 
                     else:
                         concent_time = concent_time.split(":")[0] + "시간 " + concent_time.split(":")[1] + "분"
 
-                    play_time = get_time(play)
+                    play_time = get_time(t_play)
                     if int(play_time.split(":")[0]) == 0:
                         play_time = play_time.split(":")[1] + "분"
                     else:
@@ -591,8 +609,11 @@ class studymate(views.APIView):
             if user.uid == uid:  # 나
                 if recent_type.objects.filter(uid=user).exists():
                     study_info = recent_type.objects.filter(uid=user)
+                    type_array = Daily_1m_content.objects.filter(uid=user)
                     concent = 0
                     play = 0
+                    t_concent = 0
+                    t_play = 0
 
                     for info in study_info:  # 실시간 play/concent 개수 가져오기
                         if info.type == 'C':
@@ -600,10 +621,17 @@ class studymate(views.APIView):
                         elif info.type == 'P':
                             play += 1
 
-                    concent_time = get_time(concent)
+                    for t in type_array:
+                        if info.type == 'C':
+                            t_concent += 1
+                        elif info.type == 'P':
+                            t_play += 1
+
+
+                    concent_time = get_time(t_concent)
                     concent_time = concent_time.split(":")[0] + ":" + concent_time.split(":")[1]
 
-                    play_time = get_time(play)
+                    play_time = get_time(t_play)
                     play_time = play_time.split(":")[0] + ":" + play_time.split(":")[1]
 
                     me = {
@@ -623,8 +651,11 @@ class studymate(views.APIView):
             else:  # 다른 사람들
 
                 study_info = recent_type.objects.filter(uid=user)
+                type_array = Daily_1m_content.objects.filter(uid=user)
                 concent = 0
                 play = 0
+                t_concent = 0
+                t_play = 0
 
                 if study_info.exists():
                     for info in study_info:  # 실시간 play/concent 개수 가져오기
@@ -633,6 +664,11 @@ class studymate(views.APIView):
                         elif info.type == 'P':
                             play += 1
 
+                    for t in type_array:
+                        if info.type == 'C':
+                            t_concent += 1
+                        elif info.type == 'P':
+                            t_play += 1
 
                     if concent == 0:
                         concent_rate = '0.0'
@@ -662,14 +698,14 @@ class studymate(views.APIView):
                         print("tottttttt" + str(tot_time))
                         print("ratttttttt" + str(concent_rate))
                         print("===================")
-                    concent_time = get_time(concent)
+                    concent_time = get_time(t_concent)
                     if int(concent_time.split(":")[0]) == 0:
                         concent_time = concent_time.split(":")[1] + "분"
 
                     else:
                         concent_time = concent_time.split(":")[0] + "시간 " + concent_time.split(":")[1] + "분"
 
-                    play_time = get_time(play)
+                    play_time = get_time(t_play)
                     if int(play_time.split(":")[0]) == 0:
                         play_time = play_time.split(":")[1] + "분"
                     else:
