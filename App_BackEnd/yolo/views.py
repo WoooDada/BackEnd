@@ -31,6 +31,7 @@ class getmessage(views.APIView):
         global total_play, total_con, array
 
         #토큰 받아오기
+
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
         user = User.objects.get(uid=payload['id'])
@@ -90,19 +91,23 @@ class getmessage(views.APIView):
         minute = now.minute
         time = str(hour) + ":" + str(minute)
 
-
+        array =[]
         #각각 user의 time마다 type저장해줌
-        for a in array :
-            if a[0] == user :    #이미 저장된 type이 존재하는 경우
-                time_Exists=False
-                for t in a[1] :     #a[1] = [ [time,[type]] ,  [time,[type]] , ... ]
-                    if t[0] == time :       #배열 내 time 존재하는 경우
-                        t[1].append(type)
-                        time_Exists=True
-                        break
-                    if not time_Exists : #같은 시간대 존재하지 않는 경우 새로 저장해 줌
-                        a[1].append([time,[type]])
-
+        user_Exists=False
+        if len(array) != 0:
+            for a in array :
+                if a[0] == user :    #이미 저장된 type이 존재하는 경우
+                    time_Exists=False
+                    user_Exists=True
+                    for t in a[1] :     #a[1] = [ [time,[type]] ,  [time,[type]] , ... ]
+                        if t[0] == time :       #배열 내 time 존재하는 경우
+                            t[1].append(type)
+                            time_Exists=True
+                            break
+                        if not time_Exists : #같은 시간대 존재하지 않는 경우 새로 저장해 줌
+                            a[1].append([time,[type]])
+        if not user_Exists or len(array) == 0:
+            array.append([user,[[time,[type]]]])
 
 
         for data in array :     #data = [user, [   [time,[type]] ,  [time,[type]] , ... ] ]
