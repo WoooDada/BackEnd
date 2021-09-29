@@ -113,6 +113,8 @@ class inout(views.APIView):
                 t_concent = 0
                 t_play = 0
 
+
+
                 if study_info.exists():
                     for info in study_info:  # 실시간 play/concent 개수 가져오기
                         if info.type == 'C':
@@ -120,11 +122,6 @@ class inout(views.APIView):
                         elif info.type == 'P':
                             play += 1
 
-                    for t in type_array:
-                        if t.type == 'C':
-                            t_concent += 1
-                        elif t.type == 'P':
-                            t_play += 1
 
                     if concent == 0:
                         concent_rate = '0.0'
@@ -151,6 +148,11 @@ class inout(views.APIView):
                         concent_rate = c / tot_time * 100
                         concent_rate = round(concent_rate, 1)
 
+                    for t in type_array:
+                        if t.type == 'C':
+                            t_concent += 1
+                        elif t.type == 'P':
+                            t_play += 1
 
                     concent_time = get_time(t_concent)
                     if int(concent_time.split(":")[0]) == 0:
@@ -664,11 +666,7 @@ class studymate(views.APIView):
                         elif info.type == 'P':
                             play += 1
 
-                    for t in type_array:
-                        if t.type == 'C':
-                            t_concent += 1
-                        elif t.type == 'P':
-                            t_play += 1
+                  
 
                     if concent == 0:
                         concent_rate = '0.0'
@@ -698,6 +696,13 @@ class studymate(views.APIView):
                         print("tottttttt" + str(tot_time))
                         print("ratttttttt" + str(concent_rate))
                         print("===================")
+
+                    for t in type_array:
+                        if t.type == 'C':
+                            t_concent += 1
+                        elif t.type == 'P':
+                            t_play += 1
+
                     concent_time = get_time(t_concent)
                     if int(concent_time.split(":")[0]) == 0:
                         concent_time = concent_time.split(":")[1] + "분"
