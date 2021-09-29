@@ -364,117 +364,123 @@ class ten_min_data(views.APIView):
         one_min_list = []
         whole_min_list = []
 
-        query_set = user.daily_1m_uid.all()
-        #   type_array = []     # length = 10인 배열로 C / P / U 들어감
-
-        hour_array = [
-            '00','01','02','03','04','05','06','07','08','09','10','11','12','13','14',
-            '15','16','17','18','19','20','21','22','23'
-        ]  # hour와 같은 시간인 data 있는 배열
-
-        minute_array = ['00','10','20','30','40','50']
-
-
-        whole_hour = [
-            [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
-        ]
-
-
-        if 0<=hour<=9 :
-            hour_str = str(0) + str(hour) + ":" + str(minute - 1)  # 0~9시인경우 00~09시로 변경
-
+        now = timezone.now()
+        if not Study_analysis.objects.filter(date=now.date()).exists():
+            whole_min_list = []
         else :
-            hour_str = str(hour) + ":" + str(minute - 1)
 
-        for qs in query_set:
+            query_set = user.daily_1m_uid.all()
+            #   type_array = []     # length = 10인 배열로 C / P / U 들어감
 
-            qs_data = {
-                "stt_time": qs.time,
-                "end_time": qs.time,
-                "concent_type": qs.type
-            }
+            hour_array = [
+                '00','01','02','03','04','05','06','07','08','09','10','11','12','13','14',
+                '15','16','17','18','19','20','21','22','23'
+            ]  # hour와 같은 시간인 data 있는 배열
 
-
-            if qs.time == hour_str :
-                one_min_list.append(qs_data)
-
-            qs_hour = qs.time.split(":")[0]         #hour 잘라내기
-
-            flag = 0
-            for h in hour_array :    #whole_hour 2차원 배열에 같은 hour끼리 넣기
-                if h == qs_hour :
-                    whole_hour[flag].append(qs)
-                    break
-                flag = flag  + 1
+            minute_array = ['00','10','20','30','40','50']
 
 
-        if get_type == 0:  # 해당되는 1분 데이터 주기 5/25 2:17에 get인 경우 5/24 2:16 데이터 넘기기
-            return qs_data
+            whole_hour = [
+                [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
+            ]
 
 
-        elif get_type == 1:  # 해당 날짜의 모든 데이터 가져오기
+            if 0<=hour<=9 :
+                hour_str = str(0) + str(hour) + ":" + str(minute - 1)  # 0~9시인경우 00~09시로 변경
 
-            hour_tag = 0
+            else :
+                hour_str = str(hour) + ":" + str(minute - 1)
 
-            for w in whole_hour:
-                whole_minute = [
-                    [], [], [], [], [], []
-                ]  # 순서대로 00~09 / 10~19 / ... / 50 ~59 분에 해당하는 type 들어가는 배열
 
-                now_hour = hour_array[hour_tag]
-                hour_tag = hour_tag + 1
-                if w == []:
-                    continue
+            for qs in query_set:
 
-                for h in w :
-                    h_minute = h.time.split(":")[1]      #쿼리셋객체 하나의 minute 잘라오기
-                    h_minute = h_minute[0]          #쿼리셋객체 minute의 앞자리
-                    whole_minute[int(h_minute)].append(h.type)
+                qs_data = {
+                    "stt_time": qs.time,
+                    "end_time": qs.time,
+                    "concent_type": qs.type
+                }
 
-                minute_tag = 0
-                for a in whole_minute :
 
-                    check_concent = 0  # 10분 중 'C'갯수
-                    check_play = 0  # 10분 중 'P'갯수
+                if qs.time == hour_str :
+                    one_min_list.append(qs_data)
 
-                    temp_tag = minute_tag
-                    minute_tag = minute_tag + 1
+                qs_hour = qs.time.split(":")[0]         #hour 잘라내기
 
-                    if a == [] :
+                flag = 0
+                for h in hour_array :    #whole_hour 2차원 배열에 같은 hour끼리 넣기
+                    if h == qs_hour :
+                        whole_hour[flag].append(qs)
+                        break
+                    flag = flag  + 1
+
+
+            if get_type == 0:  # 해당되는 1분 데이터 주기 5/25 2:17에 get인 경우 5/24 2:16 데이터 넘기기
+                return qs_data
+
+
+            elif get_type == 1:  # 해당 날짜의 모든 데이터 가져오기
+
+                hour_tag = 0
+
+                for w in whole_hour:
+                    whole_minute = [
+                        [], [], [], [], [], []
+                    ]  # 순서대로 00~09 / 10~19 / ... / 50 ~59 분에 해당하는 type 들어가는 배열
+
+                    now_hour = hour_array[hour_tag]
+                    hour_tag = hour_tag + 1
+                    if w == []:
                         continue
 
-                    for type in a :
-                        if type == 'C' :
-                            check_concent = check_concent + 1
-                        elif type == 'P':
-                            check_play = check_play + 1
+                    for h in w :
+                        h_minute = h.time.split(":")[1]      #쿼리셋객체 하나의 minute 잘라오기
+                        h_minute = h_minute[0]          #쿼리셋객체 minute의 앞자리
+                        whole_minute[int(h_minute)].append(h.type)
+
+                    minute_tag = 0
+                    for a in whole_minute :
+
+                        check_concent = 0  # 10분 중 'C'갯수
+                        check_play = 0  # 10분 중 'P'갯수
+
+                        temp_tag = minute_tag
+                        minute_tag = minute_tag + 1
+
+                        if a == [] :
+                            continue
+
+                        for type in a :
+                            if type == 'C' :
+                                check_concent = check_concent + 1
+                            elif type == 'P':
+                                check_play = check_play + 1
 
 
-                    stt_time = now_hour + ":" + minute_array[temp_tag]    #stt_time
-                    now_minute = minute_array[temp_tag]
-                    end_minute = str(now_minute[0]) + "9"
-                    end_time = now_hour + ":" + end_minute      #end_time
+                        stt_time = now_hour + ":" + minute_array[temp_tag]    #stt_time
+                        now_minute = minute_array[temp_tag]
+                        end_minute = str(now_minute[0]) + "9"
+                        end_time = now_hour + ":" + end_minute      #end_time
 
 
-#1분에 3개씩 -> 10분 30개이므로 과반수인 15가 c면 c리턴
-                    if check_concent > check_play and (check_concent + check_play) >= 5 :
-                        concent_type = 'C'
-                        qs_data = {
-                            "stt_time": stt_time,
-                            "end_time": end_time,
-                            "concent_type": concent_type
-                        }
-                        whole_min_list.append(qs_data)
-                    elif check_concent <= check_play and (check_concent + check_play) >= 5 :
-                        concent_type = 'P'
 
-                        qs_data = {
-                            "stt_time": stt_time,
-                            "end_time": end_time,
-                            "concent_type": concent_type
-                        }
-                        whole_min_list.append(qs_data)
+                        if check_concent > check_play and (check_concent + check_play) >= 5 :
+                            concent_type = 'C'
+                            qs_data = {
+                                "stt_time": stt_time,
+                                "end_time": end_time,
+                                "concent_type": concent_type
+                            }
+                            whole_min_list.append(qs_data)
+                        elif check_concent <= check_play and (check_concent + check_play) >= 5 :
+                            concent_type = 'P'
 
+                            qs_data = {
+                                "stt_time": stt_time,
+                                "end_time": end_time,
+                                "concent_type": concent_type
+                            }
+                            whole_min_list.append(qs_data)
+                
             return whole_min_list
 
 
