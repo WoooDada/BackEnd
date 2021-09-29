@@ -105,7 +105,7 @@ class getmessage(views.APIView):
             for a in array :
                 if a[0] == user :    #이미 저장된 type이 존재하는 경우
                     time_Exists=False
-                    user_Exists=True
+                  #  user_Exists=True
                     for t in a[1] :     #a[1] = [ [time,[type]] ,  [time,[type]] , ... ]
                         if t[0] == time :       #배열 내 time 존재하는 경우
                             t[1].append(type)
@@ -118,8 +118,9 @@ class getmessage(views.APIView):
                             a[1].append([time,[type]])
                             print("3")
                             print(array)
-        if not user_Exists or len(array) == 0:
+        else:
             array.append([user,[[time,[type]]]])
+
             print("1")
             print(array)
 
