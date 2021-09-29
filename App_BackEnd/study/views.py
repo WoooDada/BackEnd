@@ -71,7 +71,7 @@ class inout(views.APIView):
             user = room.user_id
 
             if user.uid == nowuser:  # 나
-                if recent_type.objects.filter(uid=user).exists():
+                if Daily_1m_content.objects.filter(uid=user).exists():
                     study_info = recent_type.objects.filter(uid=user)
                     type_array = Daily_1m_content.objects.filter(uid=user)
                     concent = 0
@@ -607,7 +607,7 @@ class studymate(views.APIView):
             user = room.user_id
 
             if user.uid == uid:  # 나
-                if recent_type.objects.filter(uid=user).exists():
+                if Daily_1m_content.objects.filter(uid=user).exists():
                     study_info = recent_type.objects.filter(uid=user)
                     type_array = Daily_1m_content.objects.filter(uid=user)
                     concent = 0
