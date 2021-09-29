@@ -480,7 +480,7 @@ class ten_min_data(views.APIView):
                                 "concent_type": concent_type
                             }
                             whole_min_list.append(qs_data)
-                
+
             return whole_min_list
 
 
@@ -639,7 +639,9 @@ class studymate(views.APIView):
                         p = 0
                         count = study_info.count()
                         if count >= 20:
-                            study_info = reversed(study_info)[:20]
+
+                            study_info = study_info.reverse()[:20]
+          
                             tot_time = 20
                         else:
 
