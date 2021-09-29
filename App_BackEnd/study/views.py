@@ -10,7 +10,7 @@ from .serializers import daily_1m_serializer, study_ana_serializer
 import jwt
 from main.models import Recent_Room
 import json
-
+from yolo.models import recent_type
 
 #delete해서 Daily_1m_concent 데이터 사라지기 전에 저장. 즉, 00:00 ~ 04:00 사이의 데이터 저장하는 부분
 temp_list =[]
@@ -71,8 +71,8 @@ class inout(views.APIView):
             user = room.user_id
 
             if user.uid == nowuser:  # 나
-                if Daily_1m_content.objects.filter(uid=user).exists():
-                    study_info = Daily_1m_content.objects.filter(uid=user)
+                if recent_type.objects.filter(uid=user).exists():
+                    study_info = recent_type.objects.filter(uid=user)
                     concent = 0
                     play = 0
 
@@ -97,7 +97,7 @@ class inout(views.APIView):
 
             else:  # 다른 사람들
 
-                study_info = Daily_1m_content.objects.filter(uid=user)
+                study_info = recent_type.objects.filter(uid=user)
                 concent = 0
                 play = 0
 
@@ -119,7 +119,7 @@ class inout(views.APIView):
                         if count >= 20:
                             tot_time = 20
 
-                            study_info = Daily_1m_content.objects.filter(uid=user)[::-1][:20]
+                            study_info = recent_type.objects.filter(uid=user)[::-1][:20]
 
                         else:
 
@@ -589,8 +589,8 @@ class studymate(views.APIView):
             user = room.user_id
 
             if user.uid == uid:  # 나
-                if Daily_1m_content.objects.filter(uid=user).exists():
-                    study_info = Daily_1m_content.objects.filter(uid=user)
+                if recent_type.objects.filter(uid=user).exists():
+                    study_info = recent_type.objects.filter(uid=user)
                     concent = 0
                     play = 0
 
@@ -622,7 +622,7 @@ class studymate(views.APIView):
 
             else:  # 다른 사람들
 
-                study_info = Daily_1m_content.objects.filter(uid=user)
+                study_info = recent_type.objects.filter(uid=user)
                 concent = 0
                 play = 0
 
@@ -642,9 +642,9 @@ class studymate(views.APIView):
                         count = study_info.count()
                         if count >= 20:
 
-                            study_info = Daily_1m_content.objects.filter(uid=user)[::-1][:20]
-
+                            study_info = recent_type.objects.filter(uid=user)[::-1][:20]
                             tot_time = 20
+
                         else:
 
                             tot_time = study_info.count()
@@ -656,7 +656,6 @@ class studymate(views.APIView):
 
 
                         concent_rate = c / tot_time * 100
-                        print("firstrate" + str(concent_rate))
                         concent_rate = round(concent_rate, 1)
 
                         print("cccccccccccc" + str(c))

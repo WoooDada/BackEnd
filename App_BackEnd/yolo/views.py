@@ -10,6 +10,7 @@ import numpy as np
 from django.utils import timezone
 from api.models import User
 from study.models import Daily_1m_content
+from .models import recent_type
 
 def base64_file(data, name=None):
     if data is None:
@@ -159,7 +160,9 @@ class getmessage(views.APIView):
                             array.remove(array[index])
 
                             print("20 success and delete from array => " + time + "and type is  => " + type)
+
             index += 1
+            recent_type.create(uid=user, type=type).save()
 
 
         return Response({'type': type},status=status.HTTP_200_OK)
