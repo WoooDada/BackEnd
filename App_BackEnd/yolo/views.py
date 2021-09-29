@@ -25,8 +25,11 @@ def base64_file(data, name=None):
 
 global total_play, total_con
 global array
+array = []
 
 class getmessage(views.APIView):
+    global array
+    array = []
 
     def post(self, request):
 
@@ -98,7 +101,7 @@ class getmessage(views.APIView):
         minute = now.minute
         time = str(hour) + ":" + str(minute)
 
-        
+
         #각각 user의 time마다 type저장해줌
       #  user_Exists=False
         if len(array) != 0:
