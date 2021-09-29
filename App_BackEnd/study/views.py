@@ -86,9 +86,9 @@ class inout(views.APIView):
                             play += 1
 
                     for t in type_array:
-                        if info.type == 'C':
+                        if t.type == 'C':
                             t_concent += 1
-                        elif info.type == 'P':
+                        elif t.type == 'P':
                             t_play += 1
 
                     concent_time = get_time(t_concent)
@@ -121,9 +121,9 @@ class inout(views.APIView):
                             play += 1
 
                     for t in type_array:
-                        if info.type == 'C':
+                        if t.type == 'C':
                             t_concent += 1
-                        elif info.type == 'P':
+                        elif t.type == 'P':
                             t_play += 1
 
                     if concent == 0:
@@ -622,9 +622,9 @@ class studymate(views.APIView):
                             play += 1
 
                     for t in type_array:
-                        if info.type == 'C':
+                        if t.type == 'C':
                             t_concent += 1
-                        elif info.type == 'P':
+                        elif t.type == 'P':
                             t_play += 1
 
 
@@ -665,9 +665,9 @@ class studymate(views.APIView):
                             play += 1
 
                     for t in type_array:
-                        if info.type == 'C':
+                        if t.type == 'C':
                             t_concent += 1
-                        elif info.type == 'P':
+                        elif t.type == 'P':
                             t_play += 1
 
                     if concent == 0:
