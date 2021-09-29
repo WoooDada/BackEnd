@@ -127,10 +127,11 @@ class getmessage(views.APIView):
             print("1")
             print(array)
 
-
+        index = 0
         for data in array :     #data = [user, [   [time,[type]] ,  [time,[type]] , ... ] ]
 
             if data[0] == user :        #user의 [user, [   [time,[type]] ,  [time,[type]] , ... ] ] 찾은 경우
+
                 for a in data[1] :  # data[1] =[   [time,[type]] ,  [time,[type]] , ... ] 중에서 a =[time,[type]]
                     concent = 0
                     play = 0
@@ -141,17 +142,18 @@ class getmessage(views.APIView):
                                 concent += 1
                             elif t == 'P':
                                 play += 1
-                        if concent + play >= 12 :           #12개면 1m 데이터로 저장하기
+                        if concent + play == 12 :           #12개면 1m 데이터로 저장하기
                             if concent >= play :        #C 로 저장
                                 Daily_1m_content.objects.create(uid=user, type='C', time=time).save()
 
                             else :          #P 로 저장
                                 Daily_1m_content.objects.create(uid=user, type='P', time=time).save()
 
-                        index = data[1].index(a)  # data[1]에서 a=[time,[type]]의 인덱스 위치
-                        array.remove(data[1][index])  # array에서 해당 유저의 [time,[type]] 삭제
-                        print("20 success and delete from array => " + time + "and type is  => " + type)
+                            #d_1m 만들어지면 array 비우기
+                            array.remove(array[index])
 
+                            print("20 success and delete from array => " + time + "and type is  => " + type)
+            index += 1
 
 
         return Response({'type': type},status=status.HTTP_200_OK)
