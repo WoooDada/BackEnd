@@ -169,7 +169,7 @@ class inout(views.APIView):
 
                     studymates.append({
                         "nickname": user.nickname,
-                        "concent_rate": str(concent_rate) + "%",
+                        "concent_rate": str(concent_rate),
                         "concent_time": concent_time,
                         "play_time": play_time
                     })
@@ -718,7 +718,7 @@ class studymate(views.APIView):
 
                     studymates.append({
                         "nickname": user.nickname,
-                        "concent_rate": str(concent_rate) + "%",
+                        "concent_rate": str(concent_rate),
                         "concent_time": concent_time,
                         "play_time": play_time
                     })
