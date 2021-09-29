@@ -117,12 +117,13 @@ class inout(views.APIView):
                         print("count"+str(count))
 
                         if count >= 20:
-                            study_info = study_info.reverse()[:20]
+                            study_info = study_info[:20]
                             tot_time = 20
                             print("count is more than 20 =>")
                             print(study_info)
 
                         else:
+
                             print("count is less than 20 =>")
                             print(study_info)
                             tot_time = study_info.count()
