@@ -157,7 +157,7 @@ class inout(views.APIView):
                 else:
                     studymates.append({
                         "nickname": user.nickname,
-                        "concent_rate": "0.0%",
+                        "concent_rate": "0.0",
                         "concent_time": "0분",
                         "play_time": "0분"
                     })
@@ -685,7 +685,7 @@ class studymate(views.APIView):
                 else:
                     studymates.append({
                         "nickname": user.nickname,
-                        "concent_rate": "0.0%",
+                        "concent_rate": "0.0",
                         "concent_time": "0분",
                         "play_time": "0분"
                     })
