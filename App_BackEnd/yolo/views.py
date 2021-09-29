@@ -109,7 +109,7 @@ class getmessage(views.APIView):
                 user_Exists = True
         if not user_Exists:
             array.append([user,[]])
-            
+
 
         if len(array) != 0:
             for a in array :
