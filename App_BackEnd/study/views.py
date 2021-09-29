@@ -653,9 +653,9 @@ class studymate(views.APIView):
                                 p += 1
 
 
-                        concent_rate = c / tot_time
+                        concent_rate = c / tot_time * 100
                         print("firstrate" + str(concent_rate))
-                        concent_rate = round(concent_rate, 3) * 100
+                        concent_rate = round(concent_rate, 2)
 
                         print("cccccccccccc" + str(c))
                         print("tottttttt" + str(tot_time))
