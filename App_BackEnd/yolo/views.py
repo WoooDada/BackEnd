@@ -148,7 +148,7 @@ class getmessage(views.APIView):
                             else :          #P 로 저장
                                 Daily_1m_content.objects.create(uid=user, type='P', time=time).save()
 
-                            index = data[1].index(a)  # data[1]에서 a=[time,[type]]의 인덱스 위치
+                        index = data[1].index(a)  # data[1]에서 a=[time,[type]]의 인덱스 위치
                         array.remove(data[1][index])  # array에서 해당 유저의 [time,[type]] 삭제
                         print("20 success and delete from array => " + time + "and type is  => " + type)
 
