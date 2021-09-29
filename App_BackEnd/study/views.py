@@ -115,7 +115,7 @@ class inout(views.APIView):
                         p = 0
                         count = study_info.count()
                         if count >= 20:
-                            study_info = reversed(study_info)[:20]
+                            study_info = study_info.reverse()[:20]
                             tot_time = 20
                         else:
 
@@ -641,7 +641,7 @@ class studymate(views.APIView):
                         if count >= 20:
 
                             study_info = study_info.reverse()[:20]
-          
+
                             tot_time = 20
                         else:
 
