@@ -162,7 +162,7 @@ class getmessage(views.APIView):
                             print("20 success and delete from array => " + time + "and type is  => " + type)
 
             index += 1
-            recent_type.create(uid=user, type=type).save()
+            recent_type.objects.create(uid=user, type=type).save()
 
 
         return Response({'type': type},status=status.HTTP_200_OK)
