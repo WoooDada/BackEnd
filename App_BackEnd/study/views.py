@@ -160,7 +160,7 @@ class inout(views.APIView):
                         "play_time": "0분"
                     })
 
-        return HttpResponse({"myStatus": me, "studymates": studymates},status=status.HTTP_200_OK)
+        return Response({"myStatus": me, "studymates": studymates},status=status.HTTP_200_OK)
 
 
     #룸 퇴장
