@@ -19,13 +19,9 @@ member_array =[]
 
 class inout(views.APIView):
 
-    global room
-    global user
 
     #룸 입장
     def post(self,request):
-        global room
-        global user
 
         access_token = request.headers.get('Authorization', None).split(' ')[1]
         payload = jwt.decode(access_token, 'secret', algorithm='HS256')
@@ -65,8 +61,14 @@ class inout(views.APIView):
 
     #룸 퇴장
     def delete(self, request):
-        global room
-        global user
+
+        get_room_id = request.data.get("room_id")
+        room = Room.objects.get(room_id=get_room_id)
+
+        access_token = request.headers.get('Authorization', None).split(' ')[1]
+        payload = jwt.decode(access_token, 'secret', algorithm='HS256')
+        user = User.objects.get(uid=payload['id'])
+
 
         """
         access_token = request.headers.get('Authorization', None).split(' ')[1]
@@ -78,6 +80,7 @@ class inout(views.APIView):
           """
         print(room)
         print(user)
+        
         if Room_Enroll.objects.filter(room_id=room, user_id=user).exists():
             print("aaaa")
             Room_Enroll.objects.get(room_id=room, user_id=user).delete()
