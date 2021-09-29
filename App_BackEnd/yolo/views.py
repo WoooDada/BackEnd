@@ -12,6 +12,8 @@ from api.models import User
 from study.models import Daily_1m_content
 
 def base64_file(data, name=None):
+    if data is None:
+        return "none"
     format, imgstr = data.split(';base64,')
     ext = format.split('/')[-1]
     str_decoded = base64.b64decode(imgstr)
@@ -40,51 +42,55 @@ class getmessage(views.APIView):
       #  message = self.request.query_params.get('message')
         message= request.data.get("message")
         img = base64_file(message, name='yolo_picture')  # base64로 이미지 decode하기
-
-        # 모델에 적용
-        model = torch.hub.load('yolov5', 'custom', path='yolo/static/best.pt', source='local', force_reload=True)
-        results = model(img)
-
-        results_array = results.pandas().xyxy[0].to_json(orient="records")  # 결과값 json변환
-
-        results_array = results_array.replace("'", "\"")  # '을 "로 치환해야 json으로 변환 가능함
-        results_array = json.loads(results_array)  # string을 json(dict)형식으로 변환
-
-
-
-        class_array = []
-        for result in results_array:
-            get_confidence = result['confidence']
-            get_class = result['name']
-
-            if get_confidence >= 0.1:
-                class_array.append(get_class)
-
-        if 'face' in class_array:
+        if img =="none" :
+            print("no picture")
             type = 'P'
-            # message = 'yes face'
-        else:
-            if ('book' in class_array) or ('tablet' in class_array):
-                if 'phone' in class_array:
-                    type = 'P'
-                #   message = 'handphone'
+        else :
 
-                else:
-                    if 'handonly' in class_array:
-                        type = 'C'
-                    #   #     message = 'handonly'
-                    elif 'pen' in class_array:
-                        type = 'C'
+            # 모델에 적용
+            model = torch.hub.load('yolov5', 'custom', path='yolo/static/best.pt', source='local', force_reload=True)
+            results = model(img)
+
+            results_array = results.pandas().xyxy[0].to_json(orient="records")  # 결과값 json변환
+
+            results_array = results_array.replace("'", "\"")  # '을 "로 치환해야 json으로 변환 가능함
+            results_array = json.loads(results_array)  # string을 json(dict)형식으로 변환
+
+
+
+            class_array = []
+            for result in results_array:
+                get_confidence = result['confidence']
+                get_class = result['name']
+
+                if get_confidence >= 0.1:
+                    class_array.append(get_class)
+
+            if 'face' in class_array:
+                type = 'P'
+                # message = 'yes face'
+            else:
+                if ('book' in class_array) or ('tablet' in class_array):
+                    if 'phone' in class_array:
+                        type = 'P'
+                    #   message = 'handphone'
 
                     else:
-                        type = 'P'
-                    #       message='none'
+                        if 'handonly' in class_array:
+                            type = 'C'
+                        #   #     message = 'handonly'
+                        elif 'pen' in class_array:
+                            type = 'C'
 
-            else:
-                type = 'P'
-                # message = 'no face no desk'
+                        else:
+                            type = 'P'
+                        #       message='none'
 
-        print("type => " + type)
+                else:
+                    type = 'P'
+                    # message = 'no face no desk'
+
+            print("type => " + type)
 
         # 같은 시간 내에 최대 20개 모아서 1분으로 저장
         now = timezone.now()
