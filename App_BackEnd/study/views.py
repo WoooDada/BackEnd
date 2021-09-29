@@ -652,14 +652,14 @@ class studymate(views.APIView):
                             elif qs.type == 'P':
                                 p += 1
 
+                        
+                        concent_rate = c / tot_time
+                        print("firstrate" + str(concent_rate))
+                        concent_rate = round(concent_rate, 2) * 100
+
                         print("cccccccccccc" + str(c))
                         print("tottttttt" + str(tot_time))
                         print("ratttttttt" + str(concent_rate))
-                        concent_rate = c / tot_time
-                        concent_rate = round(concent_rate, 2) * 100
-                        print("c개수" + str(c))
-                        print("p개수" + str(p))
-                        print("rate" + str(concent_rate))
 
                     concent_time = get_time(concent)
                     if int(concent_time.split(":")[0]) == 0:
