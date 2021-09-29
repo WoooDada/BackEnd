@@ -103,7 +103,14 @@ class getmessage(views.APIView):
 
 
         #각각 user의 time마다 type저장해줌
-      #  user_Exists=False
+        user_Exists=False
+        for a in array :
+            if a[0] == user :
+                user_Exists = True
+        if not user_Exists:
+            array.append([user,[]])
+            
+
         if len(array) != 0:
             for a in array :
                 if a[0] == user :    #이미 저장된 type이 존재하는 경우
