@@ -122,7 +122,7 @@ class inout(views.APIView):
                             print(study_info)
                             tot_time = 20
                             print("count is more than 20 =>")
-                            study_info = study_reverse.reverse()[:20]
+                            study_info = Daily_1m_content.objects.filter(uid=user).reverse()[:20]
                             print(study_info)
 
                         else:
